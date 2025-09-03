@@ -1,11 +1,11 @@
 # **TEAM: JJaCL**
-### Project I-22
-**Project: Assistive Task App**
-Sponsor: Dr. Stephanie Ludi
-**Project Overview**
+## Project I-22: Assistive Task App
+**Sponsor: Dr. Stephanie Ludi**
+
+### **Project Overview**
 For this app, you need to pitch an app that you assert will help persons with disabilities in some way (though people without disabilities can also use it). It may be for people generally or for a subgroup (e.g. Deaf/Hard of hearing community, Autism community) to be used for certain activities or scenarios. You will need to do some research on what will be useful that is not already on the market or is an improvement of what is on the market.
 
-**JJaCL Further Features Suggestions/Ideas**
+#### **JJaCL Further Features Suggestions/Ideas**
 _These are suggestions adding on to the given Project Overview._
 * Task-Oriented
   * Focus mode: visual/auditory countdown timer for task durations (pomodoro-style)
