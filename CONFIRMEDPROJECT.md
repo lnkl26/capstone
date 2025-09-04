@@ -20,3 +20,41 @@ _These are suggestions adding on to the given Project Overview._
 
 **JJaCL’s Motivation**
 * **Problem:** Many popular task management apps don’t really have users with disabilities in mind. We aim to provide an adaptive task management experience by providing useful accessibility features.
+
+---
+
+## POSSIBLE SPRINT OUTLINE
+### SPRINT 1
+**User Research**
+* Identify target users (e.g., ADHD, Autism, Dyslexia, etc.)
+* Survey/Interview to understand needs and challenges
+* Conduct analysis of existing apps (e.g., Routinery)
+
+**Prioritized Features**
+* Task Create/Edit/Delete
+* Routine Create/Edit/Delete
+* Pomodoro-style focus timer (w/visual & auditory cues)
+
+**Design & Architecture**
+
+_Possible Tech Stack:_
+* HTML/CSS, React.js, [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API), localStorage, [Service Worker and manifest.json](https://www.digitalocean.com/community/tutorials/js-intro-progressive-web-apps)
+* Static App Hosting --> Use GitHub Pages
+
+**Miscellaneous**
+* Collect user feedback
+## SPRINT 2
+### Prioritized Features
+* Any that weren't implemented in previous sprint(s)
+* High-Contrast & Color-Blind Modes
+* Text size and Dyslexia-friendly font toggle
+* Screen read-aloud compatibility or voice navigation
+* Task Breakdown Assistant (app/system suggests sub tasks based on the given task)
+* Mood tracker tied to tasks/routines
+* Preset Routines (e.g., template the user can choose from such as "Study")
+### Enhancements 
+* Better Visuals (icons, progress bars, etc.) for users with cognitive disabilities
+* User settings page for accessibility customization
+## SPRINT 3
+### Polish
+* Improve responsiveness for different screen sizes
