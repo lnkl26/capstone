@@ -1,6 +1,6 @@
 **Product Design**
 
-| Team | \<Team Name In Bold Black\> Team Members’ names here  |
+| Team | \<JJaCL\> Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal |
 | :---- | :---- |
 
 ***Note: this is a “living document”, meaning its content will change with the implementation of the project. Use it to capture key project concepts and document your product design and decisions. Make sure the design is traceable to the requirements. Remove/replace the blue text and the descriptive paragraphs in each section prior to your submission as directed by your instructor.  REMOVE THE ITALICIZED TEXT BEFORE SUBMISSION.***
