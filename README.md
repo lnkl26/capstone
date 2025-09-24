@@ -11,7 +11,7 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 
 ## Project Status
 
-### In Progess
+### In Progress
 
 * AUG 26 2025 | Deciding on our project
 * SEP 03 2025 | Project decided: [Assistive Task Web App](https://github.com/lnkl26/capstone/blob/main/CONFIRMEDPROJECT.md)
