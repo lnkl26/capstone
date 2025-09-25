@@ -26,6 +26,7 @@
 *This is for UML class diagram capturing the relationships between classes. It is only necessary to show methods that are publically accessible by other classes. Only show an instance variable of a class if it is publically accessible.*
 
 The first iteration of the [UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
+
 * Will need clarification of whether CRUD functions need to be added or not.
 
 ## ER Diagram(s)
@@ -39,6 +40,7 @@ The first iteration of the [UML Class Diagram](https://github.com/lnkl26/capston
 *If you are not sure what types of diagram you need for your project, ask right away.*
 
 The first iteration of the [Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
+
 * Will need clarification on whether or not more detailed information is required.
 
 ## User Interface Wireframe(s)/Screenshot(s)
