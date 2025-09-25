@@ -24,6 +24,9 @@
 
 *This is for UML class diagram capturing the relationships between classes. It is only necessary to show methods that are publically accessible by other classes. Only show an instance variable of a class if it is publically accessible.*
 
+The first iteration of the [UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
+* Will need clarification of whether CRUD functions need to be added or not.
+
 ## ER Diagram(s)
 
 *This is for ER diagram capturing the structure of your database.*
