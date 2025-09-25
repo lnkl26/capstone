@@ -14,7 +14,8 @@
 
 | Revision Number | Revision Date | Summary of Changes | Author(s) |
 | ----- | ----- | ----- | ----- |
-| 0.1 | MM/DD/YYYY | Updates to X and Y to account for Z | Dr. Gregory House |
+| 0.1 | 09/25/2025 | Initial creation of UML class diagram | Leann Kahal |
+| 0.1 | 09/25/2025 | Initial creation of Information Architecture diagram | Leann Kahal |
 |  |  |  |  |
 |  |  |  |  |
 
