@@ -11,11 +11,11 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 
 ## Project Status
 
-### In Progess
+### In Progress
 
 * AUG 26 2025 | Deciding on our project
-* SEP 03 2025 | Project decided: [Assistive Task Web App](https://github.com/lnkl26/capstone/blob/main/CONFIRMEDPROJECT.md)
-* SEP 12 2025 | Written [Product Requirements Document](https://github.com/lnkl26/capstone/blob/main/REVIEWED_Product-Requirements.pdf)
+* SEP 03 2025 | Project decided: [Assistive Task Web App](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/CONFIRMEDPROJECT.md)
+* SEP 12 2025 | Written [Product Requirements Document](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/JJaCL_Requirements.md)
 
 ## How to Run
 

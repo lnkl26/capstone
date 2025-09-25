@@ -1,29 +1,28 @@
-**Product Requirements**
+# Product Requirements
 
-*Assistive Task App \- ADHD/Autism-Friendly Focus & Food App*
+## Assistive Task App - ADHD/Autism-Friendly Focus & Food App
 
-| Team | JJaCL |
+| Team | **JJaCL** |
 | :---- | :---- |
+| Team Members | Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal |
 
-# **Team Members:** Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
-
-# **Brief problem statement** 
+## Brief problem statement
 
 This should be 1-2 paragraphs describing what the motivation is for the project.  What is the problem to be solved?
 
-Neurodivergent individuals, specifically those with ADHD or are Autistic, may struggle with executive functioning, task management, and maintaining consistent eating habits. This project aims to create an all-in-one task management and food tracking system designed for neurodivergent users in mind. Most apps geared towards these individuals often have features that are paywalled or follow a subscription-based model, we would like to avoid this and prioritize accessibility instead. 
+Neurodivergent individuals, specifically those with ADHD or are Autistic, may struggle with executive functioning, task management, and maintaining consistent eating habits. This project aims to create an all-in-one task management and food tracking system designed for neurodivergent users in mind. Most apps geared towards these individuals often have features that are paywalled or follow a subscription-based model, we would like to avoid this and prioritize accessibility instead.
 
-# **System Requirements**
+## System Requirements
 
 What system configuration needs to run your proposed system (including anything third party that is needed to run your system).
 
 A modern web browser that supports HTML5, CSS3, and JavaScript ES6+ are needed for the system to run. Possible browsers are Google Chrome, Mozilla Firefox, Microsoft Edge, and Safari. Note, these browsers need to be running the latest version of themselves. This is to ensure that the browsers are able to support IndexedDB and localStorage, which is what we will be using for data storage. Browsers also need to support Service Workers (for offline support and caching) and Web Manifest (for progressive web app development) in order for the system to work as intended. Any device that can run these browsers should be able to run our web app.
 
-The web application will be initially hosted using GitHub Pages. For the initial download, users will need internet connection. Login is not required to use the web app itself. In the future, we will expand our downloading options to other web hosting services that do not require users to create an account. 
+The web application will be initially hosted using GitHub Pages. For the initial download, users will need internet connection. Login is not required to use the web app itself. In the future, we will expand our downloading options to other web hosting services that do not require users to create an account.
 
 We expect to use third-party dependencies such as React.js and Node.js for frontend framework and app deployment, respectively. Other possible software that need to work in tandem with our web app are screen readers available on the user’s OS and devices that should have microphone access (for voice command support).
 
-# **Users Profile**
+## Users Profile
 
 Who is the system intended for? What characteristics should the users have (this can also be a range of things such as reading level, etc.).
 
@@ -36,11 +35,11 @@ Possible User Characteristics:
 * Desire for non-judgemental, supportive systems that encourage autonomy  
 * May include children, teens, and adults, with or without form diagnosis
 
-We aim to keep the text at an 8th grade reading level, ensuring comprehension across a wider range of cognitive abilities. Those who are less tech-savvy will have an onboarding walkthrough, while tech-savvy individuals can skip the onboarding. 
+We aim to keep the text at an 8th grade reading level, ensuring comprehension across a wider range of cognitive abilities. Those who are less tech-savvy will have an onboarding walkthrough, while tech-savvy individuals can skip the onboarding.
 
-# **List of Features**
+## List of Features
 
-# Provide a numbered list of features (F1, F2, etc.) that concisely, clearly, and accurately describe that which constitutes your project.
+***Provide a numbered list of features (F1, F2, etc.) that concisely, clearly, and accurately describe that which constitutes your project.***
 
 | No. | Feature Name | Description |
 | :---- | :---- | :---- |
@@ -53,9 +52,9 @@ We aim to keep the text at an 8th grade reading level, ensuring comprehension ac
 | F7  | Medication Reminders | Set up recurring alerts to take medication on time. |
 | F8 | Exportable Food Logging | Allows users to export their food tracking data as a CSV file, useful for personal review or sharing with healthcare providers. |
 
-# **Functional Requirements (user stories)**
+## Functional Requirements (user stories)
 
-List the Priority as 1 (High Priority \- Critical) to 3 (Low Priority – Would be nice if we have time)
+***List the Priority as 1 (High Priority - Critical) to 3 (Low Priority – Would be nice if we have time)***
 
 | No. | Feature Name | Description | Priority |
 | :---- | :---- | :---- | :---: |
@@ -68,9 +67,7 @@ List the Priority as 1 (High Priority \- Critical) to 3 (Low Priority – Would 
 | R7 | Shared Task | As a student working on a group project, I want to assign and track shared tasks with my team so we can stay on the same without confusion | 3 |
 | R8 | Exportable Food Logging | As someone managing my diet with a nutritionist, I want to export my food logs so I can share accurate information without rewriting everything | 3 |
 
-# 
-
-# **Non-Functional Requirements**
+## Non-Functional Requirements
 
 *Describe any constraints or cross-cutting characteristics of the system in a manner that is clear, specific, and testable.  Each requirement should have a unique identifier (e.g. NF1, NF2,..).  Only present those which are applicable to your system.  Categories include but are not limited to:*
 
@@ -97,7 +94,6 @@ Sponsor Requirements
 
 I have read and approved the material in this document.  If there is no external sponsor, the TA or instructor will sign it for accuracy/scope.
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_	\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_	\_\_\_\_\_\_\_\_\_
-
-Print Name				Signature					Date
-
+| \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ | \_\_\_\_\_\_\_\_\_ |
+| :---- | :---- | :---- |
+| Print Name | Signature | Date |
