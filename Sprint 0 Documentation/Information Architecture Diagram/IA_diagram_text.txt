@@ -1,0 +1,38 @@
+@startuml
+node "Home / Dashboard" {
+}
+
+node "Productivity Management" {
+  node "Task CRUD" {
+    node "Task List"
+    node "Shared Task List"
+    node "Assist Task Breakdown"
+  }
+  node "Routine CRUD" {
+    node "Routine Templates"
+  }
+  node "Focus Mode" {
+    node "Pomodoro Timer"
+    node "Task Sidebar"
+  }
+}
+
+node "Food / Med Management" {
+  node "Diet Tracker" {
+    node "Export Food Logs (CSV)"
+  }
+  node "Medication" {
+    node "Medication Reminder CRUD"
+  }
+}
+
+node "Settings" {
+  node "User Profile"
+  node "Notification Preferences"
+  node "Export Data"
+}
+
+"Home / Dashboard" --> "Productivity Management"
+"Home / Dashboard" --> "Food / Med Management"
+"Home / Dashboard" --> "Settings"
+@enduml
