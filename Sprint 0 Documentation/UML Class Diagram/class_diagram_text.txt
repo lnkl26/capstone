@@ -1,0 +1,97 @@
+@startuml AssistiveTaskApp
+
+' =============================
+' Classes
+' =============================
+
+class User {
+    +id: UUID
+    +name: String
+    +email: String
+    --
+    +createTask(): Task
+    +createRoutine(): Routine
+    +enterFocusMode(): void
+    +addSharedTask(): void
+    +trackFood(): void
+    +setReminder(): void
+    +exportFoodLog(): void
+}
+
+class Task {
+    +title: String
+    +isCompleted: Boolean
+    --
+    +markComplete(): void
+    +breakDown(): void
+}
+
+class RepeatRule {
+    +frequency: String ' e.g. "Daily", "Weekly"
+    +interval: int ' e.g. every 2 days
+    +endsOn: Date
+    --
+    +isDue(date: Date): Boolean
+}
+
+class Routine {
+    +name: String
+    --
+    +addTask(task: Task): void
+}
+
+class FocusMode {
+    +startTimer(): void
+    +pauseTimer(): void
+    +displayTaskList(): void
+}
+
+class AssistTaskBreakdown {
+    +suggestSteps(task: Task): List<String>
+}
+
+class SharedTaskList {
+    +addMember(user: User): void
+    +addTask(task: Task): void
+    +markTaskComplete(task: Task): void
+}
+
+class DietTracker {
+    +logFood(item: String): void
+    +tagSafeFood(item: String): void
+    +getDailyIntake(): List<String>
+}
+
+class MedicationReminder {
+    +setReminder(time: String): void
+    +cancelReminder(): void
+}
+
+class FoodLogExporter {
+    +exportCSV(): File
+}
+
+' =============================
+' Relationships
+' =============================
+
+User "1" --> "*" Task : creates >
+User "1" --> "*" Routine : creates >
+User --> FocusMode : uses >
+User --> SharedTaskList : shares >
+User --> DietTracker : uses >
+User --> MedicationReminder : uses >
+User --> FoodLogExporter : exports >
+
+Routine o-- "*" Task : contains >
+
+Task --> RepeatRule : has >
+
+MedicationReminder --> RepeatRule : has >
+
+AssistTaskBreakdown --> Task : suggests breakdown for >
+
+SharedTaskList --> "*" Task : contains >
+SharedTaskList --> "*" User : members >
+
+@enduml
