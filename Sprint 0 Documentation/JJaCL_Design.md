@@ -9,8 +9,8 @@
 | 0.1 | 09/25/2025 | Initial creation of UML class diagram | Leann Kahal |
 | 0.1 | 09/25/2025 | Initial creation of Information Architecture diagram | Leann Kahal |
 | 0.1 | 09/27/2025 | Initial creation of Entity Relationship diagram | Leann Kahal |
-| 0.2 | 09/27/2025 | Reformated and Added CRUD functions to the UML class diagram | Leann Kahal |
-| 0.2 | 09/27/2025 | Reformated and added Services to the IA diagram | Leann Kahal |
+| 0.2 | 09/27/2025 | Reformatted and Added CRUD functions to the UML class diagram | Leann Kahal |
+| 0.2 | 09/27/2025 | Reformatted and added Services to the IA diagram | Leann Kahal |
 | 0.1 | 09/27/2025 | Initial creation of UI Wireframes | Leann Kahal |
 
 ***The Revision Table above must be augmented after any version of this document is updated. Insert any necessary rows at the bottom of the table.***
@@ -48,7 +48,7 @@ JJaCL's Assistive Task Web App is a modular productivity and wellness applicatio
 
 * The User class does not directly interact with the domain models, but instead interacts with the services and tools, which is ideal for scalability.
 
-* Tasks and routines are extended via RepeatRule for modularity, and AssistTaskBreakdown is an assistive feature offers further enhancements.
+* Tasks and routines are extended via RepeatRule for modularity, and AssistTaskBreakdown is an assistive feature that offers further enhancements.
 
 ### Entity Relationship Design
 
@@ -74,7 +74,7 @@ The main goal here is to have a simple navigation hierarchy, where:
 
 ### User Interface Design
 
-We are aimining for minimalistic and non-cluttered UI using tile layouts. Where nxm, n being rows, and m being columns.
+We are aiming for a minimalistic and non-cluttered UI using tile layouts. Where nxm, n being rows, and m being columns.
 
 * The Home screen uses a 2x2 tile format: 
     * User Profile
@@ -83,8 +83,8 @@ We are aimining for minimalistic and non-cluttered UI using tile layouts. Where 
     * Settings
 
 * The Productivity screen uses 3x1 tile format:
-    * "Your Tasks" for task managment
-    * "Your Routine" for routine managment
+    * "Your Tasks" for task management
+    * "Your Routine" for routine management
     * "Focus Mode" for the built in Pomodoro Timer
 
 * The Food/Med screen uses 2x1 tile format:
@@ -103,15 +103,15 @@ We are aimining for minimalistic and non-cluttered UI using tile layouts. Where 
 
 We (JJaCL) explored over a dozen different types of sidebar and navigations styles commonly used for web applications. One of the first few designs we noticed was text-only navigation menus. While functional, we noted that this style was rather uninspiring and lacked the visual appeal we were aiming for. We concluded that this type of navigation would come off as disengaging for our user base.
 
-Another common design we noticed was combining both icons and text labels for navigation. This was promising, however most of the examples we were revieweing used rather small icons. We believed this was not useful as it would recude their clarity and impact for first-time users.
+Another common design we noticed was combining both icons and text labels for navigation. This was promising, however most of the examples we were reviewing used rather small icons. We believed this was not useful as it would reduce their clarity and impact for first-time users.
 
-After reviewing other various formats, we decided on a tile-based layout for the home screen. We believe this would feel cleaner, and be visually engaging for users. But, many references we were looking at used borderless tiles, which we believed would make the UI looked too flat and lead to frequent misclicks. So, in our final layout, we wanted clearly spaced and bordered tiles to improve usability and visual clarity.
+After reviewing other various formats, we decided on a tile-based layout for the home screen. We believe this would feel cleaner, and be visually engaging for users. But, many references we were looking at used borderless tiles, which we believed would make the UI look too flat and lead to frequent misclicks. So, in our final layout, we wanted clearly spaced and bordered tiles to improve usability and visual clarity.
 
 ### Shape-Based Visual Cues
 
 To reinforce hierarchy and functionality, we decided using distinct tiles shapes would be most useful.
 
-* Rounded squares for primary managemnt sections (e.g., Task Management, and Food/Med Management).
+* Rounded squares for primary management sections (e.g., Task Management, and Food/Med Management).
 
 * Circle for user profile access
 
@@ -119,14 +119,14 @@ To reinforce hierarchy and functionality, we decided using distinct tiles shapes
 
 ### Icons and Labels
 
-We are prioritizing large and clear icons for visual clarity and accessibility, but we will still include text labels beneath or beside each icon. This is to avoid ambigious buttons.
+We are prioritizing large and clear icons for visual clarity and accessibility, but we will still include text labels beneath or beside each icon. This is to avoid ambiguous buttons.
 
 Additionally, many designs we reviewed lack in-screen help features or a clear back button, so we decided to include them in our UI.
 
-* A Help button/tool for each major screen, allowing users to easily understand where they and what they can do.
+* A Help button/tool for each major screen, allowing users to easily understand where they are and what they can do.
 
-* A Back button on all secondary and details screens, ensuring simple navigation
+* A Back button on all secondary and detailed screens, ensuring simple navigation.
 
 ### Trade-Offs
 
-Although, we stated that we wanted to prioritize minimalistic UI, we still wanted to provide visual engagement, so we discarded the text-only navigation idea.
+Although we stated that we wanted to prioritize minimalistic UI, we still wanted to provide visual engagement, so we discarded the text-only navigation idea.
