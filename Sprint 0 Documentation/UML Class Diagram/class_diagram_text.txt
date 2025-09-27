@@ -9,16 +9,13 @@ class User {
     +name: String
     +email: String
     --
-    +createTask(): Task
-    +createRoutine(): Routine
     +enterFocusMode(): void
     +addSharedTask(): void
-    +trackFood(): void
-    +setReminder(): void
     +exportFoodLog(): void
 }
 
 class Task {
+    +id: UUID
     +title: String
     +isCompleted: Boolean
     --
@@ -26,18 +23,33 @@ class Task {
     +breakDown(): void
 }
 
+class TaskService {
+    +createTask(user: User, title: String): Task
+    +readTask(taskId: UUID): Task
+    +updateTask(task: Task): void
+    +deleteTask(taskId: UUID): void
+}
+
 class RepeatRule {
-    +frequency: String ' e.g. "Daily", "Weekly"
-    +interval: int ' e.g. every 2 days
+    +frequency: String "e.g. Daily, Weekly"
+    +interval: int "e.g. every 2 days"
     +endsOn: Date
     --
     +isDue(date: Date): Boolean
 }
 
 class Routine {
+    +id: UUID
     +name: String
     --
     +addTask(task: Task): void
+}
+
+class RoutineService {
+    +createRoutine(user: User, name: String): Routine
+    +readRoutine(routineId: UUID): Routine
+    +updateRoutine(routine: Routine): void
+    +deleteRoutine(routineId: UUID): void
 }
 
 class FocusMode {
@@ -60,11 +72,24 @@ class DietTracker {
     +logFood(item: String): void
     +tagSafeFood(item: String): void
     +getDailyIntake(): List<String>
+    +readFoodLog(date: Date): List<String>
+    +updateFoodLog(entryId: UUID, item: String): void
+    +deleteFoodLog(entryId: UUID): void
 }
 
 class MedicationReminder {
+    +id: UUID
+    +time: String
+    --
     +setReminder(time: String): void
     +cancelReminder(): void
+}
+
+class ReminderService {
+    +createReminder(user: User, time: String): MedicationReminder
+    +readReminder(reminderId: UUID): MedicationReminder
+    +updateReminder(reminder: MedicationReminder): void
+    +deleteReminder(reminderId: UUID): void
 }
 
 class FoodLogExporter {
@@ -75,23 +100,24 @@ class FoodLogExporter {
 ' Relationships
 ' =============================
 
-User "1" --> "*" Task : creates >
-User "1" --> "*" Routine : creates >
 User --> FocusMode : uses >
 User --> SharedTaskList : shares >
-User --> DietTracker : uses >
-User --> MedicationReminder : uses >
-User --> FoodLogExporter : exports >
+User --> DietTracker : tracks diet >
+User --> FoodLogExporter : exports food log >
 
-Routine o-- "*" Task : contains >
+User --> TaskService : manages >
+User --> RoutineService : manages >
+User --> ReminderService : manages >
 
 Task --> RepeatRule : has >
-
 MedicationReminder --> RepeatRule : has >
-
-AssistTaskBreakdown --> Task : suggests breakdown for >
-
+Routine o-- "*" Task : contains >
 SharedTaskList --> "*" Task : contains >
 SharedTaskList --> "*" User : members >
+AssistTaskBreakdown --> Task : suggests steps >
+
+TaskService --> Task : manages >
+RoutineService --> Routine : manages >
+ReminderService --> MedicationReminder : manages >
 
 @enduml
