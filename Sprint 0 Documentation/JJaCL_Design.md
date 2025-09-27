@@ -4,14 +4,6 @@
 | :---- | :---- |
 | Team Members | Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal |
 
-*Note: this is a **“living document”**, meaning its content will change with the implementation of the project. Use it to capture key project concepts and document your product design and decisions. Make sure the design is traceable to the requirements. Remove/replace the blue text and the descriptive paragraphs in each section prior to your submission as directed by your instructor.*
-
-***REMOVE THE ITALICIZED TEXT BEFORE SUBMISSION.***
-
-***THIS DOCUMENT IS A STARTING POINT, YOUR TEAM IS EXPECTED TO ADD/MODIFY ALL NECESSARY SECTIONS.***
-
-*You may use any drawing tool for your UML diagrams. If you diagrams are too big to cut and paste into this document, provide a reference to the external image files(s) [JPG or PNG] where they can be found or segment your image into legible sections to make them fit.*
-
 | Revision Number | Revision Date | Summary of Changes | Author(s) |
 | ----- | ----- | ----- | ----- |
 | 0.1 | 09/25/2025 | Initial creation of UML class diagram | Leann Kahal |
@@ -102,13 +94,39 @@ We are aimining for minimalistic and non-cluttered UI using tile layouts. Where 
 * Overall Visual Design
     * Clean whitespace
     * Home screen tiles/buttons are unique from each other, in addition to unique icons and accurate labelling
+    * All screens will have a "?" button for users to click-on if they do not understand the use of the current screen they're on
+    * Screens besides the Home screen will have a \[back arrow] button, so users can access the previous screen again.
 
 ## Design Rationale
 
-*This is a running list of issues that arise as your design process proceeds. This is an important section of the design document as it captures the thought process of the product's designers. It includes why or why not (rejected solutions) a design decision was made and supports future changes to the product. It should be updated whenever a design change occurs.***
+### Navigation and UI Structure
 
-*It is RARELY the case that the first design you consider is the best one that you can come up with that meets the requirements and that can be implemented, tested, and delivered on schedule. Your instructor will be looking for signs that you considered at least a few approaches, and that you had a coherent rationale for preferring the design your team eventually adopts.*
+We (JJaCL) explored over a dozen different types of sidebar and navigations styles commonly used for web applications. One of the first few designs we noticed was text-only navigation menus. While functional, we noted that this style was rather uninspiring and lacked the visual appeal we were aiming for. We concluded that this type of navigation would come off as disengaging for our user base.
 
-*This is the place to record such thoughts – what alternatives did you consider? What are the strengths (and deficiencies) of the final design compared to the other alternatives considered? Why did you select the approach you finally chose? This last question should be answered with an eye to the tradeoffs inevitably involved in creating an appropriate design.*
+Another common design we noticed was combining both icons and text labels for navigation. This was promising, however most of the examples we were revieweing used rather small icons. We believed this was not useful as it would recude their clarity and impact for first-time users.
 
-*In addition, if (not when) the design has to be adjusted to meet unexpected problems or new requirements, this is the place to record what changes were made, what effect these had on the work that had been completed to date, and the rationale for the making changes (as opposed to “just toughing it out”).*
+After reviewing other various formats, we decided on a tile-based layout for the home screen. We believe this would feel cleaner, and be visually engaging for users. But, many references we were looking at used borderless tiles, which we believed would make the UI looked too flat and lead to frequent misclicks. So, in our final layout, we wanted clearly spaced and bordered tiles to improve usability and visual clarity.
+
+### Shape-Based Visual Cues
+
+To reinforce hierarchy and functionality, we decided using distinct tiles shapes would be most useful.
+
+* Rounded squares for primary managemnt sections (e.g., Task Management, and Food/Med Management).
+
+* Circle for user profile access
+
+* Octagon for system settings to signify its importance 
+
+### Icons and Labels
+
+We are prioritizing large and clear icons for visual clarity and accessibility, but we will still include text labels beneath or beside each icon. This is to avoid ambigious buttons.
+
+Additionally, many designs we reviewed lack in-screen help features or a clear back button, so we decided to include them in our UI.
+
+* A Help button/tool for each major screen, allowing users to easily understand where they and what they can do.
+
+* A Back button on all secondary and details screens, ensuring simple navigation
+
+### Trade-Offs
+
+Although, we stated that we wanted to prioritize minimalistic UI, we still wanted to provide visual engagement, so we discarded the text-only navigation idea.
