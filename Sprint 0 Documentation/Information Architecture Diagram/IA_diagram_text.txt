@@ -7,9 +7,11 @@ node "Productivity Management" {
     node "Task List"
     node "Shared Task List"
     node "Assist Task Breakdown"
+    node "Task Service"
   }
   node "Routine CRUD" {
     node "Routine Templates"
+    node "Routine Service"
   }
   node "Focus Mode" {
     node "Pomodoro Timer"
@@ -19,10 +21,12 @@ node "Productivity Management" {
 
 node "Food / Med Management" {
   node "Diet Tracker" {
+    node "Food Log CRUD"
     node "Export Food Logs (CSV)"
   }
   node "Medication" {
     node "Medication Reminder CRUD"
+    node "Reminder Service"
   }
 }
 

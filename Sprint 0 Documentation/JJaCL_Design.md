@@ -18,16 +18,13 @@
 | 0.1 | 09/25/2025 | Initial creation of Information Architecture diagram | Leann Kahal |
 | 0.1 | 09/27/2025 | Initial creation of Entity Relationship diagram | Leann Kahal |
 | 0.2 | 09/27/2025 | Reformated and Added CRUD functions to the UML class diagram | Leann Kahal |
+| 0.2 | 09/27/2025 | Reformated and added Services to the IA diagram | Leann Kahal |
 
 ***The Revision Table above must be augmented after any version of this document is updated. Insert any necessary rows at the bottom of the table.***
 
 ## Class Diagram(s)
 
-*This is for UML class diagram capturing the relationships between classes. It is only necessary to show methods that are publically accessible by other classes. Only show an instance variable of a class if it is publically accessible.*
-
-The first iteration of the [UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
-
-* Will need clarification of whether CRUD functions need to be added or not.
+[UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
 
 ## ER Diagram(s)
 
@@ -35,13 +32,7 @@ The first iteration of the [UML Class Diagram](https://github.com/lnkl26/capston
 
 ## Information Architecture Diagram
 
-***If your project is web-based, you can show the structure of your website here.***
-
-*If you are not sure what types of diagram you need for your project, ask right away.*
-
-The first iteration of the [Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
-
-* Will need clarification on whether or not more detailed information is required.
+[Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
