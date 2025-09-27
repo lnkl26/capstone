@@ -1,0 +1,115 @@
+@startuml ERD_AssistiveTaskApp
+hide methods
+skinparam linetype ortho
+
+entity User {
+  *id : UUID <<PK>>
+  --
+  name : String
+  email : String
+}
+
+entity Task {
+  *id : UUID <<PK>>
+  --
+  title : String
+  isCompleted : Boolean
+  user_id : UUID <<FK>>
+  repeat_rule_id : UUID <<FK>>
+}
+
+entity Routine {
+  *id : UUID <<PK>>
+  --
+  name : String
+  user_id : UUID <<FK>>
+}
+
+entity RoutineTask {
+  *routine_id : UUID <<FK>>
+  *task_id : UUID <<FK>>
+}
+
+entity RepeatRule {
+  *id : UUID <<PK>>
+  --
+  frequency : String
+  interval : int
+  endsOn : Date
+}
+
+entity SharedTaskList {
+  *id : UUID <<PK>>
+}
+
+entity SharedTaskListUser {
+  *shared_task_list_id : UUID <<FK>>
+  *user_id : UUID <<FK>>
+}
+
+entity SharedTask {
+  *shared_task_list_id : UUID <<FK>>
+  *task_id : UUID <<FK>>
+}
+
+entity FocusMode {
+  *id : UUID <<PK>>
+  --
+  user_id : UUID <<FK>>
+}
+
+entity DietTracker {
+  *id : UUID <<PK>>
+  --
+  user_id : UUID <<FK>>
+}
+
+entity FoodLog {
+  *id : UUID <<PK>>
+  --
+  diet_tracker_id : UUID <<FK>>
+  item : String
+}
+
+entity MedicationReminder {
+  *id : UUID <<PK>>
+  --
+  time : String
+  user_id : UUID <<FK>>
+  repeat_rule_id : UUID <<FK>>
+}
+
+entity FoodLogExport {
+  *id : UUID <<PK>>
+  --
+  diet_tracker_id : UUID <<FK>>
+  exportDate : Date
+  filePath : String
+}
+
+' ============================
+' Relationships
+' ============================
+
+User ||--o{ Task : "creates"
+User ||--o{ Routine : "creates"
+User ||--|| FocusMode : "has"
+User ||--o{ DietTracker : "has"
+User ||--o{ MedicationReminder : "has"
+User ||--o{ SharedTaskListUser : "joins"
+User ||--o{ FoodLogExport : "exports"
+
+Routine ||--o{ RoutineTask : "has"
+Task ||--o{ RoutineTask : "in"
+
+RepeatRule ||--o{ Task : "applies to"
+RepeatRule ||--o{ MedicationReminder : "applies to"
+
+SharedTaskList ||--o{ SharedTaskListUser : "has members"
+SharedTaskList ||--o{ SharedTask : "has tasks"
+Task ||--o{ SharedTask : "included in list"
+
+DietTracker ||--o{ FoodLog : "logs"
+DietTracker ||--o{ FoodLogExport : "exports"
+
+@enduml

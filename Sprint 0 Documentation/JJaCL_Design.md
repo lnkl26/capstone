@@ -16,7 +16,7 @@
 | ----- | ----- | ----- | ----- |
 | 0.1 | 09/25/2025 | Initial creation of UML class diagram | Leann Kahal |
 | 0.1 | 09/25/2025 | Initial creation of Information Architecture diagram | Leann Kahal |
-|  |  |  |  |
+| 0.1 | 09/27/2025 | Initial creation of Entity Relationship diagram | Leann Kahal |
 |  |  |  |  |
 
 ***The Revision Table above must be augmented after any version of this document is updated. Insert any necessary rows at the bottom of the table.***
