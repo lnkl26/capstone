@@ -20,6 +20,8 @@ I am content with the amount of work I accomplished in this sprint and look forw
 
 ## AI as a Tool
 
+AI was seldom used due to its known inaccuracies, even when given detailed prompts and resources. So, it was mainly used for quickly generating formatted text. For example, when utilizing the online editor PlantUML, Leann  used ChatGPT to generate the text for the UML class diagram, ER diagram and IA diagram. However, double-checking the text was necessary as ChatGPT may hallucinate terms that shouldn't be used in specific diagrams. Double-checking was necessary to confirm the consistency of the diagrams.
+
 ## Reflection
 
 As a team, we were able to contribute ideas openly, because everyone was given an opportunity to voice their thoughts. We had a supportive environment that encouraged creativity at the beginning of our sprint. Attendance and participation of meetings were consistent. Therefore, we were able to have efficient and focused discussions. However, while meetings were productive, members relied too heavily on in-person communication. There were occasional gaps concerning new information and updates. To further improve team efficiency, members should utilize all shared productivity tools such as GitHub and communication channels, as a way to stay informed on project status, regardless of meeting attendance. 
