@@ -19,6 +19,7 @@
 | 0.1 | 09/27/2025 | Initial creation of Entity Relationship diagram | Leann Kahal |
 | 0.2 | 09/27/2025 | Reformated and Added CRUD functions to the UML class diagram | Leann Kahal |
 | 0.2 | 09/27/2025 | Reformated and added Services to the IA diagram | Leann Kahal |
+| 0.1 | 09/27/2025 | Initial creation of UI Wireframes | Leann Kahal |
 
 ***The Revision Table above must be augmented after any version of this document is updated. Insert any necessary rows at the bottom of the table.***
 
@@ -36,7 +37,15 @@
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
+![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
 
+![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
+
+![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
+
+![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
+
+![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
 
 ## Design Summary
 
