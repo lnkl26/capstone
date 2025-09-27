@@ -24,7 +24,7 @@
 
 ## Class Diagram(s)
 
-[UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
+![UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
 
 ## ER Diagram(s)
 
@@ -32,11 +32,11 @@
 
 ## Information Architecture Diagram
 
-[Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
+![Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
-*These are meant to show the appearance and structure of your key screens.  If you are developing an app, present these to the scale of the typical phone that you are designing for.   Also provide unique screenID’s, captions and annotations that elaborate on your screens.*
+
 
 ## Design Summary
 
