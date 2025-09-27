@@ -22,6 +22,8 @@ I am content with the amount of work I accomplished in this sprint and look forw
 
 ## Reflection
 
+As a team, we were able to contribute ideas openly, because everyone was given an opportunity to voice their thoughts. We had a supportive environment that encouraged creativity at the beginning of our sprint. Attendance and participation of meetings were consistent. Therefore, we were able to have efficient and focused discussions. However, while meetings were productive, members relied too heavily on in-person communication. There were occasional gaps concerning new information and updates. To further improve team efficiency, members should utilize all shared productivity tools such as GitHub and communication channels, as a way to stay informed on project status, regardless of meeting attendance. 
+
 ## Next Sprint Goals
 
 We have a couple of goals for Sprint 1 after gathering user stories from our project sponsor and analyzing the results from our user survey. With our first goal being to have a CRUD (create, read, update, and delete) functionalities available for task management and food logging. If these are completed early, we will begin implementing CRUD functionalities for routine and reminder managment. With that being said, we will also work on implementing our UI design throughout the sprint, and gather user feedback. 
