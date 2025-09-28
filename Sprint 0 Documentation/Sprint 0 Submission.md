@@ -10,6 +10,10 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Chet Hefton
 
+During Sprint 0, I mostly contributed through the design process and brainstorming stages of our project. I helped generate and refine potential project ideas by actively engaging in discussions, weighing the feasibility of different approaches, and ensuring that our concepts aligned with both "user needs" and technical constraints. Once we narrowed our focus, I contributed to outlining the structure of our project. By collaborating with teammates during design sessions, I helped provide clarity on how certain features might be implemented and fit together within the project.
+
+Overall, my work in Sprint 0 centered on shaping the foundation of our project through design input and brainstorming, in hopes of giving the team a clear starting point for Sprint 1.
+
 ### Leann Kahal
 
 During Sprint 0, I contributed to the team's progress by actively participating in group brainstorming sessions to help refine project ideas. I took the lead when it came to drafting the product requirements and design documentation, ensuring that our planning would align with our project goals and technical feasibility. Communication with our project sponsor was also delegated to me. As I would be the one to ask for clarification and gather additional input to ensure we were meeting expectations. Role delegation was decided by me, as I would consider each member's strengths and availability to give a balanced but logical distribution of work. I also made a deliberate decision to start our brainstorming early in the sprint, as a way to avoid any last-minute efforts. 
