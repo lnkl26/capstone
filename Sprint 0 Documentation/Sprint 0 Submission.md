@@ -11,6 +11,10 @@ I want to do more in future sprints, but I'm not unhappy with what I did this sp
 
 ### Jack Crawford
 
+Over the course of Sprint 0, I primarily helped in facilitating conversations between members over several design aspects, as well as revised the documentation necessary for this sprint. Many thoughts circulated throughout everyone's minds as we began to pin down the loose ideas of our project, and I helped bridge ambitious plans that pushed our limits but potentially breached overall scope, to our core central plan that stood as the foundation for the entirety of our project.
+
+Many of the documents that had been worked on by myself and others needed adjustments in order to read appropriately, which I lended a helping hand with as well.
+
 ### Chet Hefton
 
 During Sprint 0, I mostly contributed through the design process and brainstorming stages of our project. I helped generate and refine potential project ideas by actively engaging in discussions, weighing the feasibility of different approaches, and ensuring that our concepts aligned with both "user needs" and technical constraints. Once we narrowed our focus, I contributed to outlining the structure of our project. By collaborating with teammates during design sessions, I helped provide clarity on how certain features might be implemented and fit together within the project.
