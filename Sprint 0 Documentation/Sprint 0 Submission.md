@@ -13,7 +13,7 @@ I want to do more in future sprints, but I'm not unhappy with what I did this sp
 
 Over the course of Sprint 0, I primarily helped in facilitating conversations between members over several design aspects, as well as revised the documentation necessary for this sprint. Many thoughts circulated throughout everyone's minds as we began to pin down the loose ideas of our project, and I helped bridge ambitious plans that pushed our limits but potentially breached overall scope, to our core central plan that stood as the foundation for the entirety of our project.
 
-Many of the documents that had been worked on by myself and others needed adjustments in order to read appropriately, which I lended a helping hand with as well.
+Many of the documents that had been worked on by myself and others needed adjustments in order to read appropriately, which I lent a helping hand with as well.
 
 ### Chet Hefton
 
