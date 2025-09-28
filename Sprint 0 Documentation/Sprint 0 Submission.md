@@ -5,6 +5,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 ## Sprint Accomplishments
 
 ### Jesselle Ballesil
+For Sprint 0, I contributed to the team's progress by participating in group brainstorming sessions to help refine project ideas. I helped with breaking down ideas into features. I also took notes during these discussions to share with the group to help organize our thoughts. I made sure to keep up with any changes and announcements outside of in-person communication. 
+
+I want to do more in future sprints, but I'm not unhappy with what I did this sprint.
 
 ### Jack Crawford
 
