@@ -4,10 +4,10 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 
 ## Team Members
 
-* [Jesselle Ballesil](https://github.com/CjBallesil) - (member general tasks)
-* [Jack Crawford](https://github.com/jhc027) - (member general tasks)
-* [Chet Hefton](https://github.com/ChetHefton) - (member general tasks)
-* [Leann Kahal](https://github.com/lnkl26) - (Documentation)
+* [Jesselle Ballesil](https://github.com/CjBallesil) - (Task & Routine Functionality)
+* [Jack Crawford](https://github.com/jhc027) - (Food Logging Functionality)
+* [Chet Hefton](https://github.com/ChetHefton) - (Web Navigation, Food Logging Functionality)
+* [Leann Kahal](https://github.com/lnkl26) - (Documentation, Task & Routine Functionality)
 
 ## Project Status
 
