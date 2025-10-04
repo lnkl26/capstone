@@ -17,27 +17,27 @@
 
 ## Class Diagram(s)
 
-![UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
+![UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
 
 ## ER Diagram(s)
 
-![Entity Relationship Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Entity%20Relationsip%20Diagram/ER_diagram.png)
+![Entity Relationship Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/Entity%20Relationsip%20Diagram/ER_diagram.png)
 
 ## Information Architecture Diagram
 
-![Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
+![Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
-![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
+![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
 
-![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
+![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
 
-![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
+![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
 
-![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
+![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
 
-![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
+![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
 
 ## Design Summary
 
