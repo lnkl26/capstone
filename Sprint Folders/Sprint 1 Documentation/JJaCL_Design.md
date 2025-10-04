@@ -17,34 +17,33 @@
 
 ## Class Diagram(s)
 
-![UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
+![UML Class Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UML%20Class%20Diagram/uml_class_diagram.png)
 
 ## ER Diagram(s)
 
-![Entity Relationship Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Entity%20Relationsip%20Diagram/ER_diagram.png)
+![Entity Relationship Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/Entity%20Relationsip%20Diagram/ER_diagram.png)
 
 ## Information Architecture Diagram
 
-![Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
+![Information Architecture Diagram](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/Information%20Architecture%20Diagram/IA_diagram.png)
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
-![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
+![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
 
-![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
+![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
 
-![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
+![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
 
-![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
+![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
 
-![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
+![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
 
 ## Design Summary
 
-JJaCL's Assistive Task Web App is a modular productivity and wellness application that is meant to help users manage their tasks, create routines, and track medication.
+JJaCL's Assistive Task Web App is a modular productivity and wellness application that is meant to help users manage their tasks, create routines, and track medication. 
 
 ### UML Class Design
-
 * There is a separation between core domain models (e.g., Task, Routine, MedicationReminder) and service classes (e.g., TaskService, RoutineService, ReminderService) that handles Create, Read, Update, and Delete (CRUD) operations.
 
 * The User class does not directly interact with the domain models, but instead interacts with the services and tools, which is ideal for scalability.
@@ -54,7 +53,6 @@ JJaCL's Assistive Task Web App is a modular productivity and wellness applicatio
 ### Entity Relationship Design
 
 Key relationships include:
-
 * User to Task, Routine, FocusMode, DietTracker, and MedicationReminder.
 
 * Many-to-Many relationships for shared task lists using associative entities.
@@ -66,39 +64,38 @@ Key relationships include:
 ### Information Architecture Design
 
 The main goal here is to have a simple navigation hierarchy, where:
-
 * Home / Dashboard is the central hub for navigation.
 
 * Productivity Management allows users to access their tasks, routines, and focus mode.
 
 * Food / Med Management allows users to access diet and medication tracking tools.
 
-* Settings allows users to modify or update their system preferences for the web app.
+* Settings allows users to modify or update their system preferences for the web app. 
 
 ### User Interface Design
 
 We are aiming for a minimalistic and non-cluttered UI using tile layouts. Where nxm, n being rows, and m being columns.
 
-* The Home screen uses a 2x2 tile format:
-  * User Profile
-  * Productivity
-  * Food / Medication
-  * Settings
+* The Home screen uses a 2x2 tile format: 
+    * User Profile
+    * Productivity
+    * Food / Medication
+    * Settings
 
 * The Productivity screen uses 3x1 tile format:
-  * "Your Tasks" for task management
-  * "Your Routine" for routine management
-  * "Focus Mode" for the built in Pomodoro Timer
+    * "Your Tasks" for task management
+    * "Your Routine" for routine management
+    * "Focus Mode" for the built in Pomodoro Timer
 
 * The Food/Med screen uses 2x1 tile format:
-  * "Your Diet" for food logging
-  * "Your Medication" for medication tracking
+    * "Your Diet" for food logging
+    * "Your Medication" for medication tracking
 
 * Overall Visual Design
-  * Clean whitespace
-  * Home screen tiles/buttons are unique from each other, in addition to unique icons and accurate labelling
-  * All screens will have a "?" button for users to click-on if they do not understand the use of the current screen they're on
-  * Screens besides the Home screen will have a \[back arrow] button, so users can access the previous screen again.
+    * Clean whitespace
+    * Home screen tiles/buttons are unique from each other, in addition to unique icons and accurate labelling
+    * All screens will have a "?" button for users to click-on if they do not understand the use of the current screen they're on
+    * Screens besides the Home screen will have a \[back arrow] button, so users can access the previous screen again.
 
 ## Design Rationale
 
@@ -118,7 +115,7 @@ To reinforce hierarchy and functionality, we decided using distinct tiles shapes
 
 * Circle for user profile access
 
-* Octagon for system settings to signify its importance
+* Octagon for system settings to signify its importance 
 
 ### Icons and Labels
 
