@@ -28,3 +28,7 @@ start index.html
 ## Current Bugs
 
 * DATE FOUND-DATE SOLVED | "(bug description) happens when (action that lead to bugs)"
+
+| Bug Description | Replication Steps | Date Found | Date Solved |
+| --- | --- | --- | --- |
+| (description here) | (replication here) | dd/mm/yy | dd/mm/yy |
