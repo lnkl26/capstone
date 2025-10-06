@@ -20,7 +20,8 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 ## How to Run
 
 Locally in the directory
-```
+
+```text
 start index.html
 ```
 
