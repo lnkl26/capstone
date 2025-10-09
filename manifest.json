@@ -1,0 +1,10 @@
+{
+  "name": "App Name",
+  "short_name": "Capstone Project",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#66d6ff",
+  "description": "In Developement."
+}

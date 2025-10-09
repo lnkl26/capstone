@@ -32,3 +32,7 @@ start index.html
 | Bug Description | Replication Steps | Date Found | Date Solved |
 | --- | --- | --- | --- |
 | (description here) | (replication here) | dd/mm/yy | dd/mm/yy |
+
+## Notes
+
+10/9/2025 Chet H - In a live hosted / dev environment, service worker fetters CSS, so if the styling looks off while live hosting, re-save your style.css file and it will show what the user would see upon landing.

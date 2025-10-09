@@ -14,3 +14,9 @@
     background-color: rgb(112, 174, 228);
     font-size: large;
 }
+.title {
+    display: flex;
+    justify-content: center;
+    margin: 50px;
+    color: rgb(0, 0, 0); /*font*/
+}
