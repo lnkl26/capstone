@@ -31,7 +31,7 @@ start index.html
 
 | Bug Description | Replication Steps | Date Found | Date Solved |
 | --- | --- | --- | --- |
-| (description here) | (replication here) | dd/mm/yy | dd/mm/yy |
+| settings.html:37 WebSocket connection to 'ws://127.0.0.1:5500/htmlPages/settings.html/ws' failed: | Will repaire next chance I get! | 10/09/2025 | dd/mm/yy |
 
 ## Notes
 
