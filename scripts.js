@@ -1,5 +1,8 @@
 // DOM elements
+const taskModal = document.getElementById('task-modal');
 const taskCreateBtn = document.getElementById('taskCreate-btn');
+const cancelTaskBtn = document.getElementById('cancelTask');
+
 const taskArea = document.getElementById('task-area');
 const taskInputName = document.getElementById('taskInput-name');
 const taskInputDesc = document.getElementById('taskInput-desc');
@@ -20,13 +23,19 @@ let currentSubtasks = []; // temporary subtasks for the task being created
 
 // toggle task input area
 taskCreateBtn.addEventListener('click', () => {
-    if (taskArea.style.display === 'none' || taskArea.style.display === '') {
-        taskArea.style.display = 'block';
-        taskInputName.focus();
-    } else {
-        taskArea.style.display = 'none';
-    }
+  taskModal.style.display = 'flex';
 });
+
+cancelTaskBtn.addEventListener('click', () => {
+  taskModal.style.display = 'none';
+});
+
+// close popup when clicking outside modal content
+taskModal.addEventListener('click', (e) => {
+  if (e.target === taskModal) {
+    taskModal.style.display = 'none';
+  }
+})
 
 // add subtask
 addSubtaskBtn.addEventListener('click', () => {
@@ -70,6 +79,8 @@ saveTaskBtn.addEventListener('click', () => {
         name: taskName,
         description: taskDesc || null,
         subtasks: [...currentSubtasks]
+        // reminderTime: null, //i.e. remind me at 7:20am
+        // reminderDelay: null //i.e. remind me in 5 minutes
     };
 
     tasks.push(newTask);

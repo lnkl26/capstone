@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Task Manager</title>
+        <link rel="stylesheet" href="../style.css">
+    </head>
+    <body>
 
-    <!-- Top Buttons -->
-    <button id="taskCreate-btn">Task Create</button>
-    <button id="taskListView">Task List</button>
+        <!-- Top Buttons -->
+        <button id="taskCreate-btn">Task Create</button>
+        <button id="taskListView">Task List</button>
 
-    <!-- Task Input Area (hidden by default via CSS) -->
-    <div class="task-input-area" id="task-area">
-        <input type="text" id="taskInput-name" placeholder="Enter task name..." required />
-        <textarea id="taskInput-desc" placeholder="Enter task description (optional)..."></textarea>
+        <!-- Task Creation Popup Modal -->
+        <div class="task-modal" id="task-modal">
+            <div class="task-modal-content">
+                <h2>Create a New Task</h2>
 
-        <!-- (Optional) Subtasks section -->
-        <div class="subtask-area" id="subtask-area">
-            <input type="text" id="subtaskInput" placeholder="Add subtask (optional)..." />
-            <button id="addSubtask">Add Subtask</button>
-            <ul id="subtaskList"></ul>
+                <div class="task-input-area" id="task-area">
+                    <input type="text" id="taskInput-name" placeholder="Enter task name...(required)"/>
+                    <input id="taskInput-desc" placeholder="Enter task description (optional)..."/>
+
+                    <!-- Optional Subtasks -->
+                    <div class="subtask-area" id="subtask-area">
+                        <input type="text" id="subtaskInput" placeholder="Add subtask (optional)..." />
+                        <button id="addSubtask">Add Subtask</button>
+                        <ul id="subtaskList"></ul>
+                    </div>
+
+                    <!-- Modal Buttons -->
+                    <div class="task-buttons">
+                        <button id="saveTask">Save Task</button>
+                        <button id="cancelTask">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <button id="saveTask">Save Task</button>
-    </div>
-
-    <!-- Popup for Task List -->
-    <div class="tasklist-popup" id="task-list-popup">
-        <div class="tasklist-content">
-            <h3>Your Tasks</h3>
-            <ul id="task-list"></ul>
-            <button id="close-task-list">Close</button>
+        <!-- Popup for Task List -->
+        <div class="tasklist-popup" id="task-list-popup">
+            <div class="tasklist-content">
+                <h3>Your Tasks</h3>
+                <ul id="task-list"></ul>
+                <button id="close-task-list">Close</button>
+            </div>
         </div>
-    </div>
 
-    <a href="productive.html" class="button">Back</a>
+        <a href="productive.html" class="button">Back</a>
 
-    <script src="../scripts.js"></script>
-</body>
+        <script src="../scripts.js"></script>
+    </body>
 </html>

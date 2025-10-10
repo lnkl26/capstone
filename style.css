@@ -22,18 +22,49 @@
 }
 
 /**TASK MANAGEMENT STYLING**/
-.circle-btn {
-    border-radius: 50%;
+/* Popup overlay (background) */
+.task-modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.task-input-area {
-    display: none;
+/* Popup box */
+.task-modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
-.task-input-area input {
-    padding: 10px;
-}
-
+/* Internal layout */
+.task-input-area input,
+.task-input-area textarea,
 .task-input-area button {
-    padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.task-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+#cancelTask {
+  background: #ccc;
+}
+
+.tasklist-popup {
+    display: none;
 }
