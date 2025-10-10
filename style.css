@@ -20,3 +20,20 @@
     margin: 50px;
     color: rgb(0, 0, 0); /*font*/
 }
+
+/**TASK MANAGEMENT STYLING**/
+.circle-btn {
+    border-radius: 50%;
+}
+
+.task-input-area {
+    display: none;
+}
+
+.task-input-area input {
+    padding: 10px;
+}
+
+.task-input-area button {
+    padding: 10px;
+}

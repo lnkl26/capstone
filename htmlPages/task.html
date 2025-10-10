@@ -3,10 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link rel="stylesheet" href="../style.css">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
+
+    <!-- Top Buttons -->
+    <button id="taskCreate-btn">Task Create</button>
+    <button id="taskListView">Task List</button>
+
+    <!-- Task Input Area (hidden by default via CSS) -->
+    <div class="task-input-area" id="task-area">
+        <input type="text" id="taskInput-name" placeholder="Enter task name..." required />
+        <textarea id="taskInput-desc" placeholder="Enter task description (optional)..."></textarea>
+
+        <!-- (Optional) Subtasks section -->
+        <div class="subtask-area" id="subtask-area">
+            <input type="text" id="subtaskInput" placeholder="Add subtask (optional)..." />
+            <button id="addSubtask">Add Subtask</button>
+            <ul id="subtaskList"></ul>
+        </div>
+
+        <button id="saveTask">Save Task</button>
+    </div>
+
+    <!-- Popup for Task List -->
+    <div class="tasklist-popup" id="task-list-popup">
+        <div class="tasklist-content">
+            <h3>Your Tasks</h3>
+            <ul id="task-list"></ul>
+            <button id="close-task-list">Close</button>
+        </div>
+    </div>
+
     <a href="productive.html" class="button">Back</a>
+
+    <script src="../scripts.js"></script>
 </body>
 </html>
