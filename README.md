@@ -32,7 +32,8 @@ start index.html
 | Bug Description | Replication Steps | Date Found | Date Solved |
 | --- | --- | --- | --- |
 | settings.html:37 WebSocket connection to 'ws://127.0.0.1:5500/htmlPages/settings.html/ws' failed: | Will repaire next chance I get! | 10/09/2025 | dd/mm/yy |
-| Create tasks fields disappearing after task created | Create task -> save task -> open up create task pop-up again -> task fields not shown -> refresh the screen and it will reappear | 10/10/2025 | 10/10/2025|
+| Create tasks fields disappearing after task created | Create task -> save task -> open up create task pop-up again -> task fields not shown -> refresh the screen and it will reappear | 10/10/2025 | 10/10/2025 |
+| Running the site via GitHub Pages doesn't show the modal popups, but running locally is fine | For comparison, run locally by "start index.html" and navigate to create tasks, then run via GitHub Pages by going to the link lnkl26.github.io/capstone/ | 10/10/2025 | dd/mm/yy |
 
 ## Notes
 
