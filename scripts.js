@@ -1,16 +1,16 @@
 // DOM elements
 const taskModal = document.getElementById('task-modal');
-const taskCreateBtn = document.getElementById('taskCreate-btn');
-const cancelTaskBtn = document.getElementById('cancelTask');
-
 const taskArea = document.getElementById('task-area');
 const taskInputName = document.getElementById('taskInput-name');
 const taskInputDesc = document.getElementById('taskInput-desc');
-const saveTaskBtn = document.getElementById('saveTask');
 const taskListPopup = document.getElementById('task-list-popup');
-const taskListBtn = document.getElementById('taskListView');
 const taskList = document.getElementById('task-list');
+
+const taskCreateBtn = document.getElementById('taskCreate-btn');
+const cancelTaskBtn = document.getElementById('cancelTask');
+const taskListBtn = document.getElementById('taskListView');
 const closeListBtn = document.getElementById('close-task-list');
+const saveTaskBtn = document.getElementById('saveTask');
 
 // subtask elements
 const subtaskInput = document.getElementById('subtaskInput');
@@ -21,20 +21,33 @@ const subtaskList = document.getElementById('subtaskList');
 let tasks = [];
 let currentSubtasks = []; // temporary subtasks for the task being created
 
+// load tasks from localStorage on startup
+window.addEventListener('load', () => {
+    const storedTasks = localStorage.getItem('tasks');
+    if (storedTasks) {
+        tasks = JSON.parse(storedTasks);
+    }
+});
+
+// save tasks to localStorage
+function saveTasksToStorage() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
 // toggle task input area
 taskCreateBtn.addEventListener('click', () => {
-  taskModal.style.display = 'flex';
+    taskModal.style.display = 'flex';
 });
 
 cancelTaskBtn.addEventListener('click', () => {
-  taskModal.style.display = 'none';
+    taskModal.style.display = 'none';
 });
 
 // close popup when clicking outside modal content
 taskModal.addEventListener('click', (e) => {
-  if (e.target === taskModal) {
-    taskModal.style.display = 'none';
-  }
+    if (e.target === taskModal) {
+        taskModal.style.display = 'none';
+    }
 })
 
 // add subtask
@@ -74,16 +87,18 @@ saveTaskBtn.addEventListener('click', () => {
         return;
     }
 
-    // create task object
+    // TASK OBJECT IS HERE!!!
     const newTask = {
         name: taskName,
         description: taskDesc || null,
-        subtasks: [...currentSubtasks]
+        subtasks: [...currentSubtasks],
         // reminderTime: null, //i.e. remind me at 7:20am
-        // reminderDelay: null //i.e. remind me in 5 minutes
+        // reminderDelay: null, //i.e. remind me in 5 minutes
+        completed: false
     };
 
     tasks.push(newTask);
+    saveTasksToStorage();
 
     // reset form
     taskInputName.value = '';
@@ -91,46 +106,102 @@ saveTaskBtn.addEventListener('click', () => {
     subtaskList.innerHTML = '';
     currentSubtasks = [];
 
-    taskArea.style.display = 'none';
+    taskModal.style.display = 'none';
 
     alert(`Task "${taskName}" created successfully!`);
 });
 
 // show all tasks
 taskListBtn.addEventListener('click', () => {
-    taskList.innerHTML = '';
-
-    if (tasks.length === 0) {
-        const li = document.createElement('li');
-        li.textContent = 'No tasks created yet.';
-        taskList.appendChild(li);
-    } else {
-        tasks.forEach(task => {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                <strong>${task.name}</strong><br>
-                ${task.description ? `<em>${task.description}</em><br>` : ''}
-                ${
-                    task.subtasks.length
-                        ? `<ul>${task.subtasks.map(st => `<li>${st}</li>`).join('')}</ul>`
-                        : ''
-                }
-            `;
-            taskList.appendChild(li);
-        });
-    }
-
+    renderTaskList();
+    document.body.classList.add('modal-open');
     taskListPopup.style.display = 'flex';
 });
 
 // close popup
 closeListBtn.addEventListener('click', () => {
+    document.body.classList.remove('modal-open');
     taskListPopup.style.display = 'none';
 });
 
 // close popup by clicking outside
 taskListPopup.addEventListener('click', (e) => {
     if (e.target === taskListPopup) {
+        document.body.classList.remove('modal-open');
         taskListPopup.style.display = 'none';
     }
 });
+
+function renderTaskList() {
+    taskList.innerHTML = '';
+
+    if (tasks.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'No tasks created yet.';
+        taskList.appendChild(li);
+        return;
+    }
+
+    tasks.forEach((task, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <div class="task-item ${task.completed ? 'completed' : ''}">
+        <div class="task-info">
+            <strong>${task.name}</strong><br>
+            ${task.description ? `<em>${task.description}</em><br>` : ''}
+            ${task.subtasks.length
+            ? `<ul>${task.subtasks.map(st => `<li>${st}</li>`).join('')}</ul>`
+            : ''}
+        </div>
+        <div class="task-actions">
+            <button class="complete-task" data-index="${index}">
+            ${task.completed ? '↩ Undo' : '✔ Done'}
+            </button>
+            <button class="delete-task" data-index="${index}">×</button>
+        </div>
+        </div>
+    `;
+    taskList.appendChild(li);
+    });
+
+    // Add delete event listeners
+    document.querySelectorAll('.delete-task').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            deleteTask(index);
+        });
+    });
+
+    // Add complete/undo event listeners
+    document.querySelectorAll('.complete-task').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const index = e.target.dataset.index;
+            toggleTaskCompletion(index);
+        });
+    });
+}
+
+function deleteTask(index) {
+    const taskName = tasks[index].name;
+    const confirmed = confirm(`Are you sure you want to delete "${taskName}"?`);
+    if (!confirmed) return;
+
+    tasks.splice(index, 1); // remove task
+    saveTasksToStorage();   // update storage
+    renderTaskList();       // refresh the view
+}
+
+function toggleTaskCompletion(index) {
+    tasks[index].completed = !tasks[index].completed;
+    saveTasksToStorage();
+    renderTaskList(); // re-render to update UI
+}
+
+function resetTaskForm() {
+    // clear inputs, not the structure
+    taskInputName.value = '';
+    taskInputDesc.value = '';
+    subtaskInput.value = '';
+    subtaskList.innerHTML = ''; // only clears list content
+    currentSubtasks = [];
+}

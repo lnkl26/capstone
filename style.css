@@ -22,49 +22,168 @@
 }
 
 /**TASK MANAGEMENT STYLING**/
-/* Popup overlay (background) */
+/* popup overlay (background) */
 .task-modal {
-  display: none; /* hidden by default */
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
-/* Popup box */
+/* popup box */
 .task-modal-content {
-  background: #fff;
-  padding: 30px;
-  border-radius: 10px;
-  width: 400px;
-  max-width: 90%;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-  position: relative;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 
-/* Internal layout */
+/* internal layout */
 .task-input-area input,
 .task-input-area textarea,
 .task-input-area button {
-  width: 100%;
-  margin-top: 10px;
+    width: 100%;
+    margin-top: 10px;
 }
 
 .task-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
 }
 
 #cancelTask {
-  background: #ccc;
+    background: #ccc;
 }
 
 .tasklist-popup {
     display: none;
+}
+
+/*Task List Modal Styling*/
+.tasklist-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.tasklist-content {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; /* limits popup height */
+}
+
+.tasklist-content h3 {
+    margin-top: 0;
+}
+
+/* scrollable task list area */
+.tasklist-container {
+    overflow-y: auto;
+    flex: 1;
+    margin-top: 10px;
+    padding-right: 8px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+/* style individual task list items */
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#task-list li {
+    background: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+/* close button at bottom */
+#close-task-list {
+    align-self: flex-end;
+    margin-top: 10px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.task-info {
+    flex: 1;
+    overflow-wrap: break-word;
+}
+
+/* Completed task style */
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed strong {
+    text-decoration: line-through;
+}
+
+/* Button styles */
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.complete-task {
+    background: #4caf50;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.complete-task:hover {
+    background: #3d8b40;
+}
+
+.delete-task {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 1;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.delete-task:hover {
+    background: #ff0000;
 }
