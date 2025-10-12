@@ -18,7 +18,7 @@ Organized Trello Board- filled backlog with user stories for sprint 1.
 
 ### Leann Kahal
 
-Helped organized Trello Board; added my own tasks for this sprint. Worked on the Task creation, completion, deletion, and viewing features. 
+Helped organized Trello Board; added my own tasks for this sprint. Worked on the Task creation, completion, deletion, and viewing features. Worked on Routine creation and adding existing tasks to the routine.
 
 ## AI as a Tool
 
