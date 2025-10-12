@@ -4,13 +4,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Task Manager</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../style.css">
     </head>
     <body>
-
         <!-- Top Buttons -->
-        <button id="taskCreate-btn">Task Create</button>
-        <button id="taskListView">Task List</button>
+        <div class="task-btns">
+            <button id="taskCreate-btn">Task Create</button>
+            <button id="taskListView">Task List</button>
+        </div>
 
         <!-- Task Creation Popup Modal -->
         <div class="task-modal" id="task-modal">
@@ -31,7 +35,7 @@
                     <!-- Modal Buttons -->
                     <div class="task-buttons">
                         <button id="saveTask">Save Task</button>
-                        <button id="cancelTask">Cancel</button>
+                        <button id="cancelTask">Cancel Task</button>
                     </div>
                 </div>
             </div>
