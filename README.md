@@ -34,9 +34,12 @@ start index.html
 | settings.html:37 WebSocket connection to 'ws://127.0.0.1:5500/htmlPages/settings.html/ws' failed: | Will repaire next chance I get! | 10/09/2025 | dd/mm/yy |
 | Create tasks fields disappearing after task created | Create task -> save task -> open up create task pop-up again -> task fields not shown -> refresh the screen and it will reappear | 10/10/2025 | 10/10/2025 |
 | Running the site via GitHub Pages doesn't show the modal popups, but running locally is fine | For comparison, run locally by "start index.html" and navigate to create tasks, then run via GitHub Pages by going to the link lnkl26.github.io/capstone/ | 10/10/2025 | 10/10/2025 |
+| Visual bug when creating a sub-task | Navigate to task creation and add a sub task. | 12/10/2025 | dd/mm/yy |
 
 ## Notes
 
 10/9/2025 Chet H - In a live hosted / dev environment, service worker fetters CSS, so if the styling looks off while live hosting, re-save your style.css file and it will show what the user would see upon landing.
 
 10/10/2025 | Leann Kahal | GitHub Pages is rather slow to update (compared to running the site locally), so do expect some changes to not fully appear on the "live" site for a bit. This could range from instantantenously to an hour or two.
+
+12/10/2025 | Leann Kahal | Bug #4 is only a visual bug, functionalities works just as intended, therefore this is a low priority fix for now.
