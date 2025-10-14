@@ -279,3 +279,41 @@ body {
 .edit-task:hover {
     background: #22b8e5;
 }
+
+/* Diet log helpers */
+.card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+}
+
+.grid-2, .grid-3, .grid-4 {
+    display: grid;
+    gap: .75rem;
+}
+.grid-2 {  grid-template-columns: repeat(2, minmax(0,1fr)); }
+.grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.grid-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+@media (max-width: 800px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+.button-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+.table-wrap { overflow-x: auto; }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: .5rem .6rem;
+    border-bottom: 1px solid #e9e9e9;
+    text-align: left;
+    vertical-align: top;
+}
+.button--small {
+    padding: .3rem .6rem;
+    font-size: .9rem;
+}
