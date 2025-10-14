@@ -343,3 +343,286 @@ if(document.getElementById('routineCreate-btn')) {
         addTaskArea.innerHTML = '';
     });
 }
+
+(() => {
+    const pageRoot = document.body;
+    if (!pageRoot || pageRoot.id !== "diet-log-page") return;
+
+    const LS_KEY = "dietLog";
+
+    // Elements
+    const form = document.getElementById("diet-form");
+    const dateEl = document.getElementById("diet-date");
+    const mealEl = document.getElementById("diet-meal");
+    const foodEl = document.getElementById("diet-food");
+    const calEl = document.getElementById("diet-cal");
+    const proteinEl = document.getElementById("diet-protein");
+    const carbsEl = document.getElementById("diet-carbs");
+    const fatEl = document.getElementById("diet-fat");
+    const notesEl = document.getElementById("diet-notes");
+    const editIndexEl = document.getElementById("diet-edit-index");
+    const safeEl = document.getElementById("diet-safe");
+
+    const tbody = document.getElementById("diet-tbody");
+
+    const totalCal = document.getElementById("total-cal");
+    const totalProtein = document.getElementById("total-protein");
+    const totalCarbs = document.getElementById("total-carbs");
+    const totalFat = document.getElementById("total-fat");
+
+    const filterFromEl = document.getElementById("diet-filter-from");
+    const filterToEl = document.getElementById("diet-filter-to");
+    const filterMealEl = document.getElementById("diet-filter-meal");
+    const applyFilterBtn = document.getElementById("diet-apply-filter");
+    const resetFilterBtn = document.getElementById("diet-reset-filter");
+
+    const exportCsvBtn = document.getElementById("diet-export-csv");
+    const exportJsonBtn = document.getElementById("diet-export-json");
+    const importJsonInput = document.getElementById("diet-import-json");
+    const clearAllBtn = document.getElementById("diet-clear-all");
+    const clearFormBtn = document.getElementById("diet-clear-btn");
+
+    let entries = load();
+    let view = { from: "", to: "", meal: "" };
+
+    if (!dateEl.value) {
+        const today = new Date().toISOString().slice(0, 10);
+        dateEl.value = today;
+    }
+
+    function load() {
+        try {
+        return JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+        } catch {
+        return [];
+        }
+    }
+    function save() {
+        localStorage.setItem(LS_KEY, JSON.stringify(entries));
+    }
+
+    function withinFilter(e) {
+        const eDate = e.date || "";
+        const from = view.from;
+        const to = view.to;
+
+        if (from && eDate < from) return false;
+        if (to && eDate > to) return false;
+        if (view.meal && e.meal !== view.meal) return false;
+        return true;
+    }
+
+    function render() {
+        tbody.innerHTML = "";
+        let totals = { cal: 0, p: 0, c: 0, f: 0 };
+
+        entries
+        .map((e, i) => ({ ...e, _i: i }))
+        .filter(withinFilter)
+        .sort((a, b) => a.date.localeCompare(b.date))
+        .forEach((e) => {
+            totals.cal += Number(e.cal || 0);
+            totals.p += Number(e.protein || 0);
+            totals.c += Number(e.carbs || 0);
+            totals.f += Number(e.fat || 0);
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+            <td>${e.date || ""}</td>
+            <td>${e.meal || ""}</td>
+            <td>${e.food || ""}</td>
+            <td>${e.cal || 0}</td>
+            <td>${e.protein || 0}</td>
+            <td>${e.carbs || 0}</td>
+            <td>${e.fat || 0}</td>
+            <td>${(e.notes || "").replace(/</g,"&lt;")}</td>
+            <td>${e.safe ? "✓" : ""}</td>
+            <td>
+                <button type="button" class="button button--small" data-edit="${e._i}">Edit</button>
+                <button type="button" class="button button--small" data-del="${e._i}">Delete</button>
+            </td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        totalCal.textContent = Math.round(totals.cal);
+        totalProtein.textContent = +totals.p.toFixed(1);
+        totalCarbs.textContent = +totals.c.toFixed(1);
+        totalFat.textContent = +totals.f.toFixed(1);
+    }
+
+    function clearForm() {
+        form.reset();
+        editIndexEl.value = "";
+        safeEl.checked = false;
+        // resets to today if cleared
+        if (!dateEl.value) dateEl.value = new Date().toISOString().slice(0, 10);
+    }
+
+    function readForm() {
+        return {
+        date: dateEl.value || "",
+        meal: mealEl.value || "",
+        food: foodEl.value.trim(),
+        cal: Number(calEl.value || 0),
+        protein: Number(proteinEl.value || 0),
+        carbs: Number(carbsEl.value || 0),
+        fat: Number(fatEl.value || 0),
+        notes: notesEl.value.trim(),
+        safe: Boolean(safeEl.checked),
+        };
+    }
+
+    function populateForm(e) {
+        dateEl.value = e.date || "";
+        mealEl.value = e.meal || "Lunch";
+        foodEl.value = e.food || "";
+        calEl.value = e.cal ?? "";
+        proteinEl.value = e.protein ?? "";
+        carbsEl.value = e.carbs ?? "";
+        fatEl.value = e.fat ?? "";
+        notesEl.value = e.notes || "";
+        safeEl.checked = Boolean(e.safe);
+    }
+
+    // Events
+    form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        const data = readForm();
+        if (!data.food) {
+        alert("Please enter a food name.");
+        return;
+        }
+
+        const idx = editIndexEl.value === "" ? -1 : Number(editIndexEl.value);
+        if (idx >= 0 && idx < entries.length) {
+        entries[idx] = data;
+        } else {
+        entries.push(data);
+        }
+        save();
+        clearForm();
+        render();
+    });
+
+    clearFormBtn.addEventListener("click", clearForm);
+
+    tbody.addEventListener("click", (ev) => {
+        const delBtn = ev.target.closest("[data-del]");
+        const editBtn = ev.target.closest("[data-edit]");
+
+        if (delBtn) {
+            const raw = delBtn.getAttribute("data-del");
+            const idx = Number.parseInt(raw, 10);
+            if (Number.isNaN(idx) || idx < 0 || idx >= entries.length) return;
+
+            if (confirm("Delete this entry?")) {
+            entries.splice(idx, 1);
+            save();
+            render();
+            }
+            return;
+        }
+
+        if (editBtn) {
+            const raw = editBtn.getAttribute("data-edit");
+            const idx = Number.parseInt(raw, 10);
+            if (Number.isNaN(idx) || idx < 0 || idx >= entries.length) return;
+
+            const entry = entries[idx];
+            populateForm(entry);
+            editIndexEl.value = String(idx);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+
+    applyFilterBtn.addEventListener("click", () => {
+        view = {
+        from: filterFromEl.value || "",
+        to: filterToEl.value || "",
+        meal: filterMealEl.value || "",
+        };
+        render();
+    });
+
+    resetFilterBtn.addEventListener("click", () => {
+        filterFromEl.value = "";
+        filterToEl.value = "";
+        filterMealEl.value = "";
+        view = { from: "", to: "", meal: "" };
+        render();
+    });
+
+    exportCsvBtn.addEventListener("click", () => {
+        const rows = [
+        ["date","meal","food","calories","protein","carbs","fat","notes","safe"],
+        ...entries.map(e => [
+            e.date, e.meal, e.food,
+            e.cal, e.protein, e.carbs, e.fat,
+            (e.notes || "").replace(/"/g, '""'),
+            e.safe ? "true" : "false"
+        ])
+        ];
+        const csv = rows.map(r =>
+        r.map(v => typeof v === "string" && /[",\n]/.test(v) ? `"${v}"` : v).join(",")
+        ).join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `diet-log-${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    });
+
+    exportJsonBtn.addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(entries, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `diet-log-${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+    });
+
+    importJsonInput.addEventListener("change", () => {
+        const file = importJsonInput.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+        try {
+            const data = JSON.parse(String(reader.result));
+            if (!Array.isArray(data)) throw new Error("Invalid JSON format");
+            entries = data.map(e => ({
+            date: e.date || "",
+            meal: e.meal || "Lunch",
+            food: e.food || "",
+            cal: Number(e.cal || 0),
+            protein: Number(e.protein || 0),
+            carbs: Number(e.carbs || 0),
+            fat: Number(e.fat || 0),
+            notes: e.notes || "",
+            safe: Boolean(e.safe),
+            }));
+            save();
+            render();
+            alert("Import complete.");
+        } catch (err) {
+            alert("Import failed: " + err.message);
+        } finally {
+            importJsonInput.value = "";
+        }
+        };
+        reader.readAsText(file);
+    });
+
+    clearAllBtn.addEventListener("click", () => {
+        if (!entries.length) return;
+        if (confirm("Clear ALL diet log entries?")) {
+        entries = [];
+        save();
+        render();
+        }
+    });
+
+    render();
+})();
