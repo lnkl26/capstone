@@ -35,7 +35,8 @@ start index.html
 | Create tasks fields disappearing after task created | Create task -> save task -> open up create task pop-up again -> task fields not shown -> refresh the screen and it will reappear | 10/10/2025 | 10/10/2025 |
 | Running the site via GitHub Pages doesn't show the modal popups, but running locally is fine | For comparison, run locally by "start index.html" and navigate to create tasks, then run via GitHub Pages by going to the link lnkl26.github.io/capstone/ | 10/10/2025 | 10/10/2025 |
 | Visual bug when creating a sub-task | Navigate to task creation and add a sub task. | 10/12/2025 | mm/dd/yy |
-|Sub-tasks cannot be edited or deleted when editing a task. | 10/14/2025 | mm/dd/yy |
+| Sub-tasks cannot be edited or deleted when editing a task. | 10/14/2025 | mm/dd/yy |
+| Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | mm/dd/yy |
 
 ## Notes
 
