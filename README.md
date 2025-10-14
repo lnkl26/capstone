@@ -39,7 +39,7 @@ start index.html
 
 ## Notes
 
-10/9/2025 Chet H - In a live hosted / dev environment, service worker fetters CSS, so if the styling looks off while live hosting, re-save your style.css file and it will show what the user would see upon landing.
+10/09/2025 Chet H - In a live hosted / dev environment, service worker fetters CSS, so if the styling looks off while live hosting, re-save your style.css file and it will show what the user would see upon landing.
 
 10/10/2025 | Leann Kahal | GitHub Pages is rather slow to update (compared to running the site locally), so do expect some changes to not fully appear on the "live" site for a bit. This could range from instantantenously to an hour or two.
 
