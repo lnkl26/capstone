@@ -1,14 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-     <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    <a class="button">Log Food</a>
-    <a class="button">Export Food Log</a>
-    <a href="foodMed.html" class="button">Back</a>
-</body>
-</html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Diet Log</title>
+        <link rel="stylesheet" href="../style.css"/>
+    </head>
+    <body id="diet-log-page">
+        <h1 class="title">Diet Log</h1>
+
+        <a href="foodMed.html" class="button">Back</a>
+
+    <!-- Entry Form -->
+    <section class="card">
+        <h2>Add / Edit Entry</h2>
+        <form id="diet-form">
+        <div class="grid-2">
+            <label>
+            Date
+            <input type="date" id="diet-date" required />
+            </label>
+            <label>
+            Meal
+            <select id="diet-meal" required>
+                <option>Breakfast</option>
+                <option>Lunch</option>
+                <option>Dinner</option>
+                <option>Snack</option>
+            </select>
+            </label>
+        </div>
+
+        <label>
+            Food name
+            <input type="text" id="diet-food" placeholder="e.g., Chicken salad" required />
+        </label>
+
+        <div class="grid-4">
+            <label>
+            Calories
+            <input type="number" id="diet-cal" min="0" step="1" placeholder="0" />
+            </label>
+            <label>
+            Protein (g)
+            <input type="number" id="diet-protein" min="0" step="0.1" placeholder="0" />
+            </label>
+            <label>
+            Carbs (g)
+            <input type="number" id="diet-carbs" min="0" step="0.1" placeholder="0" />
+            </label>
+            <label>
+            Fat (g)
+            <input type="number" id="diet-fat" min="0" step="0.1" placeholder="0" />
+            </label>
+        </div>
+
+        <label>
+            Notes
+            <textarea id="diet-notes" rows="2" placeholder="Optional…"></textarea>
+        </label>
+
+        <label style="display:flex; gap:.5rem; align-items:center; margin:.5rem 0;">
+            <input type="checkbox" id="diet-safe" />
+            Safe Food
+        </label>
+
+
+        <div class="button-row">
+            <button type="submit" class="button" id="diet-save-btn">Save Entry</button>
+            <button type="button" class="button" id="diet-clear-btn">Clear Form</button>
+        </div>
+
+        <input type="hidden" id="diet-edit-index" value="" />
+        </form>
+    </section>
+
+    <!-- Filters -->
+    <section class="card">
+        <h2>Filter</h2>
+        <div class="grid-3">
+        <label>
+            From
+            <input type="date" id="diet-filter-from" />
+        </label>
+        <label>
+            To
+            <input type="date" id="diet-filter-to" />
+        </label>
+        <label>
+            Meal
+            <select id="diet-filter-meal">
+            <option value="">All</option>
+            <option>Breakfast</option>
+            <option>Lunch</option>
+            <option>Dinner</option>
+            <option>Snack</option>
+            </select>
+        </label>
+        </div>
+        <div class="button-row">
+        <button class="button" id="diet-apply-filter">Apply</button>
+        <button class="button" id="diet-reset-filter">Reset</button>
+        </div>
+    </section>
+
+    <!-- Totals -->
+    <section class="card">
+        <h2>Totals</h2>
+        <div class="grid-4" id="diet-totals">
+        <div><strong>Calories:</strong> <span id="total-cal">0</span></div>
+        <div><strong>Protein:</strong> <span id="total-protein">0</span></div>
+        <div><strong>Carbs:</strong> <span id="total-carbs">0</span></div>
+        <div><strong>Fat:</strong> <span id="total-fat">0</span></div>
+        </div>
+    </section>
+
+    <!-- Table -->
+    <section class="card">
+        <h2>Entries</h2>
+        <div class="table-wrap">
+        <table class="table" id="diet-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Meal</th>
+                <th>Food</th>
+                <th>Cal</th>
+                <th>P</th>
+                <th>C</th>
+                <th>F</th>
+                <th>Notes</th>
+                <th>Safe</th>
+                <th style="width:140px;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="diet-tbody"></tbody>
+        </table>
+        </div>
+    </section>
+
+    <!-- Import/Export -->
+    <section class="card">
+        <h2>Import / Export</h2>
+        <div class="button-row">
+        <button class="button" id="diet-export-csv">Export CSV</button>
+        <button class="button" id="diet-export-json">Export JSON</button>
+        <label class="button">
+            Import JSON
+            <input type="file" id="diet-import-json" accept="application/json" style="display:none"/>
+        </label>
+        <button class="button" id="diet-clear-all">Clear All</button>
+        </div>
+    </section>
+
+    <script src="../scripts.js" defer></script>
+    </body>
+    </html>
