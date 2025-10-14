@@ -43,3 +43,5 @@ start index.html
 10/10/2025 | Leann Kahal | GitHub Pages is rather slow to update (compared to running the site locally), so do expect some changes to not fully appear on the "live" site for a bit. This could range from instantantenously to an hour or two.
 
 12/10/2025 | Leann Kahal | Bug #4 is only a visual bug, functionalities works just as intended, therefore this is a low priority fix for now.
+
+13/10/2025 | Jesselle Ballesil | Currently editing a task links to same modal as creating one, so while functionality is fine it still says "Create a new task" in the popup. Will need to eventually create a new modal for editing tasks.

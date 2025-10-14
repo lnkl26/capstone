@@ -71,7 +71,7 @@ body {
     background: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 1050;
 }
 
 /* popup box */
@@ -263,4 +263,19 @@ body {
 
 .delete-task:hover {
     background: #ff0000;
+}
+
+.edit-task {
+    background: #66CEED;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.edit-task:hover {
+    background: #22b8e5;
 }

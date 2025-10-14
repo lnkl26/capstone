@@ -1,4 +1,10 @@
 // TASK STUFF
+//global
+let tasks = [];
+let currentSubtasks = []; // temporary subtasks for the task being created
+let isEditing = false;
+let editingTaskIndex = null;
+
 if(document.getElementById('taskCreate-btn')) {
     const taskModal = document.getElementById('task-modal');
     const taskArea = document.getElementById('task-area');
@@ -17,10 +23,6 @@ if(document.getElementById('taskCreate-btn')) {
     const subtaskInput = document.getElementById('subtaskInput');
     const addSubtaskBtn = document.getElementById('addSubtask');
     const subtaskList = document.getElementById('subtaskList');
-
-    // store all tasks
-    let tasks = [];
-    let currentSubtasks = []; // temporary subtasks for the task being created
 
     // load tasks from localStorage on startup
     window.addEventListener('load', () => {
@@ -88,28 +90,34 @@ if(document.getElementById('taskCreate-btn')) {
             return;
         }
 
-        // TASK OBJECT IS HERE!!!
-        const newTask = {
-            name: taskName,
-            description: taskDesc || null,
-            subtasks: [...currentSubtasks],
-            // reminderTime: null, //i.e. remind me at 7:20am
-            // reminderDelay: null, //i.e. remind me in 5 minutes
-            completed: false
-        };
+        let taskSetting = null;
+    
+        if (isEditing) {
+            //update existing task
+            tasks[editingTaskIndex].name = taskName;
+            tasks[editingTaskIndex].description = taskDesc || null;
+            tasks[editingTaskIndex].subtasks = [...currentSubtasks];
+            taskSetting = 'edited'
+        } else {
+            // TASK OBJECT IS HERE!!!
+            const newTask = {
+                name: taskName,
+                description: taskDesc || null,
+                subtasks: [...currentSubtasks],
+                // reminderTime: null, //i.e. remind me at 7:20am
+                // reminderDelay: null, //i.e. remind me in 5 minutes
+                completed: false
+            };
+            taskSetting = 'created'
+            tasks.push(newTask);
+        }
 
-        tasks.push(newTask);
         saveTasksToStorage();
-
-        // reset form
-        taskInputName.value = '';
-        taskInputDesc.value = '';
-        subtaskList.innerHTML = '';
-        currentSubtasks = [];
+        resetTaskForm();
 
         taskModal.style.display = 'none';
 
-        alert(`Task "${taskName}" created successfully!`);
+        alert(`Task "${taskName}" "${taskSetting}" successfully!`);
     });
 
     // show all tasks
@@ -158,6 +166,9 @@ if(document.getElementById('taskCreate-btn')) {
                 <button class="complete-task" data-index="${index}">
                 ${task.completed ? '↩ Undo' : '✔ Done'}
                 </button>
+                <button class="edit-task" data-index="${index}">
+                Edit
+                </button>
                 <button class="delete-task" data-index="${index}">×</button>
             </div>
             </div>
@@ -173,6 +184,14 @@ if(document.getElementById('taskCreate-btn')) {
             });
         });
 
+        // Add edit event listeners
+        document.querySelectorAll('.edit-task').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = e.target.dataset.index;
+                editTask(index);
+            });
+        });
+
         // Add complete/undo event listeners
         document.querySelectorAll('.complete-task').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -180,6 +199,36 @@ if(document.getElementById('taskCreate-btn')) {
                 toggleTaskCompletion(index);
             });
         });
+    }
+
+    function editTask(index) {
+        const task = tasks[index];
+        const taskName = task.name;
+        const confirmed = confirm(`Are you sure you want to edit "${taskName}"?`);
+        if (!confirmed) return;
+
+        const taskModal = document.getElementById('task-modal');
+        const taskInputName = document.getElementById('taskInput-name');
+        const taskInputDesc = document.getElementById('taskInput-desc');
+        const subtaskList = document.getElementById('subtaskList');
+        const saveTaskBtn = document.getElementById('saveTask');
+
+        taskModal.style.display = 'flex';
+
+        taskInputName.value = task.name;
+        taskInputDesc.value = task.description || '';
+
+        //clear old subtasks in modal
+        subtaskList.innerHTML = '';
+        currentSubtasks = [...task.subtasks];
+        currentSubtasks.forEach(st => {
+            const li = document.createElement('li');
+            li.textContent = st;
+            subtaskList.appendChild(li);
+        })
+
+        isEditing = true;
+        editingTaskIndex = index;
     }
 
     function deleteTask(index) {
@@ -205,6 +254,13 @@ if(document.getElementById('taskCreate-btn')) {
         subtaskInput.value = '';
         subtaskList.innerHTML = ''; // only clears list content
         currentSubtasks = [];
+
+        //reset edit mode
+        isEditing = false;
+        editingTaskIndex = null;
+
+        //refresh task list view
+        renderTaskList();
     }
 }
 
