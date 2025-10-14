@@ -40,7 +40,6 @@ if(document.getElementById('taskCreate-btn')) {
     // toggle task input area
     taskCreateBtn.addEventListener('click', () => {
         taskModal.style.display = 'flex';
-        resetTaskForm();
     });
 
     cancelTaskBtn.addEventListener('click', () => {
@@ -52,6 +51,7 @@ if(document.getElementById('taskCreate-btn')) {
     taskModal.addEventListener('click', (e) => {
         if (e.target === taskModal) {
             taskModal.style.display = 'none';
+            resetTaskForm();
         }
     })
 

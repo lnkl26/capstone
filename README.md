@@ -31,11 +31,16 @@ start index.html
 
 | Bug Description | Replication Steps | Date Found | Date Solved |
 | --- | --- | --- | --- |
+
 | settings.html:37 WebSocket connection to 'ws://127.0.0.1:5500/htmlPages/settings.html/ws' failed: | Will repaire next chance I get! | 10/09/2025 | mm/dd/yy |
+
 | Create tasks fields disappearing after task created | Create task -> save task -> open up create task pop-up again -> task fields not shown -> refresh the screen and it will reappear | 10/10/2025 | 10/10/2025 |
+
 | Running the site via GitHub Pages doesn't show the modal popups, but running locally is fine | For comparison, run locally by "start index.html" and navigate to create tasks, then run via GitHub Pages by going to the link lnkl26.github.io/capstone/ | 10/10/2025 | 10/10/2025 |
+
 | Visual bug when creating a sub-task | Navigate to task creation and add a sub task. | 10/12/2025 | mm/dd/yy |
 | Sub-tasks cannot be edited or deleted when editing a task. | 10/14/2025 | mm/dd/yy |
+
 | Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | 10/14/2025 |
 
 ## Notes
@@ -50,4 +55,4 @@ start index.html
 
 10/14/2025 | Jesselle Ballesil | On iOS, fonts for buttons are colored blue instead of black.
 
-10/14/2025 | Jesselle Ballesil | Resolved bug by making sure closing modal calls resetTaskForm(). This fixed it on the editing side. Placed another resetTaskForm() call when create-btn is hit. May need to review code for redundancies, but the bug is resolved.
+10/14/2025 | Jesselle Ballesil | Resolved bug by making sure closing modal calls resetTaskForm(). May need to review code for redundancies, but the bug is resolved.
