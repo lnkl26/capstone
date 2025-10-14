@@ -40,10 +40,12 @@ if(document.getElementById('taskCreate-btn')) {
     // toggle task input area
     taskCreateBtn.addEventListener('click', () => {
         taskModal.style.display = 'flex';
+        resetTaskForm();
     });
 
     cancelTaskBtn.addEventListener('click', () => {
         taskModal.style.display = 'none';
+        resetTaskForm();
     });
 
     // close popup when clicking outside modal content
@@ -131,6 +133,7 @@ if(document.getElementById('taskCreate-btn')) {
     closeListBtn.addEventListener('click', () => {
         document.body.classList.remove('modal-open');
         taskListPopup.style.display = 'none';
+        resetTaskForm();
     });
 
     // close popup by clicking outside
@@ -138,6 +141,7 @@ if(document.getElementById('taskCreate-btn')) {
         if (e.target === taskListPopup) {
             document.body.classList.remove('modal-open');
             taskListPopup.style.display = 'none';
+            resetTaskForm();
         }
     });
 

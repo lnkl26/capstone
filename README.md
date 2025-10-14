@@ -36,7 +36,7 @@ start index.html
 | Running the site via GitHub Pages doesn't show the modal popups, but running locally is fine | For comparison, run locally by "start index.html" and navigate to create tasks, then run via GitHub Pages by going to the link lnkl26.github.io/capstone/ | 10/10/2025 | 10/10/2025 |
 | Visual bug when creating a sub-task | Navigate to task creation and add a sub task. | 10/12/2025 | mm/dd/yy |
 | Sub-tasks cannot be edited or deleted when editing a task. | 10/14/2025 | mm/dd/yy |
-| Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | mm/dd/yy |
+| Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | 10/14/2025 |
 
 ## Notes
 
@@ -49,3 +49,5 @@ start index.html
 10/13/2025 | Jesselle Ballesil | Currently editing a task links to same modal as creating one, so while functionality is fine it still says "Create a new task" in the popup. Will need to eventually create a new modal for editing tasks.
 
 10/14/2025 | Jesselle Ballesil | On iOS, fonts for buttons are colored blue instead of black.
+
+10/14/2025 | Jesselle Ballesil | Resolved bug by making sure closing modal calls resetTaskForm(). This fixed it on the editing side. Placed another resetTaskForm() call when create-btn is hit. May need to review code for redundancies, but the bug is resolved.
