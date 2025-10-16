@@ -400,6 +400,11 @@ function closeModal(el) {
     const applyFilterBtn = $("diet-apply-filter");
     const resetFilterBtn = $("diet-reset-filter");
 
+    const exportCsvBtn = $("diet-export-csv");
+    const exportJsonBtn = $("diet-export-json");
+    const importJsonInput = $("diet-import-json");
+    const clearAllBtn = $("diet-clear-all");
+
     dietCreateBtn?.addEventListener("click", () => openModal(dietModal));
     dietCancelBtn?.addEventListener("click", () => {
         clearForm();
@@ -555,6 +560,97 @@ function closeModal(el) {
         filterMealEl.value = "";
         view = { from: "", to: "", meal: "" };
         render();
+    });
+
+    // Export CSV
+    exportCsvBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (!Array.isArray(entries) || entries.length === 0) {
+            if (!confirm("No entries found. Export an empty CSV anyway?"))
+                return;
+        }
+
+        const rows = [
+            [
+                "date",
+                "meal",
+                "food",
+                "calories",
+                "protein",
+                "carbs",
+                "fat",
+                "notes",
+                "safe",
+            ],
+            ...(entries || []).map((e) => [
+                e.date ?? "",
+                e.meal ?? "",
+                e.food ?? "",
+                e.cal ?? 0,
+                e.protein ?? 0,
+                e.carbs ?? 0,
+                e.fat ?? 0,
+                String(e.notes ?? "").replace(/"/g, '""'),
+                e.safe ? "true" : "false",
+            ]),
+        ];
+
+        const csv = rows
+            .map((r) =>
+                r
+                    .map((v) =>
+                        typeof v === "string" && /[",\n]/.test(v) ? `"${v}"` : v
+                    )
+                    .join(",")
+            )
+            .join("\n");
+
+        const blob = new Blob([csv], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `diet-log-${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 0);
+    });
+
+    // Export JSON
+    exportJsonBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const data = Array.isArray(entries) ? entries : [];
+        const blob = new Blob([JSON.stringify(data, null, 2)], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `diet-log-${new Date().toISOString().slice(0, 10)}.json`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 0);
+    });
+
+    // Clear All
+    clearAllBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!entries?.length) {
+            alert("There are no entries to clear.");
+            return;
+        }
+        if (confirm("Clear diet log entries?")) {
+            entries = [];
+            localStorage.setItem("dietLog", JSON.stringify(entries));
+            render();
+        }
     });
 
     // Init
