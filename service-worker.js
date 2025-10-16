@@ -1,19 +1,19 @@
-const VERSION = 'v2';  //bump this when we make big changes
+const VERSION = 'v3';  //bump this when we make big changes
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
-  '/', '/index.html',  
-  '/swConfig.js', 
-  '/scripts.js', 
-  '/style.css', 
-  '/manifest.json',  
-  '/htmlPages/focusMode.html',
-  '/htmlPages/foodMed.html',
-  '/htmlPages/productive.html',
-  '/htmlPages/routine.html',
-  '/htmlPages/settings.html',
-  '/htmlPages/task.html',
-  '/htmlPages/trackDiet.html',
-  '/htmlPages/trackMed.html'
+  './', './index.html',  
+  './swConfig.js', 
+  './scripts.js', 
+  './style.css', 
+  './manifest.json',  
+  './htmlPages/focusMode.html',
+  './htmlPages/foodMed.html',
+  './htmlPages/productive.html',
+  './htmlPages/routine.html',
+  './htmlPages/settings.html',
+  './htmlPages/task.html',
+  './htmlPages/trackDiet.html',
+  './htmlPages/trackMed.html'
   ];
 
 //install precache core assets

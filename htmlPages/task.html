@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="manifest" href="../manifest.json">
         <title>Task Manager</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +15,8 @@
         <div class="task-btns">
             <button id="taskCreate-btn">Task Create</button>
             <button id="taskListView">Task List</button>
+            <button id="routineCreate-btn">Routine Create</button>
+            <button id="routineListView">Routine List</button>
         </div>
 
         <!-- Task Creation Popup Modal -->
@@ -49,6 +52,36 @@
                     <ul id="task-list"></ul>
                 </div>
                 <button id="close-task-list">Close</button>
+            </div>
+        </div>
+
+        <div class="routine-modal" id="routine-modal">
+            <div class="routine-modal-content">
+                <h2>Create a New Routine</h2>
+                <div class="routine-input-area" id="routine-area">
+                    <input type="text" id="routineName-input" placeholder="Enter task name...(required)"/>
+
+                    <!-- Add tasks -->
+                    <div class="addTask-area" id="addTask-area">
+
+                    </div>
+
+                    <!-- Modal Buttons -->
+                    <div class="routine-buttons">
+                        <button id="saveRoutine-btn">Save Routine</button>
+                        <button id="cancelRoutine-btn">Cancel Routine</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="routinelist-modal" id="routine-list-popup">
+            <div class="routinelist-content">
+                <h2>Your Routines</h2>
+                <div class="routinelist-container">
+                    <ul id="routine-list"></ul>
+                </div>
+                <button id="close-routine-list">Close</button>
             </div>
         </div>
 

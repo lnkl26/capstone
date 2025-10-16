@@ -6,7 +6,7 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Jesselle Ballesil
 
-Organized Trello Board- filled backlog with user stories for sprint 1.
+Organized Trello Board- filled backlog with user stories for sprint 1. Worked on Task/Subtask editing features.
 
 ### Jack Crawford
 

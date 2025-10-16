@@ -42,14 +42,16 @@ if (document.getElementById("taskCreate-btn")) {
         taskModal.style.display = "flex";
     });
 
-    cancelTaskBtn.addEventListener("click", () => {
-        taskModal.style.display = "none";
+    cancelTaskBtn.addEventListener('click', () => {
+        taskModal.style.display = 'none';
+        resetTaskForm();
     });
 
     // close popup when clicking outside modal content
     taskModal.addEventListener("click", (e) => {
         if (e.target === taskModal) {
-            taskModal.style.display = "none";
+            taskModal.style.display = 'none';
+            resetTaskForm();
         }
     });
 
@@ -103,6 +105,7 @@ if (document.getElementById("taskCreate-btn")) {
         } else {
             // TASK OBJECT IS HERE!!!
             const newTask = {
+                id: Date.now(),
                 name: taskName,
                 description: taskDesc || null,
                 subtasks: [...currentSubtasks],
@@ -130,16 +133,18 @@ if (document.getElementById("taskCreate-btn")) {
     });
 
     // close popup
-    closeListBtn.addEventListener("click", () => {
-        document.body.classList.remove("modal-open");
-        taskListPopup.style.display = "none";
+    closeListBtn.addEventListener('click', () => {
+        document.body.classList.remove('modal-open');
+        taskListPopup.style.display = 'none';
+        resetTaskForm();
     });
 
     // close popup by clicking outside
     taskListPopup.addEventListener("click", (e) => {
         if (e.target === taskListPopup) {
-            document.body.classList.remove("modal-open");
-            taskListPopup.style.display = "none";
+            document.body.classList.remove('modal-open');
+            taskListPopup.style.display = 'none';
+            resetTaskForm();
         }
     });
 
@@ -274,26 +279,32 @@ if (document.getElementById("taskCreate-btn")) {
     }
 }
 
-// ROUTINE STUFF
-if (document.getElementById("routineCreate-btn")) {
-    const routineCreateBtn = document.getElementById("routineCreate-btn");
-    const routineModal = document.getElementById("routine-modal");
-    const routineCancelBtn = document.getElementById("cancelRoutine-btn");
-    const routineSaveBtn = document.getElementById("saveRoutine-btn");
-    const routineNameInput = document.getElementById("routineName-input");
-    const addTaskArea = document.getElementById("addTask-area");
+// ROUTINE STUFF 
+if (document.getElementById('routineCreate-btn')) {
+    const routineCreateBtn = document.getElementById('routineCreate-btn');
+    const routineModal = document.getElementById('routine-modal');
+    const routineCancelBtn = document.getElementById('cancelRoutine-btn');
+    const routineSaveBtn = document.getElementById('saveRoutine-btn');
+    const routineNameInput = document.getElementById('routineName-input');
+    const addTaskArea = document.getElementById('addTask-area');
 
-    routineCreateBtn.addEventListener("click", () => {
-        routineModal.style.display = "block";
-        loadTaskFromLocalStorage();
+    const routineListPopup = document.getElementById('routine-list-popup');
+    const routineList = document.getElementById('routine-list');
+    const routineListBtn = document.getElementById('routineListView');
+    const closeListBtn = document.getElementById('close-routine-list');
+
+    // open routine creation modal
+    routineCreateBtn.addEventListener('click', () => {
+        routineModal.style.display = 'flex';
+        loadTasksFromLocalStorage();
     });
 
-    function loadTaskFromLocalStorage() {
-        const storedTasks = localStorage.getItem("tasks");
-        addTaskArea.innerHTML = "";
+    function loadTasksFromLocalStorage() {
+        const storedTasks = localStorage.getItem('tasks');
+        addTaskArea.innerHTML = '';
 
         if (!storedTasks) {
-            addTaskArea.innerHTML = "No tasks found.";
+            addTaskArea.innerHTML = '<p>No tasks found.</p>';
             return;
         }
 
@@ -319,17 +330,19 @@ if (document.getElementById("routineCreate-btn")) {
         });
     }
 
-    routineCancelBtn.addEventListener("click", () => {
-        routineModal.style.display = "none";
-        routineNameInput.value = "";
-        addTaskArea.innerHTML = "";
+    // cancel routine creation
+    routineCancelBtn.addEventListener('click', () => {
+        routineModal.style.display = 'none';
+        routineNameInput.value = '';
+        addTaskArea.innerHTML = '';
     });
 
-    routineSaveBtn.addEventListener("click", () => {
+    // save new routine
+    routineSaveBtn.addEventListener('click', () => {
         const routineName = routineNameInput.value.trim();
         const selectedTaskIds = Array.from(
             addTaskArea.querySelectorAll('input[type="checkbox"]:checked')
-        ).map((cb) => cb.value);
+        ).map(cb => cb.value);
 
         if (!routineName) {
             alert("Please enter a routine name.");
@@ -657,3 +670,86 @@ function closeModal(el) {
     if (!dateEl.value) dateEl.value = today();
     render();
 })();
+
+    // show routine list
+    routineListBtn.addEventListener('click', () => {
+        renderRoutineList();
+        document.body.classList.add('modal-open');
+        routineListPopup.style.display = 'flex';
+    });
+
+    // close popup
+    closeListBtn.addEventListener('click', () => {
+        document.body.classList.remove('modal-open');
+        routineListPopup.style.display = 'none';
+    });
+
+    // close popup by clicking outside
+    routineListPopup.addEventListener('click', (e) => {
+        if (e.target === routineListPopup) {
+            document.body.classList.remove('modal-open');
+            routineListPopup.style.display = 'none';
+        }
+    });
+
+    // render routine list
+    function renderRoutineList() {
+        routineList.innerHTML = '';
+
+        const storedRoutines = JSON.parse(localStorage.getItem('routines')) || [];
+        const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+        if (storedRoutines.length === 0) {
+            const li = document.createElement('li');
+            li.textContent = 'No routines created yet.';
+            routineList.appendChild(li);
+            return;
+        }
+
+        storedRoutines.forEach((routine, index) => {
+            const routineTasks = routine.taskIds.map(taskId => storedTasks.find(task => task.id == taskId)).filter(Boolean);
+            
+            const taskListHTML = routineTasks.length ? `
+                <ul> ${routineTasks.map(task => `
+                    <li>
+                        <strong>${task.name}</strong>
+                        ${task.description ? `<br>
+                        <em>${task.description}</em>` : ''}
+                        ${task.subtasks && task.subtasks.length? `
+                            <ul>${task.subtasks.map(st => `<li>${st}</li>`).join('')}
+                            </ul>` : ''}
+                    </li>`).join('')}
+                </ul>` : '<em>No tasks linked</em>';
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="routine-item">
+                    <div class="routine-info">
+                        <strong>${routine.name}</strong>
+                        ${taskListHTML}
+                    </div>
+                    <div class="routine-actions">
+                        <button class="delete-routine" data-index="${index}">Delete</button>
+                    </div>
+                </div>
+            `;
+            routineList.appendChild(li);
+        });
+
+        // delete routine event
+        document.querySelectorAll('.delete-routine').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const index = e.target.dataset.index;
+                deleteRoutine(index);
+            });
+        });
+    }
+
+    // delete routine
+    function deleteRoutine(index) {
+        const storedRoutines = JSON.parse(localStorage.getItem('routines')) || [];
+        storedRoutines.splice(index, 1);
+        localStorage.setItem('routines', JSON.stringify(storedRoutines));
+        renderRoutineList();
+    }
+}
