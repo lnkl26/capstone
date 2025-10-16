@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Reminders</title>
+        <link rel="stylesheet" href="../style.css" />
+    </head>
+    <body id="reminder-page">
+        <h1 class="title">Reminders</h1>
+
+        <section class="card">
+            <div class="task-btns">
+                <button type="button" id="reminderCreate-btn" class="button">
+                    New Reminder
+                </button>
+                <button
+                    type="button"
+                    id="reminder-clear-all"
+                    class="button btn-secondary"
+                >
+                    Clear All
+                </button>
+            </div>
+
+            <div class="table-wrap">
+                <table class="table" id="reminder-table">
+                    <thead>
+                        <tr>
+                            <th>Due</th>
+                            <th>Title</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reminder-tbody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Modal -->
+        <div
+            id="reminder-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="reminder-modal-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="reminder-modal-title" style="margin-top: 0">
+                    Add / Edit Reminder
+                </h2>
+
+                <form id="reminder-form" class="task-input-area">
+                    <label
+                        >Title
+                        <input
+                            type="text"
+                            id="reminder-title"
+                            placeholder="e.g., Call the pharmacy"
+                            required
+                        />
+                    </label>
+
+                    <div class="grid-2">
+                        <label
+                            >Due (date & time)
+                            <input
+                                type="datetime-local"
+                                id="reminder-due"
+                                required
+                            />
+                        </label>
+                        <label
+                            >Notes (optional)
+                            <input
+                                type="text"
+                                id="reminder-notes"
+                                placeholder="Short note…"
+                            />
+                        </label>
+                    </div>
+
+                    <input type="hidden" id="reminder-edit-index" value="" />
+
+                    <div class="task-btns">
+                        <button
+                            type="submit"
+                            id="reminder-save-btn"
+                            class="button"
+                        >
+                            Save
+                        </button>
+                        <button
+                            type="button"
+                            id="reminder-cancel-btn"
+                            class="button btn-secondary"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="task-btns">
+            <a href="productive.html" class="button btn-secondary">Back</a>
+        </div>
+
+        <script src="../scripts.js" defer></script>
+    </body>
+</html>

@@ -379,6 +379,195 @@ function closeModal(el) {
     document.body.classList.remove("no-scroll");
 }
 
+/* =Reminders */
+(function () {
+    if (!document.body || document.body.id !== "reminder-page") return;
+
+    const $ = (id) => document.getElementById(id);
+
+    // Elements
+    const modal = $("reminder-modal");
+    const createBtn = $("reminderCreate-btn");
+    const cancelBtn = $("reminder-cancel-btn");
+
+    const form = $("reminder-form");
+    const titleEl = $("reminder-title");
+    const dueEl = $("reminder-due");
+    const notesEl = $("reminder-notes");
+    const editIndexEl = $("reminder-edit-index");
+
+    const tbody = $("reminder-tbody");
+    const clearAllBtn = $("reminder-clear-all");
+
+    const LS_KEY = "quickReminders";
+
+    // State
+    let reminders = [];
+    try {
+        reminders = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+    } catch {
+        reminders = [];
+    }
+
+    createBtn?.addEventListener("click", () => {
+        clearForm();
+        openModal(modal);
+    });
+    cancelBtn?.addEventListener("click", () => {
+        clearForm();
+        closeModal(modal);
+    });
+    modal?.addEventListener("click", (e) => {
+        if (!e.target.closest(".task-modal-content")) closeModal(modal);
+    });
+
+    function clearForm() {
+        form.reset();
+        editIndexEl.value = "";
+        const now = new Date();
+        now.setMinutes(now.getMinutes() + 60);
+        dueEl.value = toLocalInputValue(now);
+    }
+
+    function toLocalInputValue(dt) {
+        const pad = (n) => String(n).padStart(2, "0");
+        return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(
+            dt.getDate()
+        )}T${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
+    }
+
+    function readForm() {
+        return {
+            title: (titleEl.value || "").trim(),
+            due: dueEl.value || "",
+            notes: (notesEl.value || "").trim(),
+            done: false,
+        };
+    }
+
+    function saveLS() {
+        localStorage.setItem(LS_KEY, JSON.stringify(reminders));
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/</g, "&lt;");
+    }
+
+    function render() {
+        tbody.innerHTML = "";
+        reminders
+            .map((r, i) => ({ ...r, _i: i }))
+            .sort((a, b) => (a.due || "").localeCompare(b.due || ""))
+            .forEach((r) => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+          <td>${r.due ? new Date(r.due).toLocaleString() : ""}</td>
+          <td>${escapeHtml(r.title)}</td>
+          <td>${escapeHtml(r.notes || "")}</td>
+          <td>
+            <button type="button" class="button button--small btn-secondary" data-edit="${
+                r._i
+            }">Edit</button>
+            <button type="button" class="button button--small btn-secondary" data-del="${
+                r._i
+            }">Delete</button>
+          </td>`;
+                tbody.appendChild(tr);
+            });
+    }
+
+    // Save
+    form.addEventListener("submit", (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        const data = readForm();
+        if (!data.title) {
+            alert("Please enter a title.");
+            return;
+        }
+        if (!data.due) {
+            alert("Please choose a due date/time.");
+            return;
+        }
+
+        try {
+            data.due = new Date(data.due).toISOString();
+        } catch {}
+
+        const idx = editIndexEl.value !== "" ? Number(editIndexEl.value) : -1;
+        if (idx >= 0 && idx < reminders.length) reminders[idx] = data;
+        else reminders.push(data);
+
+        saveLS();
+        clearForm();
+        render();
+        closeModal(modal);
+    });
+
+    // Edit/Delete
+    tbody.addEventListener("click", (e) => {
+        const del = e.target.closest("[data-del]");
+        const edt = e.target.closest("[data-edit]");
+        if (del) {
+            const i = +del.dataset.del;
+            if (Number.isInteger(i) && i >= 0 && i < reminders.length) {
+                if (confirm("Delete this reminder?")) {
+                    reminders.splice(i, 1);
+                    saveLS();
+                    render();
+                }
+            }
+        }
+        if (edt) {
+            const i = +edt.dataset.edit;
+            if (Number.isInteger(i) && i >= 0 && i < reminders.length) {
+                const v = reminders[i];
+                editIndexEl.value = String(i);
+                titleEl.value = v.title || "";
+                notesEl.value = v.notes || "";
+                try {
+                    dueEl.value = toLocalInputValue(new Date(v.due));
+                } catch {
+                    dueEl.value = "";
+                }
+                openModal(modal);
+            }
+        }
+    });
+
+    // Clear All
+    clearAllBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (!reminders.length) {
+            alert("There are no reminders to clear.");
+            return;
+        }
+        if (confirm("Clear ALL reminders? This cannot be undone.")) {
+            reminders = [];
+            saveLS();
+            render();
+        }
+    });
+
+    // Alert when reminder is due
+    setInterval(() => {
+        const now = Date.now();
+        let changed = false;
+        reminders.forEach((r) => {
+            if (!r || r.done || !r.due) return;
+            const dueMs = +new Date(r.due);
+            if (dueMs && now - dueMs >= 0 && now - dueMs < 30000) {
+                alert(`Reminder due: ${r.title}`);
+                r.done = true;
+                changed = true;
+            }
+        });
+        if (changed) saveLS();
+    }, 30000);
+
+    render();
+})();
+
 // Diet Log
 (function () {
     if (document.body.id !== "diet-log-page") return;
