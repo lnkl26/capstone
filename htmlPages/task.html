@@ -15,6 +15,7 @@
         <div class="task-btns">
             <button id="taskCreate-btn">Task Create</button>
             <button id="taskListView">Task List</button>
+            <button id="routineCreate-btn">Routine Create</button>
         </div>
 
         <!-- Task Creation Popup Modal -->
@@ -50,6 +51,26 @@
                     <ul id="task-list"></ul>
                 </div>
                 <button id="close-task-list">Close</button>
+            </div>
+        </div>
+
+        <div class="routine-modal" id="routine-modal">
+            <div class="routine-modal-content">
+                <h2>Create a New Routine</h2>
+                <div class="routine-input-area" id="routine-area">
+                    <input type="text" id="routineName-input" placeholder="Enter task name...(required)"/>
+
+                    <!-- Add tasks -->
+                    <div class="addTask-area" id="addTask-area">
+
+                    </div>
+
+                    <!-- Modal Buttons -->
+                    <div class="routine-buttons">
+                        <button id="saveRoutine-btn">Save Routine</button>
+                        <button id="cancelRoutine-btn">Cancel Routine</button>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -278,7 +278,7 @@ if(document.getElementById('routineCreate-btn')) {
     const addTaskArea = document.getElementById('addTask-area');
 
     routineCreateBtn.addEventListener('click', () => {
-        routineModal.style.display = 'block';
+        routineModal.style.display = 'flex';
         loadTaskFromLocalStorage();
     });
 

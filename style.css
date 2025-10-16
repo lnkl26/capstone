@@ -279,3 +279,28 @@ body {
 .edit-task:hover {
     background: #22b8e5;
 }
+
+.routine-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.routine-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 100%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-family: "Noto Sans", sans-serif;
+}
