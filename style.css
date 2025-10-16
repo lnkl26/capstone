@@ -304,3 +304,83 @@ body {
     position: relative;
     font-family: "Noto Sans", sans-serif;
 }
+
+/* Routine List Popup (hidden by default) */
+.routinelist-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: "Noto Sans", sans-serif;
+}
+
+/* Routine List Modal Content */
+.routinelist-content {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; /* limits popup height */
+}
+
+.routinelist-content h2 {
+    margin-top: 0;
+}
+
+/* Scrollable routine list area */
+.routinelist-container {
+    overflow-y: auto;
+    flex: 1;
+    margin-top: 10px;
+    padding-right: 8px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Style individual routine list items */
+#routine-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#routine-list li {
+    background: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+/* Close button at bottom */
+#close-routine-list {
+    align-self: flex-end;
+    margin-top: 10px;
+}
+
+/* Routine item layout */
+.routine-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.routine-info {
+    flex: 1;
+    overflow-wrap: break-word;
+}
+
+.routine-actions button {
+    margin-left: 5px;
+    cursor: pointer;
+}
