@@ -14,7 +14,7 @@ Organized Trello Board- filled backlog with user stories for sprint 1. Worked on
 
 ### Chet Hefton
 
-(text here)
+Implemented the base UI and navigation system. Set up the manifest.json meta data functionality. Set up the service worker progressive web app ending so that our application cahces the files and can run with no connection. Maintained trello board and bugs/bug fixes.
 
 ### Leann Kahal
 
