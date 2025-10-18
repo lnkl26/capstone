@@ -10,11 +10,13 @@ Organized Trello Board- filled backlog with user stories for sprint 1. Worked on
 
 ### Jack Crawford
 
-(text here)
+During Spring 1, I primarily focused on the diet logging functionality as well as creating a basic foundation of the reminder function. Each function features UI buttons and interactables that can be used on multiple platforms, such as PC and mobile. Information can be manually entered, edited, and deleted, as well as exported into different file formats (such as .csv and .json).
+
+This sprint did come with some time constraints due to other classes needing attention, but ultimately served as a good indicator of how to increase efficiency of future sprints.
 
 ### Chet Hefton
 
-Implemented the base UI and navigation system. Set up the manifest.json meta data functionality. Set up the service worker progressive web app ending so that our application cahces the files and can run with no connection. Maintained trello board and bugs/bug fixes. Also created the med and logging functionalities which are still in dev but very nearly complete.
+Implemented the base UI and navigation system. Set up the manifest.json meta data functionality. Set up the service worker progressive web app ending so that our application caches the files and can run with no connection. Maintained trello board and bugs/bug fixes. Also created the med and logging functionalities which are still in dev but very nearly complete.
 
 ### Leann Kahal
 
@@ -28,7 +30,7 @@ AI was used for test case generation to prevent missing edge cases.
 
 ## Reflection
 
-As a team, we worked rather cohesively. Everyone attended group meetings, and mostly did their tasks. There are still some communication mishaps, but we will continue to work to reduce miscommunication. 
+As a team, we worked rather cohesively. Everyone attended group meetings, and mostly did their tasks. There are still some communication mishaps, but we will continue to work to reduce miscommunication.
 
 ## Next Sprint Goals
 
