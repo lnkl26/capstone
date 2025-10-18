@@ -1,4 +1,4 @@
-const VERSION = 'v3';  //bump this when we make big changes
+const VERSION = 'v7';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
   './', './index.html',  
@@ -9,11 +9,11 @@ const ASSETS = [  //files to be available offline immediately
   './htmlPages/focusMode.html',
   './htmlPages/foodMed.html',
   './htmlPages/productive.html',
-  './htmlPages/routine.html',
   './htmlPages/settings.html',
   './htmlPages/task.html',
   './htmlPages/trackDiet.html',
-  './htmlPages/trackMed.html'
+  './htmlPages/trackMed.html',
+  './medLog.js'
   ];
 
 //install precache core assets

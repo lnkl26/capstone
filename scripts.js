@@ -1,3 +1,16 @@
+/*
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        //sw debugging 
+        const reg = await navigator.serviceWorker.register('/service-worker.js', {scope: '/'});
+        console.log('sw registered:', reg.scope);
+      } catch (err) {
+        console.error('sw registration failed:', err);
+      }
+    });
+  }
+*/
 // TASK STUFF
 //global
 let tasks = [];

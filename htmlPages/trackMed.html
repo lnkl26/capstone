@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="../manifest.json">
-    <title>Document</title>
+    <title>Med Logging</title>
     <link rel="stylesheet" href="../style.css">
+     <script defer src="../medLog.js"></script>
 </head>
 <body>
-    <a class="button">Medication Reminders</a>
-    <a class="button">Reminder Service</a>
-    <a href="foodMed.html" class="button">Back</a>
+  <button id="btnMeds" class="button">Medication Reminders</button>
+  <button id="btnService" class="button">Reminder Service</button>
+  <a href="foodMed.html" class="button">Back</a>
+ <!--menu host, will be used for both buttons-->
+  <dialog id="popupMenu" class="popup-menu"></dialog>
 </body>
 </html>
