@@ -67,7 +67,7 @@ We aim to keep the text at an 8th grade reading level, ensuring comprehension ac
 | NF4 | Performance | The app will function consistently on modern web browsers, Chrome v120+, Microsoft Edge v120+, Safari v18+, and Firefox v115+. |
 | NF5 | Data Privacy | The system will not share or sell user data to third parties, therefore complying with GDPR and CCPA regulations. |
 | NF6 | Accuracy | Focus timer and scheduling component will operate with no more than 1 second deviation, given a 25 minute cycle. |
-| NF7 | Data Storage/Persistance | The system must store all persistent data (such as tasks, logs, etc.) in a centralized database using Firebase. |
+| NF7 | Data Storage/Persistence | The system must store all persistent data (such as tasks, logs, etc.) in a centralized database using Firebase. |
 
 Sponsor Requirements
 
