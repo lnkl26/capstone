@@ -8,13 +8,9 @@
 
 ## Brief problem statement
 
-This should be 1-2 paragraphs describing what the motivation is for the project.  What is the problem to be solved?
-
 Neurodivergent individuals, specifically those with ADHD or are Autistic, may struggle with executive functioning, task management, and maintaining consistent eating habits. This project aims to create an all-in-one task management and food tracking system designed for neurodivergent users in mind. Most apps geared towards these individuals often have features that are paywalled or follow a subscription-based model, we would like to avoid this and prioritize accessibility instead.
 
 ## System Requirements
-
-What system configuration needs to run your proposed system (including anything third party that is needed to run your system).
 
 A modern web browser that supports HTML5, CSS3, and JavaScript ES6+ are needed for the system to run. Possible browsers are Google Chrome, Mozilla Firefox, Microsoft Edge, and Safari. Note, these browsers need to be running the latest version of themselves. This is to ensure that the browsers are able to support IndexedDB and localStorage, which is what we will be using for data storage. Browsers also need to support Service Workers (for offline support and caching) and Web Manifest (for progressive web app development) in order for the system to work as intended. Any device that can run these browsers should be able to run our web app.
 
@@ -23,8 +19,6 @@ The web application will be initially hosted using GitHub Pages. For the initial
 We expect to use third-party dependencies such as React.js and Node.js for frontend framework and app deployment, respectively. Other possible software that need to work in tandem with our web app are screen readers available on the user’s OS and devices that should have microphone access (for voice command support).
 
 ## Users Profile
-
-Who is the system intended for? What characteristics should the users have (this can also be a range of things such as reading level, etc.).
 
 The system is intended for neurodivergent individuals, specifically for those who are Autistic, have ADHD, or experience executive dysfunction. The app is designed to support users who may struggle with planning, organizing, or maintaining consistency in their routines. There are also food-related features for people with sensory sensitivities, dietary needs, or restrictive eating habits, which are common in neurodivergent individuals.
 
@@ -39,8 +33,6 @@ We aim to keep the text at an 8th grade reading level, ensuring comprehension ac
 
 ## List of Features
 
-***Provide a numbered list of features (F1, F2, etc.) that concisely, clearly, and accurately describe that which constitutes your project.***
-
 | No. | Feature Name | Description |
 | :---- | :---- | :---- |
 | F1 | Task Creation | Baseline, users are able to create and check-off tasks  |
@@ -53,8 +45,6 @@ We aim to keep the text at an 8th grade reading level, ensuring comprehension ac
 | F8 | Exportable Food Logging | Allows users to export their food tracking data as a CSV file, useful for personal review or sharing with healthcare providers. |
 
 ## Functional Requirements (user stories)
-
-***List the Priority as 1 (High Priority - Critical) to 3 (Low Priority – Would be nice if we have time)***
 
 | No. | Feature Name | Description | Priority |
 | :---- | :---- | :---- | :---: |
@@ -69,18 +59,6 @@ We aim to keep the text at an 8th grade reading level, ensuring comprehension ac
 
 ## Non-Functional Requirements
 
-*Describe any constraints or cross-cutting characteristics of the system in a manner that is clear, specific, and testable.  Each requirement should have a unique identifier (e.g. NF1, NF2,..).  Only present those which are applicable to your system.  Categories include but are not limited to:*
-
-Security
-
-Reliability
-
-Usability
-
-Cross-Platform Compatibility
-
-Accuracy
-
 | No. | Category | Description |
 | :---- | :---- | :---- |
 | NF1 | Usability | The system will have an intuitive and minimalistic UI, so that at least 80%  of new users will be able to create a task within 2 minutes of opening the app (based on usability testing). |
@@ -89,6 +67,7 @@ Accuracy
 | NF4 | Performance | The app will function consistently on modern web browsers, Chrome v120+, Microsoft Edge v120+, Safari v18+, and Firefox v115+. |
 | NF5 | Data Privacy | The system will not share or sell user data to third parties, therefore complying with GDPR and CCPA regulations. |
 | NF6 | Accuracy | Focus timer and scheduling component will operate with no more than 1 second deviation, given a 25 minute cycle. |
+| NF7 | Data Storage/Persistance | The system must store all persistent data (such as tasks, logs, etc.) in a centralized database using Firebase. |
 
 Sponsor Requirements
 
