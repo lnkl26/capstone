@@ -12,6 +12,7 @@
 | 0.2 | 09/27/2025 | Reformatted and Added CRUD functions to the UML class diagram | Leann Kahal |
 | 0.2 | 09/27/2025 | Reformatted and added Services to the IA diagram | Leann Kahal |
 | 0.1 | 09/27/2025 | Initial creation of UI Wireframes | Leann Kahal |
+| 0.2 | 10/18/2025 | Updated UI Wireframes based on Sprint 1 | Leann Kahal |
 
 ***The Revision Table above must be augmented after any version of this document is updated. Insert any necessary rows at the bottom of the table.***
 
@@ -29,15 +30,11 @@
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
-![Home Screen / Dashboard UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-HOME.png)
-
-![User Profile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-USER.png)
-
-![Productivity Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-PRODUCTIVITY.png)
-
-![Food / Medication Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-FOODMED.png)
-
-![Settings Tile UI](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%200%20Documentation/UI%20Wireframes/SCR-SETTINGS.png)
+[!Screen-Main Menu]()
+[!Screen-Task Menu]()
+[!Screen-Task Creation]()
+[!Screen-Medication]()
+[!Screen-Diet]()
 
 ## Design Summary
 
@@ -76,6 +73,10 @@ The main goal here is to have a simple navigation hierarchy, where:
 * Settings allows users to modify or update their system preferences for the web app.
 
 ### User Interface Design
+
+Note (Updated October 18 2025):
+
+The following UI design section reflects our intended design goals and direction. However the current product UI (images currently shown in UI Wireframe section) differs due to pending implementation and prioritization. We are still aiming for the design listed below.
 
 We are aiming for a minimalistic and non-cluttered UI using tile layouts. Where nxm, n being rows, and m being columns.
 
