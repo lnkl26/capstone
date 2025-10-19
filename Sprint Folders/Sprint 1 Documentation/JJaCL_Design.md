@@ -30,11 +30,11 @@
 
 ## User Interface Wireframe(s)/Screenshot(s)
 
-[!Screen-Main Menu]()
-[!Screen-Task Menu]()
-[!Screen-Task Creation]()
-[!Screen-Medication]()
-[!Screen-Diet]()
+![Screen-Main Menu](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%201%20Documentation/UI%20Wireframes/SCR-MM.png)
+![Screen-Task Menu](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%201%20Documentation/UI%20Wireframes/SCR-PRD.png)
+![Screen-Task Creation](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%201%20Documentation/UI%20Wireframes/SCR-CT.png)
+![Screen-Medication](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%201%20Documentation/UI%20Wireframes/SCR-ML.png)
+![Screen-Diet](https://github.com/lnkl26/capstone/blob/main/Sprint%20Folders/Sprint%201%20Documentation/UI%20Wireframes/SCR-DT.png)
 
 ## Design Summary
 
