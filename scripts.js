@@ -17,6 +17,7 @@ let tasks = [];
 let currentSubtasks = []; // temporary subtasks for the task being created
 let isEditing = false;
 let editingTaskIndex = null;
+let editingSubtaskIndex = null;
 
 if (document.getElementById("taskCreate-btn")) {
     const taskModal = document.getElementById("task-modal");
@@ -74,7 +75,20 @@ if (document.getElementById("taskCreate-btn")) {
 
         if (!subtaskName) return;
 
-        currentSubtasks.push(subtaskName);
+        if (isEditing) {
+            //update existing subtask
+            tasks.editingTaskIndex.subtaskList[editingSubtaskIndex].name = subtaskName;
+        }
+        // SUBTASK OBJECT IS HERE!!!
+            const newSubtask = {
+                id: Date.now(),
+                name: subtaskName,
+                // reminderTime: null, //i.e. remind me at 7:20am
+                // reminderDelay: null, //i.e. remind me in 5 minutes
+                completed: false,
+            };
+
+        currentSubtasks.push(newSubtask);
 
         const li = document.createElement("li");
         li.textContent = subtaskName;
