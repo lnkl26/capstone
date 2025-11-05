@@ -34,3 +34,8 @@ body {
     flex-direction: column;
     gap: 15px;
 }
+
+#taskList li.completed .task-header {
+    text-decoration: line-through;
+    opacity: 0.5;
+}

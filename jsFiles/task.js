@@ -43,10 +43,17 @@ saveTaskBtn.addEventListener('click', () => {
         description,
         subtask: [...currentSubTask],
         createdAt: new Date().toISOString(),
-        completed: false,
+        completed: editingTaskIndex !== null ? tasks[editingTaskIndex].completed : false
     };
 
-    tasks.push(newTask);
+    if(editingTaskIndex !== null) {
+        tasks[editingTaskIndex] = newTask;
+        editingTaskIndex = null;
+    } else {
+        tasks.push(newTask);
+    }
+
+    //tasks.push(newTask);
     console.log('Tasks: ', tasks);  // TESTING
 
     taskNameInput.value = '';
@@ -55,7 +62,7 @@ saveTaskBtn.addEventListener('click', () => {
     currentSubTask = [];
 
     taskModal.classList.remove('active');
-
+    renderTaskList();
     alert('Task saved successfully!');
 });
 
@@ -93,8 +100,42 @@ function renderTaskList() {
 
     tasks.forEach((task, index) => {
         const li = document.createElement('li');
-        li.innerHTML = ` <strong>${task.name}</strong> ${task.description ? `<p>${task.description}</p>` : ''} ${ task.subtask && task.subtask.length ? `<ul>${task.subtask.map(st => `<li>${st}</li>`).join('')}</ul>` : '' } `;
-        taskListEl.appendChild(li);
+        li.classList.toggle('completed', task.completed);
+
+        li.innerHTML = ` <div class="task-header"> <strong>${task.name}</strong> ${task.description ? `<p>${task.description}</p>` : ''} </div> ${task.subtask && task.subtask.length ? `<ul>${task.subtask.map(st => `<li>${st}</li>`).join('')}</ul>` : ''} <div class="task-actions"> <button class="edit-btn">Edit</button> <button class="complete-btn">${task.completed ? 'Undo' : 'Complete'}</button> <button class="delete-btn">Delete</button> </div> `;
+
+        li.querySelector('.complete-btn').addEventListener('click', () => {
+            tasks[index].completed = !tasks[index].completed;
+            renderTaskList();
+        });
+    
+
+        li.querySelector('.delete-btn').addEventListener('click', () => {
+            if(confirm(`Delete "${task.name}"?`)) {
+                tasks.splice(index, 1);
+                renderTaskList();
+            }
+        });
+
+        li.querySelector('.edit-btn').addEventListener('click', () => {
+            taskNameInput.value = task.name;
+            taskDescInput.value = task.description;
+            subTaskList.innerHTML = ''; 
+            currentSubTask = [...task.subtask];
+
+            currentSubTask.forEach(st => {
+                const li = document.createElement('li');
+                li.textContent = st;
+                subTaskList.appendChild(li);
+            });
+            taskListModal.classList.remove('active');
+            editingTaskIndex = index;
+            taskModal.querySelector('h2').textContent = 'Edit Task';
+            saveTaskBtn.textContent = 'Save Changes';
+            taskModal.classList.add('active');
+        });
+
+    taskListEl.appendChild(li);
     });
 }
 
