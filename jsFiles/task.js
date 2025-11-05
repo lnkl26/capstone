@@ -10,6 +10,14 @@ const openTaskBtn = document.getElementById('taskCreate-btn'); // rename this la
 const closeTaskBtn = document.getElementById('cancelTask');
 
 openTaskBtn.addEventListener('click', () => {
+    taskNameInput.value = '';
+    taskDescInput.value = '';
+    currentSubTask = [];
+    renderSubTasks(currentSubTask, subTaskList);
+
+    editingTaskIndex = null;
+    taskModal.querySelector('h2').textContent = 'Create New Task';
+    saveTaskBtn.textContent = 'Save';
     taskModal.classList.add('active');
 });
 
@@ -41,7 +49,7 @@ saveTaskBtn.addEventListener('click', () => {
     const newTask = {
         name,
         description,
-        subtask: [...currentSubTask],
+        subtask: currentSubTask.map(st => ({ name: st, completed: false })),
         createdAt: new Date().toISOString(),
         completed: editingTaskIndex !== null ? tasks[editingTaskIndex].completed : false
     };
@@ -69,12 +77,8 @@ saveTaskBtn.addEventListener('click', () => {
 addSubTaskBtn.addEventListener('click', () => {
     const subtaskName = subTaskInput.value.trim();
     if(subtaskName) {
-        currentSubTask.push(subtaskName);
-
-        const li = document.createElement('li');
-        li.textContent = subtaskName;
-        subTaskList.appendChild(li);
-
+        currentSubTask.push({ name: subtaskName, completed: false });
+        renderSubTasks(currentSubTask, subTaskList);
         subTaskInput.value = '';
     }
 });
@@ -92,7 +96,7 @@ closeTaskListBtn.addEventListener('click', () => {
 // COMPLETE TASK FROM TASK LIST VIEW
 function renderTaskList() {
     taskListEl.innerHTML = '';
-
+    
     if(tasks.length === 0) {
         taskListEl.innerHTML = '<li>You have no tasks yet!</li>';
         return;
@@ -102,32 +106,41 @@ function renderTaskList() {
         const li = document.createElement('li');
         li.classList.toggle('completed', task.completed);
 
-        li.innerHTML = ` <div class="task-header"> <strong>${task.name}</strong> ${task.description ? `<p>${task.description}</p>` : ''} </div> ${task.subtask && task.subtask.length ? `<ul>${task.subtask.map(st => `<li>${st}</li>`).join('')}</ul>` : ''} <div class="task-actions"> <button class="edit-btn">Edit</button> <button class="complete-btn">${task.completed ? 'Undo' : 'Complete'}</button> <button class="delete-btn">Delete</button> </div> `;
+        const taskCheckbox = document.createElement('input');
+        taskCheckbox.type = 'checkbox';
+        taskCheckbox.checked = task.completed;
 
-        li.querySelector('.complete-btn').addEventListener('click', () => {
-            tasks[index].completed = !tasks[index].completed;
+        taskCheckbox.addEventListener('change', () => {
+            task.completed = taskCheckbox.checked;
+            task.subtask.forEach(st => st.completed = task.completed);
             renderTaskList();
         });
-    
 
-        li.querySelector('.delete-btn').addEventListener('click', () => {
-            if(confirm(`Delete "${task.name}"?`)) {
-                tasks.splice(index, 1);
-                renderTaskList();
-            }
-        });
+        const taskLabel = document.createElement('span');
+        taskLabel.innerHTML = `<strong>${task.name}</strong> ${task.description ? `<p>${task.description}</p>` : ''}`;
 
-        li.querySelector('.edit-btn').addEventListener('click', () => {
+        li.appendChild(taskCheckbox);
+        li.appendChild(taskLabel);
+
+        if(task.subtask.length) {
+            const ul = document.createElement('ul');
+            renderSubTasks(task.subtask, ul, index);
+            li.appendChild(ul);
+        }
+
+        const actions = document.createElement('div');
+        actions.className = 'task-actions';
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'Edit';
+        editBtn.className = 'edit-btn';
+
+        editBtn.addEventListener('click', () => {
             taskNameInput.value = task.name;
             taskDescInput.value = task.description;
-            subTaskList.innerHTML = ''; 
-            currentSubTask = [...task.subtask];
+            currentSubTask = task.subtask.map(st => ({ name: st.name, completed: st.completed }));
 
-            currentSubTask.forEach(st => {
-                const li = document.createElement('li');
-                li.textContent = st;
-                subTaskList.appendChild(li);
-            });
+            renderSubTasks(currentSubTask, subTaskList);
+
             taskListModal.classList.remove('active');
             editingTaskIndex = index;
             taskModal.querySelector('h2').textContent = 'Edit Task';
@@ -135,7 +148,71 @@ function renderTaskList() {
             taskModal.classList.add('active');
         });
 
-    taskListEl.appendChild(li);
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            if(confirm(`Delete "${task.name}"?`)) {
+                tasks.splice(index, 1);
+                renderTaskList();
+            }
+        });
+
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+        li.appendChild(actions);
+
+        taskListEl.appendChild(li);
+    });
+
+}
+
+function renderSubTasks(subtasks, container, taskIndex = null) {
+    container.innerHTML = '';
+
+    subtasks.forEach((st, i) => {
+        const li = document.createElement('li');
+
+        li.classList.toggle('completed', st.completed);
+
+        // Checkbox for the subtask
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.checked = st.completed;
+
+        checkbox.addEventListener('change', () => {
+            st.completed = checkbox.checked;
+            li.classList.toggle('completed', st.completed);
+
+            if (taskIndex !== null) {
+                const allDone = subtasks.every(s => s.completed);
+                tasks[taskIndex].completed = allDone;
+                renderTaskList();
+            }
+        });
+
+        const span = document.createElement('span');
+        span.textContent = st.name;
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.style.marginLeft = '8px';
+        removeBtn.addEventListener('click', () => {
+            subtasks.splice(i, 1);
+
+            if (taskIndex !== null) {
+                const allDone = subtasks.every(s => s.completed);
+                tasks[taskIndex].completed = allDone;
+            }
+
+            renderSubTasks(subtasks, container, taskIndex);
+            if (taskIndex !== null) renderTaskList();
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(span);
+        li.appendChild(removeBtn);
+
+        container.appendChild(li);
     });
 }
 

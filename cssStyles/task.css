@@ -39,3 +39,8 @@ body {
     text-decoration: line-through;
     opacity: 0.5;
 }
+
+li.completed span, li.completed {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
