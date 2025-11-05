@@ -3,6 +3,8 @@ let minutes = 15;
 let seconds = 0;
 let isPaused = true;
 let enteredTime = null;
+let focusTime;
+let breakTime;
 
 function startTimer() {
     timer = setInterval(updateTimer, 1000);
@@ -72,4 +74,19 @@ function chooseTime() {
     } else {
         alert('Please enter a valid number greater than 0.');
     }
+}
+
+function shortPomodoro() {
+    focusTime = 15;
+    breakTime = 5;
+}
+
+function mediumPomodoro() {
+    focusTime = 25;
+    breakTime = 15;
+}
+
+function longPomodoro() {
+    focusTime = 45;
+    breakTime = 15;
 }
