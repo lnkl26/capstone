@@ -1,31 +1,24 @@
 let timer;
-let minutes = 15; //temp
+let minutes = 15;
 let seconds = 0;
 let isPaused = true;
 let enteredTime = null;
 
 function startTimer() {
     timer = setInterval(updateTimer, 1000);
-    const pauseResumeButton = document.querySelector('.control-buttons button');
-
-    if(isPaused) {
-        clearInterval(timer);
-        pauseResumeButton.textContent = 'resume';
-    } else {
-        startTimer();
-        pauseResumeButton.textContent = 'pause';
-    }
 }
 
 function updateTimer() {
-    const timerElement = document.getElementById('timer');
-    timerElement.textContent = formatTime(minutes, seconds);
+    const timerElement =
+        document.getElementById('timer');
+    timerElement.textContent = 
+        formatTime(minutes, seconds);
 
-    if(minutes === 0 && seconds === 0) {
+    if (minutes === 0 && seconds === 0) {
         clearInterval(timer);
-        alert('Time is up, it is now break time!');
-    } else if(!isPaused) {
-        if(seconds > 0) {
+        alert('Focus mode over, time for a break!');
+    } else if (!isPaused) {
+        if (seconds > 0) {
             seconds--;
         } else {
             seconds = 59;
@@ -40,8 +33,9 @@ function formatTime(minutes, seconds) {
 
 function togglePauseResume() {
     const pauseResumeButton = document.querySelector('.control-buttons button');
+    isPaused = !isPaused;
 
-    if(isPaused) {
+    if (isPaused) {
         clearInterval(timer);
         pauseResumeButton.textContent = 'resume';
     } else {
@@ -64,7 +58,7 @@ function restartTimer() {
 
 function chooseTime() {
     const newTime = prompt('Enter new time in minutes:');
-    if(!isNaN(newTime) && newTime > 0) {
+    if (!isNaN(newTime) && newTime > 0) {
         enteredTime = parseInt(newTime);
         minutes = enteredTime;
         seconds = 0;
@@ -76,6 +70,6 @@ function chooseTime() {
         pauseResumeButton.textContent = 'pause';
         startTimer();
     } else {
-        alert('Please enter a valid number greater than 0');
+        alert('Please enter a valid number greater than 0.');
     }
 }
