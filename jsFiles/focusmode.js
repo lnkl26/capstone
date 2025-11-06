@@ -101,7 +101,7 @@ function mediumPomodoro() {
 
 function longPomodoro() {
     focusTime = 45;
-    breakTime = 5;
+    breakTime = 15;
     startFocus();
 }
 
