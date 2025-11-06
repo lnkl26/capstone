@@ -494,7 +494,7 @@ function closeModal(el) {
     document.body.classList.remove("no-scroll");
 }
 
-/* =Reminders */
+/* Reminders */
 (function () {
     if (!document.body || document.body.id !== "reminder-page") return;
 
@@ -513,6 +513,17 @@ function closeModal(el) {
 
     const tbody = $("reminder-tbody");
     const clearAllBtn = $("reminder-clear-all");
+
+    const clearAllModal = $("clearall-modal");
+    const clearAllConfirm = $("clearall-confirm");
+    const clearAllCancel = $("clearall-cancel");
+
+    const confirmModal = $("confirm-modal");
+    const confirmDeleteBtn = $("confirm-delete");
+    const confirmCancelBtn = $("confirm-cancel");
+
+    const thead = document.querySelector("#reminder-table thead");
+    let sortState = { key: "due", dir: "asc" };
 
     const LS_KEY = "quickReminders";
 
@@ -544,6 +555,42 @@ function closeModal(el) {
         dueEl.value = toLocalInputValue(now);
     }
 
+    let pendingDeleteIndex = null;
+
+    function openConfirm(i) {
+        pendingDeleteIndex = i;
+        confirmModal.style.display = "block";
+        document.body.classList.add("no-scroll");
+    }
+    function closeConfirm() {
+        confirmModal.style.display = "none";
+        document.body.classList.remove("no-scroll");
+        pendingDeleteIndex = null;
+    }
+
+    // close confirm on Cancel / backdrop / Escape
+    confirmCancelBtn?.addEventListener("click", closeConfirm);
+    confirmModal?.addEventListener("click", (e) => {
+        if (e.target === confirmModal) closeConfirm();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && confirmModal?.style.display === "block")
+            closeConfirm();
+    });
+
+    confirmDeleteBtn?.addEventListener("click", () => {
+        if (
+            pendingDeleteIndex != null &&
+            pendingDeleteIndex >= 0 &&
+            pendingDeleteIndex < reminders.length
+        ) {
+            reminders.splice(pendingDeleteIndex, 1);
+            saveLS();
+            render();
+        }
+        closeConfirm();
+    });
+
     function toLocalInputValue(dt) {
         const pad = (n) => String(n).padStart(2, "0");
         return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(
@@ -568,28 +615,137 @@ function closeModal(el) {
         return String(s).replace(/</g, "&lt;");
     }
 
-    function render() {
-        tbody.innerHTML = "";
-        reminders
-            .map((r, i) => ({ ...r, _i: i }))
-            .sort((a, b) => (a.due || "").localeCompare(b.due || ""))
-            .forEach((r) => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-          <td>${r.due ? new Date(r.due).toLocaleString() : ""}</td>
-          <td>${escapeHtml(r.title)}</td>
-          <td>${escapeHtml(r.notes || "")}</td>
-          <td>
-            <button type="button" class="button button--small btn-secondary" data-edit="${
-                r._i
-            }">Edit</button>
-            <button type="button" class="button button--small btn-secondary" data-del="${
-                r._i
-            }">Delete</button>
-          </td>`;
-                tbody.appendChild(tr);
-            });
+    function ensureCreatedAt(item) {
+        if (!item.createdAt) item.createdAt = Date.now();
+        return item;
     }
+
+    // Split date into (dayStartUTC, secondsInDay)
+    function getDueParts(due) {
+        if (!due) return [0, 0];
+        const d = new Date(due);
+        const dayUTC = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate());
+        const secs = d.getHours() * 3600 + d.getMinutes() * 60 + d.getSeconds();
+        return [dayUTC, secs];
+    }
+
+    function openClearAll() {
+        clearAllModal.style.display = "block";
+        document.body.classList.add("no-scroll");
+    }
+    function closeClearAll() {
+        clearAllModal.style.display = "none";
+        document.body.classList.remove("no-scroll");
+    }
+
+    clearAllCancel?.addEventListener("click", closeClearAll);
+    clearAllModal?.addEventListener("click", (e) => {
+        if (e.target === clearAllModal) closeClearAll();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && clearAllModal.style.display === "block")
+            closeClearAll();
+    });
+
+    clearAllConfirm?.addEventListener("click", () => {
+        reminders = [];
+        saveLS();
+        render();
+        closeClearAll();
+    });
+
+    function render() {
+        reminders = reminders.map(ensureCreatedAt);
+
+        let rows = reminders.map((r, i) => ({ ...r, _i: i }));
+
+        rows.sort((a, b) => {
+            const { key, dir } = sortState;
+            const mul = dir === "asc" ? 1 : -1;
+
+            if (key === "due") {
+                // Compare by day, then by time-of-day, then by createdAt
+                const [ad, at] = getDueParts(a.due);
+                const [bd, bt] = getDueParts(b.due);
+                if (ad !== bd) return (ad - bd) * mul;
+                if (at !== bt) return (at - bt) * mul;
+                return ((a.createdAt || 0) - (b.createdAt || 0)) * mul;
+            }
+
+            if (key === "title") {
+                const cmp = (a.title || "").localeCompare(b.title || "");
+                if (cmp) return cmp * mul;
+                const [ad, at] = getDueParts(a.due);
+                const [bd, bt] = getDueParts(b.due);
+                if (ad !== bd) return (ad - bd) * mul;
+                if (at !== bt) return (at - bt) * mul;
+                return ((a.createdAt || 0) - (b.createdAt || 0)) * mul;
+            }
+
+            if (key === "notes") {
+                const cmp = (a.notes || "").localeCompare(b.notes || "");
+                if (cmp) return cmp * mul;
+                const [ad, at] = getDueParts(a.due);
+                const [bd, bt] = getDueParts(b.due);
+                if (ad !== bd) return (ad - bd) * mul;
+                if (at !== bt) return (at - bt) * mul;
+                return ((a.createdAt || 0) - (b.createdAt || 0)) * mul;
+            }
+
+            return 0;
+        });
+
+        // Update header sort arrows
+        thead.querySelectorAll("th.sortable").forEach((th) => {
+            th.setAttribute(
+                "aria-sort",
+                th.dataset.key === sortState.key
+                    ? sortState.dir === "asc"
+                        ? "ascending"
+                        : "descending"
+                    : "none"
+            );
+        });
+
+        // Render
+        tbody.innerHTML = "";
+        rows.forEach((r) => {
+            const tr = document.createElement("tr");
+            if (r.done) tr.classList.add("is-done");
+            tr.innerHTML = `
+      <td>${r.due ? new Date(r.due).toLocaleString() : ""}</td>
+      <td>${escapeHtml(r.title || "")}</td>
+      <td>${escapeHtml(r.notes || "")}</td>
+      <td>
+        <button type="button" class="button button--small btn-secondary" data-done="${
+            r._i
+        }">
+          ${r.done ? "Undo" : "Done"}
+        </button>
+        <button type="button" class="button button--small btn-secondary" data-edit="${
+            r._i
+        }">Edit</button>
+        <button type="button" class="button button--small btn-secondary" data-del="${
+            r._i
+        }">Delete</button>
+      </td>`;
+            document.getElementById("reminder-tbody").appendChild(tr);
+        });
+
+        saveLS();
+    }
+
+    // Click-to-sort headers
+    thead?.addEventListener("click", (e) => {
+        const th = e.target.closest("th.sortable");
+        if (!th) return;
+        const key = th.dataset.key;
+        sortState =
+            sortState.key === key
+                ? { key, dir: sortState.dir === "asc" ? "desc" : "asc" }
+                : { key, dir: "asc" };
+        render();
+    });
 
     // Save
     form.addEventListener("submit", (ev) => {
@@ -623,15 +779,22 @@ function closeModal(el) {
     tbody.addEventListener("click", (e) => {
         const del = e.target.closest("[data-del]");
         const edt = e.target.closest("[data-edit]");
+        const mark = e.target.closest("[data-done]");
+        if (mark) {
+            const i = +mark.dataset.done;
+            if (Number.isInteger(i) && i >= 0 && i < reminders.length) {
+                reminders[i].done = !reminders[i].done;
+                saveLS();
+                render();
+            }
+            return;
+        }
         if (del) {
             const i = +del.dataset.del;
             if (Number.isInteger(i) && i >= 0 && i < reminders.length) {
-                if (confirm("Delete this reminder?")) {
-                    reminders.splice(i, 1);
-                    saveLS();
-                    render();
-                }
+                openConfirm(i);
             }
+            return;
         }
         if (edt) {
             const i = +edt.dataset.edit;
@@ -651,18 +814,7 @@ function closeModal(el) {
     });
 
     // Clear All
-    clearAllBtn?.addEventListener("click", (e) => {
-        e.preventDefault();
-        if (!reminders.length) {
-            alert("There are no reminders to clear.");
-            return;
-        }
-        if (confirm("Clear ALL reminders? This cannot be undone.")) {
-            reminders = [];
-            saveLS();
-            render();
-        }
-    });
+    clearAllBtn?.addEventListener("click", openClearAll);
 
     // Alert when reminder is due
     setInterval(() => {
