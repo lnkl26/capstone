@@ -49,7 +49,7 @@ saveTaskBtn.addEventListener('click', () => {
     const newTask = {
         name,
         description,
-        subtask: currentSubTask.map(st => ({ name: st, completed: false })),
+        subtask: [ ... currentSubTask],
         createdAt: new Date().toISOString(),
         completed: editingTaskIndex !== null ? tasks[editingTaskIndex].completed : false
     };
