@@ -7,6 +7,8 @@ let focusTime = 15;
 let breakTime = 5;
 
 const timerElement = document.getElementById('timer');
+const stopBtn = document.getElementById('stopButton');
+const resetBtn = document.getElementById('resetButton');
 
 function startTimer() {
     if (timer) clearInterval(timer);
@@ -47,6 +49,8 @@ function startFocus() {
     minutes = focusTime;
     seconds = 0;
     timerElement.textContent = formatTime(minutes, seconds);
+    isPaused = false;
+    stopBtn.textContent = 'stop';
     startTimer();
 }
 
@@ -55,7 +59,31 @@ function startBreak() {
     minutes = breakTime;
     seconds = 0;
     timerElement.textContent = formatTime(minutes, seconds);
+    isPaused = false;
+    stopBtn.textContent = 'stop';
     startTimer();
+}
+
+function toggleStartStop() {
+    if(isPaused) {
+        startTimer();
+        stopBtn.textContent = 'stop';
+    } else {
+        isPaused = true;
+        clearInterval(timer);
+        stopBtn.textContent = 'start';
+    }
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    isPaused = true;
+    stopBtn.textContent = 'stop';
+
+    minutes = isBreak ? breakTime : focusTime;
+
+    seconds = 0;
+    timerElement.textContent = formatTime(minutes, seconds);
 }
 
 // POMODORO PRESETS
