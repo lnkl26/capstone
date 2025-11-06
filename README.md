@@ -37,7 +37,7 @@ start index.html
 | Visual bug when creating a sub-task | Navigate to task creation and add a sub task. | 10/12/2025 | mm/dd/yy |
 | Sub-tasks cannot be edited or deleted when editing a task. | - | 10/14/2025 | mm/dd/yy |
 | Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | 10/14/2025 |
-| Subtask showing incorrectly | Create a task with subtask(s), check task list | 11/05/2025 | --- |
+| Subtask showing incorrectly | Create a task with subtask(s), check task list | 11/05/2025 | 11/06/2025 |
 
 ## Notes
 

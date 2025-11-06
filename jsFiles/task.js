@@ -190,8 +190,39 @@ function renderSubTasks(subtasks, container, taskIndex = null) {
             }
         });
 
+        //edit subtask
         const span = document.createElement('span');
         span.textContent = st.name;
+        span.style.cursor = 'pointer';
+
+        span.addEventListener('click', () => {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = st.name;
+            input.style.marginRight = '8px';
+
+            //replace span with input
+            li.replaceChild(input, span);
+            input.focus();
+
+            //save on blur or enter key
+            const saveEdit = () => {
+                const newName = input.value.trim();
+                if (newName) {
+                    st.name = newName;
+                    renderSubTasks(subtasks, container, taskIndex);
+                    if (taskIndex !== null) renderTaskList();
+                } else {
+                    alert('Subtask name cannot be empty.');
+                    input.focus();
+                }
+            };
+
+            input.addEventListener('blur', saveEdit);
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') saveEdit();
+            });
+        });
 
         const removeBtn = document.createElement('button');
         removeBtn.textContent = '×';
