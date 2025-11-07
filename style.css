@@ -17,7 +17,22 @@ body {
     color: black; /*font*/
     background-color: rgb(170, 202, 230);
     border-radius: 6px;
-    box-shadow: -2.5px 4px 1px rgba(0,0,0,.3);
+    box-shadow: -2.5px 4px 1px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    cursor: pointer;
+    border: 1.3px solid black;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+}
+.pop-button {
+    display: inline-flex;
+    justify-content: center;
+    padding: 15px 20px;
+    margin: 50px;
+    color: black; /*font*/
+    background-color: rgb(170, 202, 230);
+    border-radius: 6px;
+    box-shadow: -2.5px 4px 1px rgba(0, 0, 0, 0.3);
     text-decoration: none;
     cursor: pointer;
     border: 1.3px solid black;
@@ -39,50 +54,127 @@ body {
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
-.popup-menu::backdrop { 
-  background: rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(2px);
+.popup-menu::backdrop {
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2px);
 }
-.popup-menu { 
-  background: #fff;
-  border: 1.3px solid black;
-  border-radius: 6px;
-  padding: 8px;
-  box-shadow: -4px 6px 2px rgba(0,0,0,.3);
-  min-width: 240px;
+.popup-menu {
+    background: #fff;
+    border: 1.3px solid black;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: -4px 6px 2px rgba(0, 0, 0, 0.3);
+    min-width: 240px;
 }
 .menu {
-  display: grid;
-  gap: 8px;
+    display: grid;
+    gap: 8px;
 }
 .menu button {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  color: black;
-  background-color: rgb(170, 202, 230);
-  border: 1.3px solid black;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: "Noto Sans", sans-serif;
-  font-weight: 550;
-  box-shadow: -2px 3px .5px rgba(0,0,0,.3);  
-  text-align: center;
-  transition: transform 120ms ease, background-color 120ms ease;
+    display: block;
+    width: 100%;
+    padding: 12px 16px;
+    color: black;
+    background-color: rgb(170, 202, 230);
+    border: 1.3px solid black;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    transition: transform 120ms ease, background-color 120ms ease;
 }
-.menu button:hover { 
-  background-color: rgb(112, 174, 228);
-  transform: scale(1.02);
+.menu button:hover {
+    background-color: rgb(112, 174, 228);
+    transform: scale(1.02);
 }
-.menu .danger { 
-  background: #fee;
-  border-color: #f99;
+.menu .danger {
+    background: #fee;
+    border-color: #f99;
 }
 .menu .danger:hover {
-  background: #fdd;
+    background: #fdd;
 }
-
+.page-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0px 40px;
+}
+/*top row of two buttons*/
+.button-row {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+.back-section {
+    margin-bottom: 60px;
+}
+/*white area for log content*/
+.log-section {
+    min-height: 200px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+}
+.popup-menu::backdrop {
+    background: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2px);
+}
+.popup-menu {
+    border: 0;
+    padding: 0;
+    background: transparent; /*keep dialog invisible*/
+    position: absolute;
+}
+/*the actual menu panel*/
+.popup-menu .menu {
+    min-width: 240px;
+    background: #fff;
+    border: 1.5px solid #000;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+    display: grid;
+    gap: 8px;
+}
+.popup-menu .menu-title {
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+.popup-menu .menu-btn {
+    width: 100%;
+    padding: 12px 14px;
+    background: rgb(170, 202, 230);
+    border: 1.3px solid #000;
+    border-radius: 8px;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 120ms ease, background-color 120ms ease,
+        box-shadow 120ms ease;
+}
+.popup-menu .menu-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+.popup-menu .menu-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+.popup-menu .menu-btn.danger {
+    background: #fee;
+}
+.popup-menu .menu-btn.secondary {
+    background: #fee;
+}
 /**TASK MANAGEMENT STYLING**/
 .task-btns {
     margin-top: 150px;
@@ -770,4 +862,130 @@ body#diet-log-page .import-actions label.button.btn-secondary {
 .routine-actions button {
     margin-left: 5px;
     cursor: pointer;
+}
+
+/* --- Reminders toolbar --- */
+.toolbar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 18px auto 10px;
+}
+.back-btn-top {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.toolbar-center {
+    text-align: center;
+}
+.title--compact {
+    margin: 0;
+    font-size: 28px;
+    text-align: center;
+}
+/* Center the New / Clear buttons under the title */
+.actions-under-title {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+/* Blue accent for 'New' */
+.btn-accent {
+    background: #5ec8f2;
+    border-color: #5ec8f2;
+    color: #06202b;
+}
+.btn-accent:hover {
+    filter: brightness(0.95);
+}
+
+/* Header-specific overrides so buttons don't inherit the huge global margin */
+.toolbar .button,
+.back-btn-top {
+    margin: 0 !important;
+}
+.actions-under-title .button {
+    margin: 0 6px !important;
+}
+
+/* Danger button (for destructive actions) */
+.button.danger {
+    background: #e24b4b;
+    border-color: #e24b4b;
+    color: #fff;
+}
+.button.danger:hover {
+    filter: brightness(0.95);
+}
+
+/* Sortable header arrows */
+.table th.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+.table th.sortable::after {
+    content: "↕";
+    font-size: 12px;
+    opacity: 0.45;
+    margin-left: 6px;
+}
+.table th.sortable[aria-sort="ascending"]::after {
+    content: "↑";
+    opacity: 0.85;
+}
+.table th.sortable[aria-sort="descending"]::after {
+    content: "↓";
+    opacity: 0.85;
+}
+
+/* --- Bottom-anchored confirm modals (Delete & Clear All) --- */
+#confirm-modal,
+#clearall-modal {
+    display: none; /* hidden until JS shows it */
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(3px);
+    z-index: 2000;
+    align-items: flex-end; /* push to bottom of viewport */
+    justify-content: center; /* center horizontally */
+}
+#confirm-modal[style*="display: block"],
+#clearall-modal[style*="display: block"] {
+    display: flex !important; /* allow flexbox centering */
+}
+#confirm-modal .task-modal-content,
+#clearall-modal .task-modal-content {
+    position: relative;
+    bottom: 6vh; /* lift off the bottom edge */
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    padding: 18px 20px;
+    width: min(90%, 420px);
+    text-align: left;
+    animation: slideUp 0.25s ease-out;
+}
+#confirm-modal .task-btns,
+#clearall-modal .task-btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* One keyframes block for both modals */
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

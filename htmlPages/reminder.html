@@ -7,29 +7,61 @@
         <link rel="stylesheet" href="../style.css" />
     </head>
     <body id="reminder-page">
-        <h1 class="title">Reminders</h1>
-
-        <section class="card">
-            <div class="task-btns">
-                <button type="button" id="reminderCreate-btn" class="button">
-                    New Reminder
-                </button>
-                <button
-                    type="button"
-                    id="reminder-clear-all"
-                    class="button btn-secondary"
-                >
-                    Clear All
-                </button>
+        <!-- Top toolbar -->
+        <header class="toolbar page-container">
+            <a
+                href="productive.html"
+                class="button btn-secondary button--sm back-btn-top"
+                id="back-btn"
+                >Back</a
+            >
+            <div class="toolbar-center">
+                <h1 class="title title--compact">Reminders</h1>
+                <div class="actions-under-title">
+                    <button
+                        type="button"
+                        id="reminderCreate-btn"
+                        class="button button--sm btn-accent"
+                    >
+                        New
+                    </button>
+                    <button
+                        type="button"
+                        id="reminder-clear-all"
+                        class="button btn-secondary button--sm"
+                    >
+                        Clear
+                    </button>
+                </div>
             </div>
+        </header>
 
+        <section class="card page-container">
             <div class="table-wrap">
                 <table class="table" id="reminder-table">
                     <thead>
                         <tr>
-                            <th>Due</th>
-                            <th>Title</th>
-                            <th>Notes</th>
+                            <th
+                                class="sortable"
+                                data-key="due"
+                                aria-sort="none"
+                            >
+                                Due
+                            </th>
+                            <th
+                                class="sortable"
+                                data-key="title"
+                                aria-sort="none"
+                            >
+                                Title
+                            </th>
+                            <th
+                                class="sortable"
+                                data-key="notes"
+                                aria-sort="none"
+                            >
+                                Notes
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -104,8 +136,86 @@
             </div>
         </div>
 
-        <div class="task-btns">
-            <a href="productive.html" class="button btn-secondary">Back</a>
+        <!-- Confirm Delete Modal -->
+        <div
+            id="confirm-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirm-title"
+            style="display: none"
+        >
+            <div class="task-modal-content" style="max-width: 420px">
+                <h2 id="confirm-title" style="margin-top: 0">
+                    Delete this reminder?
+                </h2>
+                <p>This action can’t be undone.</p>
+                <div
+                    class="task-btns"
+                    style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                        margin-top: 16px;
+                    "
+                >
+                    <button
+                        type="button"
+                        id="confirm-cancel"
+                        class="button btn-secondary button--sm"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        id="confirm-delete"
+                        class="button danger button--sm"
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Clear-All Modal -->
+        <div
+            id="clearall-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="clearall-title"
+            style="display: none"
+        >
+            <div class="task-modal-content" style="max-width: 420px">
+                <h2 id="clearall-title" style="margin-top: 0">
+                    Clear all reminders?
+                </h2>
+                <p>This will permanently delete all reminders.</p>
+                <div
+                    class="task-btns"
+                    style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                        margin-top: 16px;
+                    "
+                >
+                    <button
+                        type="button"
+                        id="clearall-cancel"
+                        class="button btn-secondary button--sm"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="button"
+                        id="clearall-confirm"
+                        class="button danger button--sm"
+                    >
+                        Clear All
+                    </button>
+                </div>
+            </div>
         </div>
 
         <script src="../scripts.js" defer></script>
