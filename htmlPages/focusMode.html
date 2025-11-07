@@ -4,12 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="manifest" href="../manifest.json">
-    <title>Document</title>
-     <link rel="stylesheet" href="../style.css">
+    <title>Focus Mode</title>
+     <link rel="stylesheet" href="../cssStyles/focusmode.css">
 </head>
 <body>
-    <a class="button">Pomodoro Timer</a>
-    <a class="button">Task Sidebar</a>
+    <div class="pomodoro-timer">
+        <div class="timer-circle" id="timer">00:00</div>
+        <div class="timer-types">
+            <button onclick="shortPomodoro()">
+                15/5 pomodoro
+            </button>
+            <button onclick="mediumPomodoro()">
+                25/5 pomodoro
+            </button>
+            <button onclick="longPomodoro()">
+                45/5 pomodoro
+            </button>
+        </div>
+        <div class="control-buttons">
+            <button id="stopButton" onclick="toggleStartStop()">stop</button>
+            <button id="resetButton" onclick="resetTimer()">reset</button>
+        </div>
+    </div>
     <a href="productive.html" class="button">Back</a>
+    <script src="../jsFiles/focusmode.js"></script>
 </body>
 </html>

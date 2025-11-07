@@ -6,7 +6,8 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Jesselle Ballesil
 
-(Achievements here)
+* Assist in restructure of functions for code optimization of tasks.
+* Subtask editing
 
 ### Jack Crawford
 
@@ -18,7 +19,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Leann Kahal
 
-(Achievements here)
+* Restructure file hierarchies for code optimization of task-related functions
+* Working on pomodoro timer functionality
+* Working on utilizing Firebase instead of localStorage
 
 ## AI as a Tool
 

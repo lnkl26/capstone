@@ -5,53 +5,66 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="manifest" href="../manifest.json">
         <title>Task Manager</title>
+
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="../cssStyles/task.css">
     </head>
     <body>
         <!-- Top Buttons -->
         <div class="task-btns">
-            <button id="taskCreate-btn">Task Create</button>
-            <button id="taskListView">Task List</button>
-            <button id="routineCreate-btn">Routine Create</button>
-            <button id="routineListView">Routine List</button>
+            <button id="taskCreate-btn">Create Task</button>
+            <button id="taskListView">View Tasks</button>
+            <button id="routineCreate-btn">Create Routine</button>
+            <button id="routineListView">View Routines</button>
         </div>
 
-        <!-- Task Creation Popup Modal -->
-        <div class="task-modal" id="task-modal">
-            <div class="task-modal-content">
-                <h2>Create a New Task</h2>
+        <!-- MODAL TEMPLATE -->
+         <template id="modalTemplate">
+            <div class="modal">
+                <div class="modal-content">
+                    <h2 class="modal-title"></h2>
+                    <div class="modal-body"></div>
+                    <div class="modal-buttons"></div>
+                </div>
+            </div>
+         </template>
 
-                <div class="task-input-area" id="task-area">
+        <!-- TASK MODAL -->
+        <div class="modal" id="taskModal">
+            <div class="modal-content">
+                <h2>Create New Task</h2>
+                <div class="task-input-area">
                     <input type="text" id="taskInput-name" placeholder="Enter task name...(required)"/>
-                    <input id="taskInput-desc" placeholder="Enter task description (optional)..."/>
+                    <input type="text" id="taskInput-desc" placeholder="Enter task description...(optional)"/>
 
-                    <!-- Optional Subtasks -->
-                    <div class="subtask-area" id="subtask-area">
-                        <input type="text" id="subtaskInput" placeholder="Add subtask (optional)..." />
+                    <!-- SUB TASKS -->
+                    <div class="subtask-area">
+                        <input type="text" id="subtaskInput" placeholder="Add subtask...(optional)"/>
                         <button id="addSubtask">Add Subtask</button>
                         <ul id="subtaskList"></ul>
                     </div>
 
-                    <!-- Modal Buttons -->
-                    <div class="task-buttons">
-                        <button id="saveTask">Save Task</button>
-                        <button id="cancelTask">Cancel Task</button>
+                    <!-- BUTTONS -->
+                    <div class="modal-buttons">
+                        <button id="saveTask">Save</button>
+                        <button id="cancelTask">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- popup for Task List -->
-        <div class="tasklist-modal" id="task-list-popup">
-            <div class="tasklist-content">
+        <!-- TASK LIST MODAL -->
+        <div class="modal" id="taskListModal">
+            <div class="modal-content">
                 <h2>Your Tasks</h2>
-                <div class="tasklist-container">
-                    <ul id="task-list"></ul>
+                <div class="task-list-container">
+                    <ul id="taskList"></ul>
                 </div>
-                <button id="close-task-list">Close</button>
+                <div class="modal-buttons">
+                    <button id="closeTaskList">Close</button>
+                </div>
             </div>
         </div>
 
@@ -87,6 +100,6 @@
 
         <a href="productive.html" class="button">Back</a>
 
-        <script src="../scripts.js"></script>
+        <script src="../jsFiles/task.js"></script>
     </body>
 </html>

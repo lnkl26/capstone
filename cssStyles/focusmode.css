@@ -1,0 +1,81 @@
+body {
+    background-color: #f8f8f8;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.pomodoro-timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* timer circle */
+.timer-circle {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(0,0,0,0.1);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem;
+    color: #333;
+    background-color: white;
+
+    animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 20px #66ceed; }
+    50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(60, 231, 160, 0.6); }
+    100% { transform: scale(1); box-shadow: 0 0 20px #66ceed; }
+}
+
+.timer-types {
+    display: flex;
+    gap: 10px;
+}
+
+.timer-types button {
+    background-color: #66ceed;
+    color: #2c3e50;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    margin-top: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.control-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.control-buttons button {
+    background-color: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
