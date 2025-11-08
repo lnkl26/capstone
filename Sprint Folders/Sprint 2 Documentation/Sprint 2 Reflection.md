@@ -8,6 +8,7 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 * Assist in restructure of functions for code optimization of tasks.
 * Subtask editing
+* Connect task functions to database.
 
 ### Jack Crawford
 

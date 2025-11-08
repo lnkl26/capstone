@@ -1,13 +1,29 @@
+import {
+  db, collection, addDoc, deleteDoc, doc, updateDoc, 
+  onSnapshot, query, orderBy, serverTimestamp, 
+} from "../firebase.js";
+
 // GLOBAL VARIABLES
 let tasks = [];
 let currentSubTask = [];
 let editingTaskIndex = null;
 let editingSubTaskIndex = null;
+const tasksCollection = collection(db, "tasks");
 
 // TASK MANAGER 
 const taskModal = document.getElementById('taskModal');
 const openTaskBtn = document.getElementById('taskCreate-btn'); // rename this later
 const closeTaskBtn = document.getElementById('cancelTask');
+
+document.addEventListener('DOMContentLoaded', () => {
+    onSnapshot(query(tasksCollection, orderBy("createdAt", "desc")), (snapshot) => {
+        tasks = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ... doc.data()
+        }));
+        renderTaskList();
+    });
+});
 
 openTaskBtn.addEventListener('click', () => {
     taskNameInput.value = '';
@@ -37,7 +53,7 @@ const openTaskListBtn = document.getElementById('taskListView'); // rename this 
 const closeTaskListBtn = document.getElementById('closeTaskList');
 const taskListEl = document.getElementById('taskList');
 
-saveTaskBtn.addEventListener('click', () => {
+saveTaskBtn.addEventListener('click', async () => {
     const name = taskNameInput.value.trim();
     const description = taskDescInput.value.trim();
 
@@ -50,19 +66,25 @@ saveTaskBtn.addEventListener('click', () => {
         name,
         description,
         subtask: [ ... currentSubTask],
-        createdAt: new Date().toISOString(),
+        createdAt: serverTimestamp(),
         completed: editingTaskIndex !== null ? tasks[editingTaskIndex].completed : false
     };
 
-    if(editingTaskIndex !== null) {
-        tasks[editingTaskIndex] = newTask;
-        editingTaskIndex = null;
-    } else {
-        tasks.push(newTask);
+    try {
+        if(editingTaskIndex !== null) {
+            const taskId = tasks[editingTaskIndex].id;
+            console.log("Editing task ID:", taskId);
+            const taskRef = doc(db, "tasks", taskId);
+            await updateDoc(taskRef, newTask);
+            editingTaskIndex = null;
+        } else {
+            await addDoc(tasksCollection, newTask);
+        }
+        alert('Task saved successfully!');
+    } catch (error) {
+        console.error("Error saving task: ", error);
+        alert("Failed to save task.");
     }
-
-    //tasks.push(newTask);
-    console.log('Tasks: ', tasks);  // TESTING
 
     taskNameInput.value = '';
     taskDescInput.value = '';
@@ -71,7 +93,6 @@ saveTaskBtn.addEventListener('click', () => {
 
     taskModal.classList.remove('active');
     renderTaskList();
-    alert('Task saved successfully!');
 });
 
 addSubTaskBtn.addEventListener('click', () => {
@@ -150,10 +171,15 @@ function renderTaskList() {
 
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'Delete';
-        deleteBtn.addEventListener('click', () => {
-            if(confirm(`Delete "${task.name}"?`)) {
-                tasks.splice(index, 1);
-                renderTaskList();
+        deleteBtn.addEventListener('click', async () => {
+            if (confirm('Delete "${task.name}"?')) {
+                try {
+                    const taskId = task.id; //firebase id
+                    await deleteDoc(doc(db, "tasks", taskId));
+                } catch (error) {
+                    console.error("Error deleting task: ", error);
+                    alert("Failed to delete task.");
+                }
             }
         });
 
