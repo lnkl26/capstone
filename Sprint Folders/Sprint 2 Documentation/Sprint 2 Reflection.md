@@ -16,7 +16,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Chet Hefton
 
-(Achievements here)
+* Assist in code optimization.
+* Update UI and backend.
+* Create and Implement Database, also connected medication log and medication reminder functions to database.
 
 ### Leann Kahal
 
