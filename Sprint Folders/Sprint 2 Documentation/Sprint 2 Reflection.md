@@ -12,7 +12,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Jack Crawford
 
-(Achievements here)
+* Optimized reminder notification process
+* Adjusted UI implementation
+* Created sorting funcitonality within display tables
 
 ### Chet Hefton
 
