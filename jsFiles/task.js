@@ -14,17 +14,6 @@ const tasksCollection = collection(db, "tasks");
 const taskModal = document.getElementById('taskModal');
 const openTaskBtn = document.getElementById('taskCreate-btn'); // rename this later
 const closeTaskBtn = document.getElementById('cancelTask');
-const saveTaskBtn = document.getElementById('saveTask');
-const taskNameInput = document.getElementById('taskInput-name');
-const taskDescInput = document.getElementById('taskInput-desc');
-const subTaskInput = document.getElementById('subtaskInput');
-const addSubTaskBtn = document.getElementById('addSubtask');
-const subTaskList = document.getElementById('subtaskList');
-
-const taskListModal = document.getElementById('taskListModal');
-const openTaskListBtn = document.getElementById('taskListView'); // rename this later
-const closeTaskListBtn = document.getElementById('closeTaskList');
-const taskListEl = document.getElementById('taskList');
 
 document.addEventListener('DOMContentLoaded', () => {
     onSnapshot(query(tasksCollection, orderBy("createdAt", "desc")), (snapshot) => {
