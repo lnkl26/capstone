@@ -8,14 +8,19 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 * Assist in restructure of functions for code optimization of tasks.
 * Subtask editing
+* Connect task functions to database.
 
 ### Jack Crawford
 
-(Achievements here)
+* Optimized reminder notification process
+* Adjusted UI implementation
+* Created sorting funcitonality within display tables
 
 ### Chet Hefton
 
-(Achievements here)
+* Assist in code optimization.
+* Update UI and backend.
+* Create and Implement Database, also connected medication log and medication reminder functions to database.
 
 ### Leann Kahal
 

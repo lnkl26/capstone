@@ -6,19 +6,30 @@
     <link rel="manifest" href="../manifest.json">
     <title>Med Logging</title>
     <link rel="stylesheet" href="../style.css">
-     <script defer src="../medLog.js"></script>
+    <script type="module" src="../firebase.js"></script>
+    <script type="module" defer src="../medLog.js"></script>
 </head>
 <body>
-  <button id="btnMeds" class="pop-button">Manage Log</button>
-  <button id="btnService" class="pop-button">Medication Reminder</button>
-  <a href="foodMed.html" class="button">Back</a>
+<div class="top-buttons">
+  <div class="button-row-top">
+    <button id="btnMeds" class="pop-button">Manage Log</button>
+    <button id="btnService" class="pop-button">Medication Reminder</button>
+  </div>
+  <a href="foodMed.html" class="button back-btn">Back</a>
+</div>
  <!--menu host, will be used for both buttons-->
   <dialog id="popupMenu" class="popup-menu"></dialog>
   <main class="page-container">
     <!-- white-space area for the Med Log-->
     <section id="log-section" class="log-section">
+      <div class="section-title">Medication Log</div>
+      <div id="medLog"></div>
     <!--content dynamically loaded here later-->
   </section>
+    <section id="reminder-section" class="log-section">
+  <div class="section-title">Scheduled Reminders</div>
+  <div id="remLog"></div>
+</section>
   </main>
 </body>
 </html>

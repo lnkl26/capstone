@@ -54,18 +54,6 @@ body {
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
-.popup-menu::backdrop {
-    background: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(2px);
-}
-.popup-menu {
-    background: #fff;
-    border: 1.3px solid black;
-    border-radius: 6px;
-    padding: 8px;
-    box-shadow: -4px 6px 2px rgba(0, 0, 0, 0.3);
-    min-width: 240px;
-}
 .menu {
     display: grid;
     gap: 8px;
@@ -107,7 +95,7 @@ body {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 10px;
     margin-bottom: 40px;
 }
 .back-section {
@@ -122,6 +110,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 20px;
 }
+/*dialog tuning to allow inner panel to style itself*/
 .popup-menu::backdrop {
     background: rgba(0, 0, 0, 0.15);
     backdrop-filter: blur(2px);
@@ -148,6 +137,7 @@ body {
 .popup-menu .menu-title {
     font-weight: 700;
     margin-bottom: 2px;
+    text-align: center;
 }
 .popup-menu .menu-btn {
     width: 100%;
@@ -158,11 +148,11 @@ body {
     font: inherit;
     text-align: left;
     cursor: pointer;
-    transition: transform 120ms ease, background-color 120ms ease,
-        box-shadow 120ms ease;
+    transition: transform 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
 }
 .popup-menu .menu-btn:hover {
     transform: translateY(-1px);
+    background-color: rgb(112, 174, 228);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 .popup-menu .menu-btn:active {
@@ -174,6 +164,351 @@ body {
 }
 .popup-menu .menu-btn.secondary {
     background: #fee;
+}
+/*container for the top 3 buttons*/
+.top-buttons{
+  display:flex;
+  flex-direction: column-reverse;
+  align-items:center;
+}
+/*make sure both pop-buttons have the same width*/
+.pop-button{
+  min-width:180px;
+  text-align:center;
+}
+/*force center*/
+#popupMenu.popup-center {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  z-index: 9999;
+}
+dialog::backdrop { background: rgba(0,0,0,.25); }
+
+/*utility classes used by js (kept consistent with palette)*/
+.title, .menu-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; text-align:center; }
+.input { padding: 8px; border: 1.3px solid #000; border-radius: 8px;}
+.full { width: 94%;}
+.row { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; }
+.empty { opacity: .7; }
+
+/*two column labeled form row*/
+.form-row { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 4px; }
+.form-row > label { opacity: .85; }
+
+/*section titles inside a menu*/
+.section-title { font-weight: 600; font-size: 17px; margin-bottom: 6px; text-align: center;  border-bottom: 1px solid #d1d1d1; }
+
+/*confirm checkbox row*/
+.inline-center { display:flex; align-items:center; gap:8px; }
+/*log section container*/
+#log-section, #reminder-section {
+  background-color: #fff;          /*white box*/
+  border: 1px solid #000;          /*black border*/
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px auto;
+  width: 86%;                      /*shrink width if too wide*/
+  max-width: 600px;                /*prevent it from spanning entire screen*/
+  min-height: 150px;               /*keep space even when empty*/
+  box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 400;
+}
+
+/*inner log text or entries*/
+#medLog {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid #eee;
+}
+.embDel {
+  background:rgb(255, 205, 205);
+  border:0px solid rgb(252, 219, 219);
+  border-radius:100px;
+  padding:6px 14px;
+  cursor:pointer;
+  
+}
+/*tighten the top cluster spacing*/
+.top-buttons{ gap:20px; margin-bottom:40px; }
+
+/*remove the big per-button margins inside the cluster*/
+.top-buttons .pop-button,
+.top-buttons .back-btn{ margin:20px; }
+
+/*make the back button line up visually under the pair*/
+.button.back-btn{
+  width: 365px;         /*feel free to tweak: 420–560 looks good*/
+  max-width: 86%;
+  align-self: center;
+}
+/*reminder entries inline*/
+.entry {
+  display: flex;
+  justify-content: space-between;   /* title on left, timer on right */
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.entry strong {
+  font-weight: 600;
+}
+.countdown {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #222;
+}
+/**TASK MANAGEMENT STYLING**/
+.task-btns {
+    margin-top: 150px;
+}
+
+.task-btns button {
+    display: flex;
+    justify-content: center;
+    background-color: #66ceed;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px 20px;
+    border: 0px;
+    border-radius: 15px;
+    font-size: 35px;
+    font-family: "Noto Sans", sans-serif;
+    width: 80%;
+    height: 25%;
+}
+
+.task-btns button:hover {
+    background-color: #22b8e5;
+    font-size: 40px;
+}
+
+/* popup overlay (background) */
+.task-modal {
+    display: none; /* hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+/* popup box */
+.task-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    max-width: 100%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    font-family: "Noto Sans", sans-serif;
+}
+
+/* internal layout */
+.task-input-area input {
+    font-family: "Noto Sans", sans-serif;
+    width: 98%;
+    margin-bottom: 5px;
+}
+
+.task-input-area button {
+    font-family: "Noto Sans", sans-serif;
+    width: 100%;
+}
+
+.subtask-area {
+    margin-top: 15px;
+}
+
+.subtask-area button {
+    background-color: #72d6a7;
+    border: 0px;
+    border-radius: 15px;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.subtask-area button:hover {
+    background-color: #39c382;
+}
+
+.task-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+#saveTask {
+    background-color: #66ceed;
+    border: 0px;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+#saveTask:hover {
+    background-color: #22b8e5;
+}
+
+#cancelTask {
+    border: 0px;
+    border-radius: 15px;
+    padding: 5px;
+}
+
+#cancelTask:hover {
+    background-color: #ccc;
+}
+
+.tasklist-popup {
+    display: none;
+}
+
+/*Task List Modal Styling*/
+.tasklist-modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.tasklist-content {
+    background: #fff;
+    padding: 25px 30px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh; /* limits popup height */
+}
+
+.tasklist-content h3 {
+    margin-top: 0;
+}
+
+/* scrollable task list area */
+.tasklist-container {
+    overflow-y: auto;
+    flex: 1;
+    margin-top: 10px;
+    padding-right: 8px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+/* style individual task list items */
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#task-list li {
+    background: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 6px;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+/* close button at bottom */
+#close-task-list {
+    align-self: flex-end;
+    margin-top: 10px;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.task-info {
+    flex: 1;
+    overflow-wrap: break-word;
+}
+
+/* Completed task style */
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-item.completed strong {
+    text-decoration: line-through;
+}
+
+/* Button styles */
+.task-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.complete-task {
+    background: #72d6a7;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.complete-task:hover {
+    background: #39c382;
+}
+
+.delete-task {
+    background: #ff4d4d;
+    border: none;
+    color: white;
+    font-size: 16px;
+    line-height: 1;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.delete-task:hover {
+    background: #ff0000;
+}
+
+.edit-task {
+    background: #66ceed;
+    border: none;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.edit-task:hover {
+    background: #22b8e5;
 }
 
 /* Diet log helpers */
