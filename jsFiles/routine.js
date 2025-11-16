@@ -1,3 +1,5 @@
+let editingRoutineId = null; // Track the routine being edited
+
 function getRoutines() {
     return JSON.parse(localStorage.getItem("routines")) || [];
 }
@@ -78,21 +80,34 @@ saveRoutineBtn.addEventListener("click", () => {
 
     const routines = getRoutines();
 
-    const newRoutine = {
-        id: Date.now(),
-        name: routineName,
-        tasks: taskIds
-    };
+    if (editingRoutineId) {
+        // Editing existing routine
+        const index = routines.findIndex(r => r.id === editingRoutineId);
+        if (index !== -1) {
+            routines[index].name = routineName;
+            routines[index].tasks = taskIds;
+        }
+        editingRoutineId = null; // Reset
+        alert("Routine updated!");
+    } else {
+        // Creating new routine
+        const newRoutine = {
+            id: Date.now(),
+            name: routineName,
+            tasks: taskIds
+        };
+        routines.push(newRoutine);
+        alert("Routine saved!");
+    }
 
-    routines.push(newRoutine);
     saveRoutines(routines);
-
-    alert("Routine saved!");
 
     // Reset modal
     routineModal.classList.remove("active");
     routineNameInput.value = "";
     routineTaskList.innerHTML = "";
+
+    renderRoutineList(); // Update routine list view
 });
 
 const routineListViewBtn = document.getElementById("routineListView");
@@ -102,6 +117,7 @@ const closeRoutineListBtn = document.getElementById("closeRoutineList");
 
 const addRoutineTaskBtn = document.getElementById("addRoutineTask-Btn");
 
+const routineModalHeader = routineModal.querySelector("h2");
 
 // Open routine list modal
 routineListViewBtn.addEventListener("click", () => {
@@ -151,13 +167,14 @@ function renderRoutineList() {
         li.innerHTML = `
             <strong>${routine.name}</strong><br>
             <small>${routineTasks}</small>
+            <button class="editRoutineBtn" data-id="${routine.id}">Edit</button>
             <button class="deleteRoutineBtn" data-id="${routine.id}">Delete</button>
         `;
 
         routineList.appendChild(li);
     });
 
-    // Add click listeners to all delete buttons
+    // Add click listeners for delete buttons
     const deleteButtons = document.querySelectorAll(".deleteRoutineBtn");
     deleteButtons.forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -165,8 +182,16 @@ function renderRoutineList() {
             deleteRoutine(idToDelete);
         });
     });
-}
 
+    // Add click listeners for edit buttons
+    const editButtons = document.querySelectorAll(".editRoutineBtn");
+    editButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const idToEdit = Number(e.target.dataset.id);
+            openRoutineForEdit(idToEdit);
+        });
+    });
+}
 
 // Close routine list modal
 closeRoutineListBtn.addEventListener("click", () => {
@@ -179,4 +204,43 @@ function deleteRoutine(id) {
     saveRoutines(routines);
     renderRoutineList(); // Re-render the list after deletion
     alert("Routine deleted!");
+}
+
+function openRoutineForEdit(id) {
+    const routines = getRoutines();
+    const routine = routines.find(r => r.id === id);
+    if (!routine) return alert("Routine not found!");
+
+    routineListModal.classList.remove("active");
+
+    // Set editing ID
+    editingRoutineId = id;
+
+    routineModalHeader.textContent = "Update Your Routine";
+
+    // Pre-fill routine modal
+    routineNameInput.value = routine.name;
+    routineModal.classList.add("active");
+
+    // Load tasks and mark those included in this routine as checked
+    routineTaskList.innerHTML = "";
+    const tasks = getTasks();
+    if (tasks.length === 0) {
+        routineTaskList.innerHTML = "<p>No tasks available. Create tasks first.</p>";
+        return;
+    }
+
+    tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.classList.add("routine-task-item");
+
+        li.innerHTML = `
+            <label>
+                <input type="checkbox" class="routine-task-checkbox" value="${task.id}" ${routine.tasks.includes(task.id.toString()) ? "checked" : ""}>
+                ${task.name}
+            </label>
+        `;
+
+        routineTaskList.appendChild(li);
+    });
 }
