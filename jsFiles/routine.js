@@ -106,31 +106,7 @@ const addRoutineTaskBtn = document.getElementById("addRoutineTask-Btn");
 // Open routine list modal
 routineListViewBtn.addEventListener("click", () => {
     routineListModal.classList.add("active");
-    routineList.innerHTML = ""; // Clear previous output
-
-    const routines = getRoutines();
-    const tasks = getTasks();
-
-    if (routines.length === 0) {
-        routineList.innerHTML = "<p>No routines created yet.</p>";
-        return;
-    }
-
-    routines.forEach(routine => {
-        const li = document.createElement("li");
-        li.classList.add("routine-item");
-
-        const routineTasks = routine.tasks
-            .map(id => tasks.find(t => t.id == id)?.name || "(Deleted Task)")
-            .join(", ");
-
-        li.innerHTML = `
-            <strong>${routine.name}</strong><br>
-            <small>${routineTasks}</small>
-        `;
-
-        routineList.appendChild(li);
-    });
+    renderRoutineList();
 });
 
 addRoutineTaskBtn.addEventListener('click', () => {
@@ -153,7 +129,54 @@ addRoutineTaskBtn.addEventListener('click', () => {
     loadTasksForRoutine();
 });
 
+function renderRoutineList() {
+    routineList.innerHTML = ""; // Clear previous output
+
+    const routines = getRoutines();
+    const tasks = getTasks();
+
+    if (routines.length === 0) {
+        routineList.innerHTML = "<p>No routines created yet.</p>";
+        return;
+    }
+
+    routines.forEach(routine => {
+        const li = document.createElement("li");
+        li.classList.add("routine-item");
+
+        const routineTasks = routine.tasks
+            .map(id => tasks.find(t => t.id == id)?.name || "(Deleted Task)")
+            .join(", ");
+
+        li.innerHTML = `
+            <strong>${routine.name}</strong><br>
+            <small>${routineTasks}</small>
+            <button class="deleteRoutineBtn" data-id="${routine.id}">Delete</button>
+        `;
+
+        routineList.appendChild(li);
+    });
+
+    // Add click listeners to all delete buttons
+    const deleteButtons = document.querySelectorAll(".deleteRoutineBtn");
+    deleteButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const idToDelete = Number(e.target.dataset.id);
+            deleteRoutine(idToDelete);
+        });
+    });
+}
+
+
 // Close routine list modal
 closeRoutineListBtn.addEventListener("click", () => {
     routineListModal.classList.remove("active");
 });
+
+function deleteRoutine(id) {
+    let routines = getRoutines();
+    routines = routines.filter(routine => routine.id !== id);
+    saveRoutines(routines);
+    renderRoutineList(); // Re-render the list after deletion
+    alert("Routine deleted!");
+}
