@@ -8,6 +8,17 @@ let editingSubTaskIndex = null;
 const taskModal = document.getElementById('taskModal');
 const openTaskBtn = document.getElementById('taskCreate-btn'); // rename this later
 const closeTaskBtn = document.getElementById('cancelTask');
+const saveTaskBtn = document.getElementById('saveTask');
+const taskNameInput = document.getElementById('taskInput-name');
+const taskDescInput = document.getElementById('taskInput-desc');
+const subTaskInput = document.getElementById('subtaskInput');
+const addSubTaskBtn = document.getElementById('addSubtask');
+const subTaskList = document.getElementById('subtaskList');
+
+const taskListModal = document.getElementById('taskListModal');
+const openTaskListBtn = document.getElementById('taskListView'); // rename this later
+const closeTaskListBtn = document.getElementById('closeTaskList');
+const taskListEl = document.getElementById('taskList');
 
 openTaskBtn.addEventListener('click', () => {
     taskNameInput.value = '';
@@ -24,18 +35,6 @@ openTaskBtn.addEventListener('click', () => {
 closeTaskBtn.addEventListener('click', () => {
     taskModal.classList.remove('active');
 })
-
-const saveTaskBtn = document.getElementById('saveTask');
-const taskNameInput = document.getElementById('taskInput-name');
-const taskDescInput = document.getElementById('taskInput-desc');
-const subTaskInput = document.getElementById('subtaskInput');
-const addSubTaskBtn = document.getElementById('addSubtask');
-const subTaskList = document.getElementById('subtaskList');
-
-const taskListModal = document.getElementById('taskListModal');
-const openTaskListBtn = document.getElementById('taskListView'); // rename this later
-const closeTaskListBtn = document.getElementById('closeTaskList');
-const taskListEl = document.getElementById('taskList');
 
 saveTaskBtn.addEventListener('click', () => {
     const name = taskNameInput.value.trim();

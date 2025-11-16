@@ -68,38 +68,44 @@
             </div>
         </div>
 
-        <div class="routine-modal" id="routine-modal">
-            <div class="routine-modal-content">
-                <h2>Create a New Routine</h2>
-                <div class="routine-input-area" id="routine-area">
-                    <input type="text" id="routineName-input" placeholder="Enter task name...(required)"/>
-
-                    <!-- Add tasks -->
-                    <div class="addTask-area" id="addTask-area">
-
+        <!-- ROUTINE MODAL -->
+        <div class="modal" id="routineModal">
+            <div class="modal-content">
+                <h2 class="modal-title">Create a New Routine</h2>
+                <div class="modal-body">
+                    <input type="text" id="routineNameInput" placeholder="Enter routine name...(required)"/>
+                    <div class="routine-task-area">
+                        <h3>Routine Tasks</h3>
+                        <div class="routine-add-task">
+                            <input type="text" id="routineTaskInput" placeholder="Add task to routine..." />
+                            <button id="addRoutineTaskBtn">Add Task</button>
+                        </div>
+                        <ul id="routineTaskList"></ul>
                     </div>
-
-                    <!-- Modal Buttons -->
-                    <div class="routine-buttons">
-                        <button id="saveRoutine-btn">Save Routine</button>
-                        <button id="cancelRoutine-btn">Cancel Routine</button>
-                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button id="saveRoutine">Save Routine</button>
+                    <button id="cancelRoutine">Cancel</button>
                 </div>
             </div>
         </div>
 
-        <div class="routinelist-modal" id="routine-list-popup">
-            <div class="routinelist-content">
+        <!-- ROUTINE LIST MODAL -->
+        <div class="modal" id="routineListModal">
+            <div class="modal-content">
                 <h2>Your Routines</h2>
-                <div class="routinelist-container">
-                    <ul id="routine-list"></ul>
+                <div class="routine-list-container">
+                    <ul id="routineList"></ul>
                 </div>
-                <button id="close-routine-list">Close</button>
+                <div class="modal-buttons">
+                    <button id="closeRoutineList">Close</button>
+                </div>
             </div>
         </div>
 
         <a href="productive.html" class="button">Back</a>
 
         <script src="../jsFiles/task.js"></script>
+        <script src="../jsFiles/routine.js"></script>
     </body>
 </html>
