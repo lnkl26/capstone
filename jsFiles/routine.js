@@ -16,17 +16,19 @@ const saveRoutineBtn = document.getElementById("saveRoutine");
 const cancelRoutineBtn = document.getElementById("cancelRoutine");
 
 const routineTaskList = document.getElementById("routineTaskList");
-const routineNameInput = document.getElementById("routineNameInput");
+const routineNameInput = document.getElementById("routineInput-name");
+
+const routineTaskInput = document.getElementById("routineTaskInput");
 
 // Open modal + load tasks
 routineCreateBtn.addEventListener("click", () => {
-    routineModal.style.display = "block";
+    routineModal.classList.add("active");
     loadTasksForRoutine();
 });
 
 // Close modal
 cancelRoutineBtn.addEventListener("click", () => {
-    routineModal.style.display = "none";
+    routineModal.classList.remove("active");
     routineNameInput.value = "";
     routineTaskList.innerHTML = "";
 });
@@ -88,7 +90,7 @@ saveRoutineBtn.addEventListener("click", () => {
     alert("Routine saved!");
 
     // Reset modal
-    routineModal.style.display = "none";
+    routineModal.classList.remove("active");
     routineNameInput.value = "";
     routineTaskList.innerHTML = "";
 });
@@ -98,10 +100,13 @@ const routineListModal = document.getElementById("routineListModal");
 const routineList = document.getElementById("routineList");
 const closeRoutineListBtn = document.getElementById("closeRoutineList");
 
+const addRoutineTaskBtn = document.getElementById("addRoutineTask-Btn");
+
+
 // Open routine list modal
 routineListViewBtn.addEventListener("click", () => {
+    routineListModal.classList.add("active");
     routineList.innerHTML = ""; // Clear previous output
-    routineListModal.style.display = "block";
 
     const routines = getRoutines();
     const tasks = getTasks();
@@ -128,7 +133,27 @@ routineListViewBtn.addEventListener("click", () => {
     });
 });
 
+addRoutineTaskBtn.addEventListener('click', () => {
+    const taskName = routineTaskInput.value.trim();
+    if(!taskName) return alert("Task name cannot be empty!");
+
+    const tasks = getTasks();
+
+    const newTask = {
+        id: Date.now(),
+        name: taskName,
+        description: ""
+    };
+
+    tasks.push(newTask);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    routineTaskInput.value = "";
+
+    loadTasksForRoutine();
+});
+
 // Close routine list modal
 closeRoutineListBtn.addEventListener("click", () => {
-    routineListModal.style.display = "none";
+    routineListModal.classList.remove("active");
 });

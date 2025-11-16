@@ -35,7 +35,7 @@
         <div class="modal" id="taskModal">
             <div class="modal-content">
                 <h2>Create New Task</h2>
-                <div class="task-input-area">
+                <div class="input-area">
                     <input type="text" id="taskInput-name" placeholder="Enter task name...(required)"/>
                     <input type="text" id="taskInput-desc" placeholder="Enter task description...(optional)"/>
 
@@ -71,14 +71,16 @@
         <!-- ROUTINE MODAL -->
         <div class="modal" id="routineModal">
             <div class="modal-content">
-                <h2 class="modal-title">Create a New Routine</h2>
+                <h2>Create New Routine</h2>
+                <div class="input-area">
+                    <input type="text" id="routineInput-name" placeholder="Enter routine name...(required)"/>
+                </div>
                 <div class="modal-body">
-                    <input type="text" id="routineNameInput" placeholder="Enter routine name...(required)"/>
                     <div class="routine-task-area">
                         <h3>Routine Tasks</h3>
                         <div class="routine-add-task">
-                            <input type="text" id="routineTaskInput" placeholder="Add task to routine..." />
-                            <button id="addRoutineTaskBtn">Add Task</button>
+                            <input type="text" id="routineTaskInput" placeholder="Enter task name for routine..." />
+                            <button id="addRoutineTask-Btn">Add Task</button>
                         </div>
                         <ul id="routineTaskList"></ul>
                     </div>
