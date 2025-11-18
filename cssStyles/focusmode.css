@@ -42,6 +42,29 @@ body {
     100% { transform: scale(1); box-shadow: 0 0 20px #66ceed; }
 }
 
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 5%;
+}
+
 .timer-types {
     display: flex;
     gap: 10px;
