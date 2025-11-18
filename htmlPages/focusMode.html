@@ -11,23 +11,23 @@
     <div class="pomodoro-timer">
         <div class="timer-circle" id="timer">00:00</div>
         <div class="pomodoro-task-list">
-            <h3>Pomodoro Tasks</h3>
+            <h3>Your Tasks</h3>
             <ul id="pomodoroTaskList"></ul>
         </div>
         <div class="timer-types">
-            <button onclick="shortPomodoro()">
+            <button id="shortPomodoroBtn">
                 15/5 pomodoro
             </button>
-            <button onclick="mediumPomodoro()">
+            <button id="mediumPomodoroBtn">
                 25/5 pomodoro
             </button>
-            <button onclick="longPomodoro()">
+            <button id="longPomodoroBtn">
                 45/5 pomodoro
             </button>
         </div>
         <div class="control-buttons">
-            <button id="stopButton" onclick="toggleStartStop()">stop</button>
-            <button id="resetButton" onclick="resetTimer()">reset</button>
+            <button id="stopButton">stop</button>
+            <button id="resetButton">reset</button>
             <button id="taskButton">tasks</button>
         </div>
         <div id="taskModal" class="modal hidden">

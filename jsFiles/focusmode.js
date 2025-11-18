@@ -15,12 +15,21 @@ let pomodoroTasks = [];
 const timerElement = document.getElementById('timer');
 const stopBtn = document.getElementById('stopButton');
 const resetBtn = document.getElementById('resetButton');
+const shortBtn = document.getElementById('shortPomodoroBtn');
+const mediumBtn = document.getElementById('mediumPomodoroBtn');
+const longBtn = document.getElementById('longPomdoroBtn');
 
 const taskButton = document.getElementById('taskButton');
 const taskModal = document.getElementById('taskModal');
 const closeTaskModal = document.getElementById('closeTaskModal');
 const firebaseTaskList = document.getElementById('firebaseTaskList');
 const pomodoroTaskList = document.getElementById('pomodoroTaskList');
+
+stopBtn.addEventListener('click', toggleStartStop);
+resetBtn.addEventListener('click', resetTimer);
+shortBtn.addEventListener('click', shortPomodoro);
+mediumBtn.addEventListener('click', mediumPomodoro);
+longBtn.addEventListener('click', longPomodoro);
 
 function startTimer() {
     if (timer) clearInterval(timer);
