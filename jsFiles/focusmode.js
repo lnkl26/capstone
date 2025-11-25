@@ -17,7 +17,7 @@ const stopBtn = document.getElementById('stopButton');
 const resetBtn = document.getElementById('resetButton');
 const shortBtn = document.getElementById('shortPomodoroBtn');
 const mediumBtn = document.getElementById('mediumPomodoroBtn');
-const longBtn = document.getElementById('longPomdoroBtn');
+const longBtn = document.getElementById('longPomodoroBtn');
 
 const taskButton = document.getElementById('taskButton');
 const taskModal = document.getElementById('taskModal');
@@ -30,6 +30,10 @@ resetBtn.addEventListener('click', resetTimer);
 shortBtn.addEventListener('click', shortPomodoro);
 mediumBtn.addEventListener('click', mediumPomodoro);
 longBtn.addEventListener('click', longPomodoro);
+
+document.addEventListener("DOMContentLoaded", () => {
+    renderPomodoroTasks();
+})
 
 function startTimer() {
     if (timer) clearInterval(timer);
@@ -73,6 +77,7 @@ function startFocus() {
     isPaused = false;
     stopBtn.textContent = 'stop';
     startTimer();
+    renderPomodoroTasks();
 }
 
 function startBreak() {
@@ -83,6 +88,7 @@ function startBreak() {
     isPaused = false;
     stopBtn.textContent = 'stop';
     startTimer();
+    renderPomodoroTasks();
 }
 
 function toggleStartStop() {
@@ -109,8 +115,8 @@ function resetTimer() {
 
 // POMODORO PRESETS
 function shortPomodoro() {
-    focusTime = 15;
-    breakTime = 5;
+    focusTime = 1;
+    breakTime = 1;
     startFocus();
 }
 
@@ -178,6 +184,10 @@ function renderPomodoroTasks() {
     pomodoroTaskList.innerHTML = '';
     if (pomodoroTasks.length === 0) {
         pomodoroTaskList.innerHTML = '<li>No tasks selected</li>';
+        return;
+    }
+    if (isBreak == true) {
+        pomodoroTaskList.innerHTML = '<li>Break Time</li>';
         return;
     }
 
