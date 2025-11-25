@@ -115,8 +115,8 @@ function resetTimer() {
 
 // POMODORO PRESETS
 function shortPomodoro() {
-    focusTime = 1;
-    breakTime = 1;
+    focusTime = 15;
+    breakTime = 5;
     startFocus();
 }
 
