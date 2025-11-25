@@ -198,9 +198,18 @@ function renderPomodoroTasks() {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = task.completed;
-        checkbox.addEventListener('change', () => {
+        checkbox.addEventListener('change', async () => {
             task.completed = checkbox.checked;
             li.classList.toggle('completed', task.completed);
+
+            try {
+                const taskRef = doc(db, "tasks", task.id);
+                await updateDoc(taskRef, {
+                    completed: task.completed
+                });
+            } catch (error) {
+                console.error("Error updating task:", error);
+            }
         });
 
         const label = document.createElement('span');
