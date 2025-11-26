@@ -1,7 +1,7 @@
 import {
   db, collection, addDoc, deleteDoc, doc,
   onSnapshot, query, orderBy, serverTimestamp,
-} from "../firebase.js";
+} from "./firebase.js";
 
 window.addEventListener("DOMContentLoaded", () => { //ensure dom loaded before run script
 console.log('medLog.js loaded');
