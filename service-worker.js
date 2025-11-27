@@ -1,23 +1,31 @@
 const VERSION = 'v17';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
-  './', './index.html',  
-  './swConfig.js', 
-  './scripts.js', 
-  './style.css', 
-  './manifest.json',  
+  './',
+  './index.html',
+  './manifest.json',
+  './scripts.js',
+  './swConfig.js',
+  './firebase.js',
+
+  './cssStyles/focusmode.css',
+  './cssStyles/medLog.css',
+  './cssStyles/menu.css',
+  './cssStyles/task.css',
+
   './htmlPages/focusMode.html',
   './htmlPages/foodMed.html',
   './htmlPages/productive.html',
+  './htmlPages/reminder.html',
   './htmlPages/settings.html',
   './htmlPages/task.html',
   './htmlPages/trackDiet.html',
   './htmlPages/trackMed.html',
-  './jsFiles/medLog.js',
+
   './jsFiles/focusmode.js',
-  './jsFiles/task.js',
+  './jsFiles/medLog.js',
   './jsFiles/routine.js',
-  './cssStyles/medLog.css'
+  './jsFiles/task.js'
   ];
 
 //install precache core assets
