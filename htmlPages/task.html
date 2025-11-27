@@ -1,114 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="manifest" href="../manifest.json">
-        <title>Task Manager</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="../manifest.json">
+    <title>Task Manager</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="../cssStyles/task.css">
-    </head>
-    <body>
-        <!-- Top Buttons -->
-        <div class="task-btns">
-            <button id="taskCreate-btn">Create Task</button>
-            <button id="taskListView">View Tasks</button>
-            <button id="routineCreate-btn">Create Routine</button>
-            <button id="routineListView">View Routines</button>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../cssStyles/menu.css">
+    <link rel="stylesheet" href="../cssStyles/task.css">
+  </head>
+  <body>
+    <main class="page-container">
+      <!-- Top Buttons -->
+      <div class="task-nav">
+        <button id="taskCreate-btn"     class="task-tab">Create Task</button>
+        <!-- <button id="taskListView"      class="task-tab">View Tasks</button> -->
+        <button id="routineCreate-btn"  class="task-tab">Create Routine</button>
+        <!-- <button id="routineListView"   class="task-tab">View Routines</button> -->
+      </div>
+
+      <!-- Center summary boxes -->
+      <div class="task-summary-wrapper">
+        <section class="summary-section">
+          <div class="section-title">Current Tasks</div>
+          <div id="currentTasks"></div>
+        </section>
+
+        <section class="summary-section">
+          <div class="section-title">Current Routines</div>
+          <div id="currentRoutines"></div>
+        </section>
+      </div>
+    </main>
+
+    <!-- MODAL TEMPLATE -->
+    <template id="modalTemplate">
+      <div class="modal">
+        <div class="modal-content">
+          <h2 class="modal-title"></h2>
+          <div class="modal-body"></div>
+          <div class="modal-buttons"></div>
         </div>
+      </div>
+    </template>
 
-        <!-- MODAL TEMPLATE -->
-         <template id="modalTemplate">
-            <div class="modal">
-                <div class="modal-content">
-                    <h2 class="modal-title"></h2>
-                    <div class="modal-body"></div>
-                    <div class="modal-buttons"></div>
-                </div>
-            </div>
-         </template>
+    <!-- TASK MODAL -->
+    <div class="modal" id="taskModal">
+      <div class="modal-content">
+        <h2>Create New Task</h2>
+        <div class="input-area">
+          <input type="text" id="taskInput-name" placeholder="Enter task name...(required)" />
+          <input type="text" id="taskInput-desc" placeholder="Enter task description...(optional)" />
 
-        <!-- TASK MODAL -->
-        <div class="modal" id="taskModal">
-            <div class="modal-content">
-                <h2>Create New Task</h2>
-                <div class="input-area">
-                    <input type="text" id="taskInput-name" placeholder="Enter task name...(required)"/>
-                    <input type="text" id="taskInput-desc" placeholder="Enter task description...(optional)"/>
+          <!-- SUB TASKS -->
+          <div class="subtask-area">
+            <input type="text" id="subtaskInput" placeholder="Add subtask...(optional)" />
+            <button id="addSubtask">Add Subtask</button>
+            <ul id="subtaskList"></ul>
+          </div>
 
-                    <!-- SUB TASKS -->
-                    <div class="subtask-area">
-                        <input type="text" id="subtaskInput" placeholder="Add subtask...(optional)"/>
-                        <button id="addSubtask">Add Subtask</button>
-                        <ul id="subtaskList"></ul>
-                    </div>
-
-                    <!-- BUTTONS -->
-                    <div class="modal-buttons">
-                        <button id="saveTask">Save</button>
-                        <button id="cancelTask">Cancel</button>
-                    </div>
-                </div>
-            </div>
+          <!-- BUTTONS -->
+          <div class="modal-buttons">
+            <button id="saveTask">Save</button>
+            <button id="cancelTask" class="danger">Cancel</button>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <!-- TASK LIST MODAL -->
-        <div class="modal" id="taskListModal">
-            <div class="modal-content">
-                <h2>Your Tasks</h2>
-                <div class="task-list-container">
-                    <ul id="taskList"></ul>
-                </div>
-                <div class="modal-buttons">
-                    <button id="closeTaskList">Close</button>
-                </div>
-            </div>
+    <!-- TASK LIST MODAL -->
+    <div class="modal" id="taskListModal">
+      <div class="modal-content">
+        <h2>Your Tasks</h2>
+        <div class="task-list-container">
+          <ul id="taskList"></ul>
         </div>
-
-        <!-- ROUTINE MODAL -->
-        <div class="modal" id="routineModal">
-            <div class="modal-content">
-                <h2>Create New Routine</h2>
-                <div class="input-area">
-                    <input type="text" id="routineInput-name" placeholder="Enter routine name...(required)"/>
-                </div>
-                <div class="modal-body">
-                    <div class="routine-task-area">
-                        <h3>Routine Tasks</h3>
-                        <div class="routine-add-task">
-                            <input type="text" id="routineTaskInput" placeholder="Enter task name..." />
-                            <button id="addRoutineTask-Btn">Add Task</button>
-                        </div>
-                        <ul id="routineTaskList"></ul>
-                    </div>
-                </div>
-                <div class="modal-buttons">
-                    <button id="saveRoutine">Save Routine</button>
-                    <button id="cancelRoutine">Cancel</button>
-                </div>
-            </div>
+        <div class="modal-buttons">
+          <button id="closeTaskList">Close</button>
         </div>
+      </div>
+    </div>
 
-        <!-- ROUTINE LIST MODAL -->
-        <div class="modal" id="routineListModal">
-            <div class="modal-content">
-                <h2>Your Routines</h2>
-                <div class="routine-list-container">
-                    <ul id="routineList"></ul>
-                </div>
-                <div class="modal-buttons">
-                    <button id="closeRoutineList">Close</button>
-                </div>
-            </div>
+    <!-- ROUTINE MODAL -->
+    <div class="modal" id="routineModal">
+      <div class="modal-content">
+        <h2>Create New Routine</h2>
+        <div class="input-area">
+          <input type="text" id="routineInput-name" placeholder="Enter routine name...(required)" />
         </div>
+        <div class="modal-body">
+          <div class="routine-task-area">
+            <h3>Routine Tasks</h3>
+            <div class="routine-add-task">
+              <input type="text" id="routineTaskInput" placeholder="Enter task name..." />
+              <button id="addRoutineTask-Btn">Add Task</button>
+            </div>
+            <ul id="routineTaskList"></ul>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button id="saveRoutine">Save Routine</button>
+          <button id="cancelRoutine" class="danger">Cancel</button>
+        </div>
+      </div>
+    </div>
 
-        <a href="productive.html" class="button">Back</a>
+    <!-- ROUTINE LIST MODAL -->
+    <div class="modal" id="routineListModal">
+      <div class="modal-content">
+        <h2>Your Routines</h2>
+        <div class="routine-list-container">
+          <ul id="routineList"></ul>
+        </div>
+        <div class="modal-buttons">
+          <button id="closeRoutineList">Close</button>
+        </div>
+      </div>
+    </div>
 
-        <script src="../jsFiles/task.js"></script>
-        <script src="../jsFiles/routine.js"></script>
-        <script type="module" src="../jsFiles/task.js"></script>
-    </body>
+    <a href="productive.html" class="button back-btn">Back</a>
+
+    <!-- scripts -->
+    <script type="module" src="../jsFiles/task.js"></script>
+    <script type="module" src="../jsFiles/routine.js"></script>>
+  </body>
 </html>

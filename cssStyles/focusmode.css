@@ -5,10 +5,11 @@ body {
     font-weight: 400;
     font-style: normal;
 
+    /*center the timer on the page*/
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -29,36 +30,59 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+
     font-size: 3rem;
     color: #333;
-    background-color: white;
+    background-color: #fff;
 
     animation: pulse 3s infinite ease-in-out;
 }
 
 @keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 20px #66ceed; }
-    50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(60, 231, 160, 0.6); }
-    100% { transform: scale(1); box-shadow: 0 0 20px #66ceed; }
+    0%   { transform: scale(1);    box-shadow: 0 0 20px #66ceed; }
+    50%  { transform: scale(1.05); box-shadow: 0 0 30px rgba(60, 231, 160, 0.6); }
+    100% { transform: scale(1);    box-shadow: 0 0 20px #66ceed; }
 }
 
+.timer-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1.3px solid #000;
+    background-color: rgb(170, 202, 230);
+    color: #000;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    font-size: 0.95rem;
+    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 120ms ease,
+                background-color 120ms ease,
+                box-shadow 120ms ease;
+}
+
+/*hover/focus */
+.timer-button:hover,
+.timer-button:focus-visible {
+    background-color: rgb(112, 174, 228);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+/*pressed*/
+.timer-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/*make the three mode buttons sit in a row */
 .timer-types {
     display: flex;
     gap: 10px;
+    margin-top: 10px;
 }
 
 .timer-types button {
-    background-color: #66ceed;
-    color: #2c3e50;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 20px;
-    margin-top: 25px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    min-width: 110px;
 }
 
 .control-buttons {
@@ -68,14 +92,86 @@ body {
 }
 
 .control-buttons button {
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 25px;
-    font-size: 1rem;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    min-width: 120px;
 }
+
+/*wire up both groups to the shared style without changing HTML*/
+.timer-types button,
+.control-buttons button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1.3px solid #000;
+    background-color: rgb(170, 202, 230);
+    color: #000;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    font-size: 0.95rem;
+    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    transition: transform 120ms ease,
+        background-color 120ms ease,
+        box-shadow 120ms ease;
+}
+.timer-types button:hover,
+.timer-types button:focus-visible,
+.control-buttons button:hover,
+.control-buttons button:focus-visible {
+    background-color: rgb(112, 174, 228);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+.timer-types button:active,
+.control-buttons button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+.control-buttons button.danger {
+    background: #fee;
+    border-color: #f99;
+    color: #900;
+}
+
+.control-buttons button.danger:hover,
+.control-buttons button.danger:focus-visible {
+    background: #fdd;
+}
+/*base button style for ALL buttons*/
+.timer-button,
+.timer-types button,
+.control-buttons button,
+.back-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 1.3px solid #000;
+    background-color: rgb(170, 202, 230);
+    color: #000;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    font-size: 0.95rem;
+    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 120ms ease,
+                background-color 120ms ease,
+                box-shadow 120ms ease;
+    display: inline-flex;
+    justify-content: center;
+    text-decoration: none;
+}
+
+/*hover */
+.back-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+}
+
+/*red back button*/
+.back-btn.danger {
+    background: rgb(255, 192, 192);
+    border-color: rgb(0, 0, 0);
+    color: rgb(0, 0, 0);
+}
+.back-btn.danger:hover {
+    background: #fdd;
+}
+

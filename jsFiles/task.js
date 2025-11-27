@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ... doc.data()
         }));
         renderTaskList();
+        renderCurrentTasks(tasks);
     });
 });
 
@@ -104,14 +105,19 @@ addSubTaskBtn.addEventListener('click', () => {
     }
 });
 
-openTaskListBtn.addEventListener('click', () => {
-    renderTaskList();
-    taskListModal.classList.add('active');
-});
+//only wire these up if the View button still exists
+if (openTaskListBtn) {
+    openTaskListBtn.addEventListener('click', () => {
+        renderTaskList();
+        taskListModal.classList.add('active');
+    });
+}
 
-closeTaskListBtn.addEventListener('click', () => {
-    taskListModal.classList.remove('active');
-});
+if (closeTaskListBtn) {
+    closeTaskListBtn.addEventListener('click', () => {
+        taskListModal.classList.remove('active');
+    });
+}
 
 // DELETE TASK FROM TASK LIST VIEW
 // COMPLETE TASK FROM TASK LIST VIEW
@@ -273,3 +279,67 @@ function renderSubTasks(subtasks, container, taskIndex = null) {
     });
 }
 
+//small html escape helper for summary boxes
+function escapeHtml(str = "") {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function renderCurrentTasks(summaryTasks) {
+  const box = document.getElementById("currentTasks");
+  if (!box) return;
+
+  if (!summaryTasks || !summaryTasks.length) {
+    box.innerHTML = '<div class="empty">No tasks yet.</div>';
+    return;
+  }
+
+  box.innerHTML = summaryTasks.map(t => `
+    <div class="summary-item${t.completed ? " completed" : ""}">
+      <strong>${escapeHtml(t.name || "")}</strong>
+      ${t.description
+        ? `<div class="summary-sub">${escapeHtml(t.description)}</div>`
+        : ""}
+    </div>
+  `).join("");
+}
+
+//fills the Curr Routines box
+//routine objects expected like { name, tasks: [...] }
+function renderCurrentRoutines(routines) {
+  const box = document.getElementById("currentRoutines");
+  if (!box) return;
+
+  if (!routines || !routines.length) {
+    box.innerHTML = '<div class="empty">No routines yet.</div>';
+    return;
+  }
+
+  box.innerHTML = routines.map(r => `
+    <div class="summary-item">
+      <strong>${escapeHtml(r.name || "")}</strong>
+      ${
+        Array.isArray(r.tasks) && r.tasks.length
+          ? `<div class="summary-sub">${r.tasks.length} step${r.tasks.length > 1 ? "s" : ""}</div>`
+          : ""
+      }
+    </div>
+  `).join("");
+}
+
+//keep Curr Tasks in sync with firestore snapshot as well
+document.addEventListener('DOMContentLoaded', () => {
+  onSnapshot(query(tasksCollection, orderBy("createdAt", "desc")), (snapshot) => {
+    const summaryTasks = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    renderCurrentTasks(summaryTasks);
+  });
+});
+
+//expose summary renderers so routine.js can call renderCurrentRoutines()
+window.renderCurrentTasks = renderCurrentTasks;
+window.renderCurrentRoutines = renderCurrentRoutines;
