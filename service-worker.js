@@ -1,4 +1,4 @@
-const VERSION = 'v17';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
+const VERSION = 'v18';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
   './',
@@ -7,6 +7,7 @@ const ASSETS = [  //files to be available offline immediately
   './scripts.js',
   './swConfig.js',
   './firebase.js',
+  './style.css',
 
   './cssStyles/focusmode.css',
   './cssStyles/medLog.css',
