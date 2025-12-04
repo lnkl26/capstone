@@ -26,7 +26,9 @@ const ASSETS = [  //files to be available offline immediately
   './jsFiles/focusmode.js',
   './jsFiles/medLog.js',
   './jsFiles/routine.js',
-  './jsFiles/task.js'
+  './jsFiles/task.js',
+  './jsFiles/reminder.js',
+  './jsFiles/dietLog.js'
   ];
 
 //install precache core assets
