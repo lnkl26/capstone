@@ -12,38 +12,25 @@ let focusTime = 15;
 let breakTime = 5;
 let pomodoroTasks = [];
 
-let timerElement, stopBtn, resetBtn, shortBtn, mediumBtn, longBtn;
-let taskButton, taskModal, closeTaskModal, firebaseTaskList, pomodoroTaskList;
-
 document.addEventListener("DOMContentLoaded", () => {
-    timerElement = document.getElementById('timer');
-    stopBtn = document.getElementById('stopButton');
-    resetBtn = document.getElementById('resetButton');
-    shortBtn = document.getElementById('shortPomodoroBtn');
-    mediumBtn = document.getElementById('mediumPomodoroBtn');
-    longBtn = document.getElementById('longPomodoroBtn');
+    const timerElement = document.getElementById('timer');
+    const stopBtn = document.getElementById('stopButton');
+    const resetBtn = document.getElementById('resetButton');
+    const shortBtn = document.getElementById('shortPomodoroBtn');
+    const mediumBtn = document.getElementById('mediumPomodoroBtn');
+    const longBtn = document.getElementById('longPomodoroBtn');
 
-    taskButton = document.getElementById('taskButton');
-    taskModal = document.getElementById('taskModal');
-    closeTaskModal = document.getElementById('closeTaskModal');
-    firebaseTaskList = document.getElementById('firebaseTaskList');
-    pomodoroTaskList = document.getElementById('pomodoroTaskList');
+    const taskButton = document.getElementById('taskButton');
+    const taskModal = document.getElementById('taskModal');
+    const closeTaskModal = document.getElementById('closeTaskModal');
+    const firebaseTaskList = document.getElementById('firebaseTaskList');
+    const pomodoroTaskList = document.getElementById('pomodoroTaskList');
 
     stopBtn.addEventListener('click', toggleStartStop);
     resetBtn.addEventListener('click', resetTimer);
     shortBtn.addEventListener('click', shortPomodoro);
     mediumBtn.addEventListener('click', mediumPomodoro);
     longBtn.addEventListener('click', longPomodoro);
-
-    //TASKS
-    taskButton.addEventListener('click', () => {
-        taskModal.classList.remove('hidden');
-        loadFirebaseTasks();
-    });
-
-    closeTaskModal.addEventListener('click', () => {
-        taskModal.classList.add('hidden');
-    })
     
     renderPomodoroTasks();
 })
@@ -146,6 +133,16 @@ function longPomodoro() {
 }
 
 timerElement.textContent = formatTime(minutes, seconds);
+
+//TASKS
+taskButton.addEventListener('click', () => {
+    taskModal.classList.remove('hidden');
+    loadFirebaseTasks();
+});
+
+closeTaskModal.addEventListener('click', () => {
+    taskModal.classList.add('hidden');
+})
 
 function loadFirebaseTasks() {
     firebaseTaskList.innerHTML = '';
