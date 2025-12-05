@@ -1,4 +1,4 @@
-# JJaCL Sprint 1 Submission
+# JJaCL Sprint 2 Submission
 
 Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
