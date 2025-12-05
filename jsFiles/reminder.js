@@ -8,6 +8,13 @@ import {
     updateDoc,
 } from "../firebase.js";
 
+import { userReady, currentUser } from "../firebase.js";
+
+window.addEventListener("load", async () => {
+  await userReady;
+  console.log("Final UID on load:", currentUser.uid);
+});
+
 (function () {
     if (!document.body || document.body.id !== "reminder-page") return;
 

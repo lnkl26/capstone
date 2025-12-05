@@ -1,3 +1,10 @@
+import { userReady, currentUser } from "../firebase.js";
+
+window.addEventListener("load", async () => {
+  await userReady;
+  console.log("Final UID on load:", currentUser.uid);
+});
+
 let editingRoutineId = null; // Track the routine being edited
 
 function getRoutines() {

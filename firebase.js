@@ -5,7 +5,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 import { getFirestore, collection, addDoc, deleteDoc, doc,
   onSnapshot, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
-
+import {
+  getAuth, onAuthStateChanged, signInAnonymously, EmailAuthProvider, 
+  linkWithCredential, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -22,12 +24,43 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 //The rest is not from firebase lol
 
 console.log("Firebase initialized");
 
+export let currentUser = null; 
+
+export function ensureUser() {
+//promises a user id before allowing saving
+  return new Promise((resolve, reject) => {
+    onAuthStateChanged(auth, async (user) => {
+      try {
+        if (user) {
+          //already signed in (could be anon or username/PIN)
+          currentUser = user;
+          console.log("User signed in:", user.uid);
+          resolve(user);
+        } else {
+          //sign in anonymously
+          const cred = await signInAnonymously(auth);
+          currentUser = cred.user;
+          console.log("Signed in anonymously:", cred.user.uid);
+          resolve(cred.user);
+        }
+      } catch (err) {
+        console.error("Error ensuring user:", err);
+        reject(err);
+      }
+    });
+  });
+}
+
+export const userReady = ensureUser();
+
 export {
   db, collection, addDoc, deleteDoc, doc,
-  onSnapshot, updateDoc, query, orderBy, serverTimestamp
+  onSnapshot, updateDoc, query, orderBy, serverTimestamp,   onAuthStateChanged,
+  signInAnonymously, EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword,
 };

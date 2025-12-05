@@ -3,6 +3,14 @@ import {
   onSnapshot, query, orderBy, serverTimestamp, 
 } from "../firebase.js";
 
+import { userReady, currentUser } from "../firebase.js";
+
+window.addEventListener("load", async () => {
+  await userReady;
+  console.log("Final UID on load:", currentUser.uid);
+});
+
+
 // GLOBAL VARIABLES
 let tasks = [];
 let currentSubTask = [];

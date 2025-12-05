@@ -1,22 +1,20 @@
-/*
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-      try {
-        //sw debugging 
-        const reg = await navigator.serviceWorker.register('/service-worker.js', {scope: '/'});
-        console.log('sw registered:', reg.scope);
-      } catch (err) {
-        console.error('sw registration failed:', err);
-      }
-    });
-  }
-*/
+import {
+  auth, db, collection, addDoc,
+  serverTimestamp, onAuthStateChanged, signInAnonymously 
+} from "./firebase.js";
 // TASK STUFF
 //global
 let tasks = [];
 let currentSubtasks = []; // temporary subtasks for the task being created
 let isEditing = false;
 let editingTaskIndex = null;
+
+import { userReady, currentUser } from "../firebase.js";
+
+window.addEventListener("load", async () => {
+  await userReady;
+  console.log("Final UID on load:", currentUser.uid);
+});
 
 if (document.getElementById("taskCreate-btn")) {
     const taskModal = document.getElementById("task-modal");
