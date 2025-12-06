@@ -117,7 +117,7 @@ saveRoutineBtn.addEventListener("click", () => {
     renderRoutineList(); // Update routine list view
 });
 
-const routineListViewBtn = document.getElementById("routineListView");
+// const routineListViewBtn = document.getElementById("routineListView");
 const routineListModal = document.getElementById("routineListModal");
 const routineList = document.getElementById("routineList");
 const closeRoutineListBtn = document.getElementById("closeRoutineList");
@@ -127,10 +127,10 @@ const addRoutineTaskBtn = document.getElementById("addRoutineTask-Btn");
 const routineModalHeader = routineModal.querySelector("h2");
 
 // Open routine list modal
-routineListViewBtn.addEventListener("click", () => {
-    routineListModal.classList.add("active");
-    renderRoutineList();
-});
+// routineListViewBtn.addEventListener("click", () => {
+//     routineListModal.classList.add("active");
+//     renderRoutineList();
+// });
 
 addRoutineTaskBtn.addEventListener('click', () => {
     const taskName = routineTaskInput.value.trim();
