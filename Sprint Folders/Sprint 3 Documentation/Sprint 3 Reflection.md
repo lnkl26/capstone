@@ -6,7 +6,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Jesselle Ballesil
 
-(Text here)
+- Created task list in focus mode page. Users can select their tasks to add to this list.
+- Task list shows up next to pomodoro timer and can be completed, which is reflected in database.
+- Focus mode hides task list when the pomodoro timer is on break.
 
 ### Jack Crawford
 
@@ -22,7 +24,7 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ## AI as a Tool
 
-(Text here)
+AI used to assist in debugging.
 
 ## Reflection
 
