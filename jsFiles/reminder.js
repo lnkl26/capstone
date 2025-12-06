@@ -9,7 +9,7 @@ import {
 } from "../firebase.js";
 
 import { userReady, currentUser } from "../firebase.js";
-
+console.log("reminder.JS LOADED");
 window.addEventListener("load", async () => {
   await userReady;
   console.log("Final UID on load:", currentUser.uid);

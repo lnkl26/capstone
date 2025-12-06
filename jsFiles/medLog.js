@@ -1,6 +1,7 @@
 import {
   db, collection, addDoc, deleteDoc, doc,
   onSnapshot, query, orderBy, serverTimestamp,
+  userCollection
 } from "../firebase.js";
 
 import { userReady, currentUser } from "../firebase.js";
@@ -10,34 +11,29 @@ window.addEventListener("load", async () => {
   console.log("Final UID on load:", currentUser.uid);
 });
 
-window.addEventListener("DOMContentLoaded", () => { //ensure dom loaded before run script
+window.addEventListener("DOMContentLoaded", async () => {
 console.log('medLog.js loaded');
 
-(() => {
-  const dlg = document.getElementById('popupMenu');
-  const btnMeds = document.getElementById('btnMeds');
-  const btnService = document.getElementById('btnService');
-  if (!dlg) { console.error('Missing #popupMenu'); return; }
+await userReady;
 
-//dom targets
-const logEl=document.getElementById('medLog');
+const medsCol = userCollection("meds");
+const remCol = userCollection("reminders");
 
-//dom target for reminders box
-const remEl=document.getElementById('remLog');
+const dlg = document.getElementById('popupMenu');
+const btnMeds = document.getElementById('btnMeds');
+const btnService = document.getElementById('btnService');
+if (!dlg) { console.error('Missing #popupMenu'); return; }
 
-//global storage helpers for reminders
+const logEl = document.getElementById('medLog');
+const remEl = document.getElementById('remLog');
+
 function getRems(){try{return JSON.parse(localStorage.getItem('medReminders')||'[]')}catch{return[]}}
 function setRems(arr){localStorage.setItem('medReminders',JSON.stringify(arr||[]))}
 
-//no space after slashes
-//firestore collection and render target
-const medsCol=collection(db,"meds");
 const medLogEl=document.getElementById("medLog");
 
-//live meds cache for menus
 let medsCache = [];
 
-//render a list of meds into the white box
 function renderMeds(docs){
   if(!medLogEl) return;
   if(!docs.length){
@@ -57,7 +53,6 @@ function renderMeds(docs){
       </div>`;
   }).join("");
 
-  //wire delete buttons
   medLogEl.querySelectorAll("[data-del]").forEach(b=>{
     b.addEventListener("click",async(e)=>{
       const id=e.currentTarget.getAttribute("data-del");
@@ -66,13 +61,11 @@ function renderMeds(docs){
   });
 }
 
-//live subscription to firestore changes
 function subscribeAndRenderMeds(){
   const q=query(medsCol,orderBy("createdAt","desc"));
-  onSnapshot(q,(snap)=>{ mirrorMedsFromSnapshot(snap.docs)
-    //update cache for menus and dropdowns
+  onSnapshot(q,(snap)=>{
+    mirrorMedsFromSnapshot(snap.docs)
     medsCache = snap.docs.map(d => ({ id: d.id, ...(d.data()||{}) }));
-    //let any open menus know the cache changed
     document.dispatchEvent(new CustomEvent('meds-cache-updated'));
     renderMeds(snap.docs);
   },(err)=>{
@@ -80,9 +73,8 @@ function subscribeAndRenderMeds(){
     medLogEl.innerHTML=`<div class="empty">error loading med log</div>`;
   });
 }
-//rebuild options in a select from medsCache
+
 function buildMedSelectOptions(select){
-  //clear
   select.innerHTML = '';
   const optNone = document.createElement('option');
   optNone.value = '';
@@ -98,7 +90,7 @@ function buildMedSelectOptions(select){
     select.appendChild(o);
   });
 }
-//helpers to add and delete
+
 async function addMedToDb(name,dose){
   await addDoc(medsCol,{
     name:String(name||"").trim(),
@@ -106,44 +98,38 @@ async function addMedToDb(name,dose){
     createdAt:serverTimestamp()
   });
 }
+
 async function deleteMedFromDb(id){
-  await deleteDoc(doc(db,"meds",id));
+  await deleteDoc(doc(medsCol,id));
 }
 
-//collections
-const remCol=collection(db,"reminders");
-
-//add reminder
-//expects {title,med,whenISO,repeat,notes}
 async function addReminderToDb({title="",med="",whenISO="",repeat="none",notes=""}){
   if(!whenISO) throw new Error("whenISO required");
   await addDoc(remCol,{
     title:String(title||"").trim(),
     med:String(med||"").trim(),
-    when:String(whenISO),              //iso string
+    when:String(whenISO),
     repeat:String(repeat||"none"),
     notes:String(notes||"").trim(),
     createdAt:serverTimestamp()
   });
 }
 
-//delete reminder
 async function deleteReminderFromDb(id){
-  await deleteDoc(doc(db,"reminders",id));
+  await deleteDoc(doc(remCol,id));
 }
 
-//live subscription + render for reminders with countdown
 function subscribeAndRenderReminders(){
   const q=query(remCol,orderBy("when","asc"));
-  onSnapshot(q,(snap)=>{ mirrorRemsFromSnapshot(snap.docs)
-    renderReminders(snap.docs);   //renderer below
+  onSnapshot(q,(snap)=>{
+    mirrorRemsFromSnapshot(snap.docs)
+    renderReminders(snap.docs);
   },(err)=>{
     console.error(err);
     if(remEl) remEl.innerHTML='<div class="empty">error loading reminders</div>';
   });
 }
 
-//renderer
 function renderReminders(docs){
   if(!remEl) return;
 
@@ -166,7 +152,6 @@ function renderReminders(docs){
       </div>`;
   }).join("");
 
-  //wire deletes on each entry
   const tick=()=>{
     remEl.querySelectorAll(".countdown").forEach(el=>{
       const iso=el.getAttribute("data-iso");
@@ -178,11 +163,10 @@ function renderReminders(docs){
   if(remTickHandle) clearInterval(remTickHandle);
   remTickHandle=setInterval(tick,1000);
 }
-//kick off live view
+
 subscribeAndRenderMeds();
 subscribeAndRenderReminders();
-//this setup uses localstorage as cache for faster paint and offline access
-//but firebase is the "truth" so sync when possible
+
 const mirrorRemindersToLocal=true;
 
 function mirrorRemsFromSnapshot(docs){
@@ -198,7 +182,6 @@ function mirrorMedsFromSnapshot(docs){
   localStorage.setItem("meds",JSON.stringify(arr));
 }
 
-//countdown formatter d:hh:mm:ss
 function formatMs(ms){
   let s=Math.max(0,Math.floor(ms/1000));
   const d=Math.floor(s/86400); s%=86400;
@@ -210,7 +193,6 @@ function formatMs(ms){
 
 let remTickHandle=null;
 
-//render the reminders white box with live countdowns
 function renderRemLog(){
   if(!remEl){return}
   const items=getRems();
@@ -241,11 +223,9 @@ function renderRemLog(){
   remTickHandle=setInterval(update,1000);
 }
 
-//storage helpers used across menus
 function getMeds(){try{return JSON.parse(localStorage.getItem('meds')||'[]')}catch{return[]}}
 function setMeds(arr){localStorage.setItem('meds',JSON.stringify(arr||[]))}
 
-//render the white log area
 function renderMedLog(){
   if(!logEl){return}
   const meds=getMeds();
@@ -253,7 +233,7 @@ function renderMedLog(){
     logEl.innerHTML='<div class="empty">No Medications.</div>';
     return;
   }
-  //simple list layout for now
+
   logEl.innerHTML=meds.map(m=>{
     const n=(m.name||'(unnamed)').replace(/</g,'&lt;');
     const d=(m.dose||'').replace(/</g,'&lt;');
@@ -264,7 +244,6 @@ function renderMedLog(){
       </div>`;
   }).join('');
 
-  //wire delete buttons
   logEl.querySelectorAll('button[data-del]').forEach(btn=>{
     btn.addEventListener('click',e=>{
       const key=e.currentTarget.getAttribute('data-del');
@@ -276,32 +255,22 @@ function renderMedLog(){
   });
 }
 
-//initial paint
 renderMedLog();
 renderRemLog();
 
+dlg.classList.add('popup-menu');
 
-  //ensure styling hook exists evenif html forgot
-  dlg.classList.add('popup-menu');
-
-  //remember the anchor rect so submenu apper in the same spot
-  let lastRect = null;
-
-  //single outside click handler
-  function handleOutsideClick(e) {
-    const wrap = dlg.querySelector('.menu');
-    if (!wrap) return;
-    const r = wrap.getBoundingClientRect();
-    const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-    if (!inside) dlg.close();
-  }
-
-  function showMenuNear(trigger, items, title) {
-    //cache anchor position from trigger if provided
+function handleOutsideClick(e) {
+  const wrap = dlg.querySelector('.menu');
+  if (!wrap) return;
+  const r = wrap.getBoundingClientRect();
+  const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  if (!inside) dlg.close();
+}
+function showMenuNear(trigger, items, title) {
     const rect = trigger?.getBoundingClientRect();
     if (rect) lastRect = rect;
 
-    //build content
     const wrap = document.createElement('div');
     wrap.className = 'menu';
 
@@ -318,49 +287,41 @@ renderRemLog();
       b.className = 'menu-btn';
       if (className) b.classList.add(className);
       b.textContent = label;
-
-      //prevent the click from bubbling up to the dialog
       b.addEventListener('click', (e) => {
         e.stopPropagation();
         action?.(e);
       });
-
       wrap.appendChild(b);
     });
 
-    //swap content
     dlg.innerHTML = '';
     dlg.appendChild(wrap);
 
-    //force center
     dlg.removeAttribute('style');
     dlg.classList.add('popup-center');
 
     if (!dlg.open) {
       dlg.showModal();
-      //use capturing so back drop clicks are caught early
       dlg.addEventListener('click', handleOutsideClick, { once: true, capture: true });
     } else {
-      //arm outside click listener for the new content
       dlg.removeEventListener('click', handleOutsideClick, { capture: true });
       dlg.addEventListener('click', handleOutsideClick, { once: true, capture: true });
     }
-  }
+}
 
-  //menus
-  function openManageMenu(trigger) {
+function openManageMenu(trigger) {
     showMenuNear(trigger, [
       { label: 'Add New Medication', action: () => openAddSubmenu() },
       { label: 'Manage Medications', action: () => openManageSubmenu() },
       { label: 'Export / Import',    action: () => openExportSubmenu() },
       { label: 'Close',              action: () => dlg.close(), className: 'danger' },
     ], 'Medication Menu');
-  }
+}
+let lastRect = null;
 
-  function openAddSubmenu() {
+function openAddSubmenu() {
   const formElements = [];
 
-  //build a simple form inside the submenu
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
   nameInput.placeholder = 'Medication name';
@@ -373,24 +334,23 @@ renderRemLog();
   doseInput.classList.add('input','full');
   formElements.push(doseInput);
 
-  //create the menu items (including buttons)
   const items = [
     { 
       label: 'Save', 
       action: async () => {
-    const name=nameInput.value.trim();
-    const dose=doseInput.value.trim();
-    if(!name||!dose){ alert('please fill out both fields.'); return; }
-    try{
-      await addMedToDb(name,dose);
-      nameInput.value='';
-      doseInput.value='';
-      dlg.close(); //optional: close after save
-    }catch(err){
-      console.error('addMedToDb failed:', err && (err.code || err.message) || err);
-      alert('failed to save');
-    }
-  } 
+        const name=nameInput.value.trim();
+        const dose=doseInput.value.trim();
+        if(!name||!dose){ alert('please fill out both fields.'); return; }
+        try{
+          await addMedToDb(name,dose);
+          nameInput.value='';
+          doseInput.value='';
+          dlg.close();
+        }catch(err){
+          console.error('addMedToDb failed:', err && (err.code || err.message) || err);
+          alert('failed to save');
+        }
+      } 
     },
     { 
       label: 'Back', 
@@ -399,7 +359,6 @@ renderRemLog();
     },
   ];
 
-  //create the menu wrapper manually
   const rect = null;
   const wrap = document.createElement('div');
   wrap.className = 'menu';
@@ -409,7 +368,6 @@ renderRemLog();
   h.className = 'menu-title';
   wrap.appendChild(h);
 
-  //add input boxes before the buttons
   formElements.forEach(el => wrap.appendChild(el));
 
   items.forEach(({ label, action, className }) => {
@@ -426,13 +384,11 @@ renderRemLog();
   dlg.innerHTML = '';
   dlg.appendChild(wrap);
 
-  //force center
   dlg.removeAttribute('style');
   dlg.classList.add('popup-center');
 }
 
 function openManageSubmenu() {
-  //build the submenu UI manually
   const wrap = document.createElement('div');
   wrap.className = 'menu';
 
@@ -441,7 +397,6 @@ function openManageSubmenu() {
   h.className = 'menu-title';
   wrap.appendChild(h);
 
-  //load meds from localStorage
   function getMeds() {
     try { return JSON.parse(localStorage.getItem('meds') || '[]'); }
     catch { return []; }
@@ -450,7 +405,6 @@ function openManageSubmenu() {
     localStorage.setItem('meds', JSON.stringify(arr || []));
   }
 
-  //search input
   const search = document.createElement('input');
   search.type = 'search';
   search.placeholder = 'Search medications...';
@@ -458,7 +412,6 @@ function openManageSubmenu() {
   search.classList.add('input','full');
   wrap.appendChild(search);
 
-  //list container
   const list = document.createElement('div');
   wrap.appendChild(list);
 
@@ -490,7 +443,6 @@ function openManageSubmenu() {
       del.classList.add('danger');
       del.addEventListener('click', (e) => {
         e.stopPropagation();
-        //delete by identity from full list
         const medsAll = getMeds();
         const i = medsAll.findIndex(x => x === m || ((x.name||'') === (m.name||'') && (x.dose||'') === (m.dose||'')));
         if (i > -1) {
@@ -510,7 +462,6 @@ function openManageSubmenu() {
   renderList();
   search.addEventListener('input', () => renderList(search.value));
 
-  //confirm clear all
   const confirmWrap = document.createElement('label');
   confirmWrap.className = 'inline-center';
   const confirmChk = document.createElement('input');
@@ -521,7 +472,6 @@ function openManageSubmenu() {
   confirmWrap.appendChild(confirmTxt);
   wrap.appendChild(confirmWrap);
 
-  //buttons
   const btnClear = document.createElement('button');
   btnClear.textContent = 'Clear All';
   btnClear.classList.add('danger');
@@ -548,11 +498,9 @@ function openManageSubmenu() {
   });
   wrap.appendChild(btnBack);
 
-  //swap content into the dialog and keep position
   dlg.innerHTML = '';
   dlg.appendChild(wrap);
 
-  //force center
   dlg.removeAttribute('style');
   dlg.classList.add('popup-center');
 
@@ -568,7 +516,6 @@ function openExportSubmenu() {
   h.className = 'menu-title';
   wrap.appendChild(h);
 
-  //localstorage access
   function getMeds() {
     try { return JSON.parse(localStorage.getItem('meds') || '[]'); }
     catch { return []; }
@@ -577,7 +524,6 @@ function openExportSubmenu() {
     localStorage.setItem('meds', JSON.stringify(arr || []));
   }
 
-  //export section
   const expHeader = document.createElement('div');
   expHeader.textContent = 'Export';
   expHeader.className = 'section-title';
@@ -599,7 +545,6 @@ function openExportSubmenu() {
   prettyWrap.appendChild(pretty);
   prettyWrap.appendChild(prettyTxt);
   wrap.appendChild(prettyWrap);
-
   const btnDownload = document.createElement('button');
   btnDownload.textContent = 'Download JSON';
   btnDownload.addEventListener('click', (e) => {
@@ -619,7 +564,6 @@ function openExportSubmenu() {
   });
   wrap.appendChild(btnDownload);
 
-  //import section
   const impHeader = document.createElement('div');
   impHeader.textContent = 'Import';
   impHeader.className = 'section-title';
@@ -661,7 +605,6 @@ function openExportSubmenu() {
   btnImport.addEventListener('click', async (e) => {
     e.stopPropagation();
 
-    //read json from text area or file
     let text = paste.value.trim();
     if (!text && fileInput.files && fileInput.files[0]) {
       text = await new Promise((res, rej) => {
@@ -710,18 +653,16 @@ function openExportSubmenu() {
   });
   wrap.appendChild(btnBack);
 
-  //swap into the dialog and keep position
   dlg.innerHTML = '';
   dlg.appendChild(wrap);
 
-  //force center
   dlg.removeAttribute('style');
   dlg.classList.add('popup-center');
 
   if (!dlg.open) dlg.showModal();
 }
+
 function openReminderMenu(trigger) {
-  //build ui
   const wrap = document.createElement('div');
   wrap.className = 'menu';
 
@@ -730,7 +671,6 @@ function openReminderMenu(trigger) {
   h.className = 'menu-title';
   wrap.appendChild(h);
 
-  //tiny helpers
   function getMeds() {
     try { return JSON.parse(localStorage.getItem('meds') || '[]'); }
     catch { return []; }
@@ -740,23 +680,20 @@ function openReminderMenu(trigger) {
     catch { return []; }
   }
 
-  const reminderTimers = {}; //local map for this open session
+  const reminderTimers = {};
 
-  //form fields
-  //med dropdown
   const meds = getMeds();
   const medRow = document.createElement('div');
   medRow.className = 'form-row';
   const medLabel = document.createElement('label'); medLabel.textContent = 'Medication:';
   const medSelect = document.createElement('select'); medSelect.classList.add('input','full');
   buildMedSelectOptions(medSelect);
-  //listen for future snapshot updates while the dialog is open
+
   const medCacheHandler = () => buildMedSelectOptions(medSelect);
   document.addEventListener('meds-cache-updated', medCacheHandler);
   medRow.appendChild(medLabel); medRow.appendChild(medSelect);
   wrap.appendChild(medRow);
 
-  //title
   const titleRow = document.createElement('div');
   titleRow.className = 'form-row';
   const titleLabel = document.createElement('label'); titleLabel.textContent = 'Title:';
@@ -765,7 +702,6 @@ function openReminderMenu(trigger) {
   titleRow.appendChild(titleLabel); titleRow.appendChild(titleInput);
   wrap.appendChild(titleRow);
 
-  //when(datetime-local)
   const whenRow = document.createElement('div');
   whenRow.className = 'form-row';
   const whenLabel = document.createElement('label'); whenLabel.textContent = 'When:';
@@ -776,7 +712,6 @@ function openReminderMenu(trigger) {
   whenRow.appendChild(whenLabel); whenRow.appendChild(whenInput);
   wrap.appendChild(whenRow);
 
-  //repeat
   const repRow = document.createElement('div');
   repRow.className = 'form-row';
   const repLabel = document.createElement('label'); repLabel.textContent = 'Repeat:';
@@ -789,7 +724,6 @@ function openReminderMenu(trigger) {
   repRow.appendChild(repLabel); repRow.appendChild(repSelect);
   wrap.appendChild(repRow);
 
-  //notes
   const notesRow = document.createElement('div');
   notesRow.className = 'form-row';
   const notesLabel = document.createElement('label'); notesLabel.textContent = 'Notes:';
@@ -798,7 +732,6 @@ function openReminderMenu(trigger) {
   notesRow.appendChild(notesLabel); notesRow.appendChild(notesArea);
   wrap.appendChild(notesRow);
 
-  //existing reminders list (reads from local mirror)
   const listHeader = document.createElement('div');
   listHeader.textContent = 'Scheduled Reminders';
   listHeader.className = 'section-title';
@@ -836,8 +769,8 @@ function openReminderMenu(trigger) {
       del.addEventListener('click', async (e) => {
         e.stopPropagation();
         try{
-          await deleteReminderFromDb(r.id); //ui will refresh via snapshot mirror
-          renderList(); //light refresh in case mirror is a tick late
+          await deleteReminderFromDb(r.id);
+          renderList();
         }catch(err){
           console.error('deleteReminderFromDb failed:',err&& (err.code||err.message)||err);
           alert('failed to delete reminder');
@@ -851,7 +784,6 @@ function openReminderMenu(trigger) {
   }
   renderList();
 
-  //buttons
   const btnCreate = document.createElement('button');
   btnCreate.textContent = 'Create Med Reminder';
   btnCreate.addEventListener('click', async (e) => {
@@ -867,9 +799,7 @@ function openReminderMenu(trigger) {
         notes:(notesArea.value||'').trim()
       });
 
-      //optional clear
       titleInput.value=''; notesArea.value='';
-      //dialog can stay open or close; closing feels nice
       dlg.close();
     }catch(err){
       console.error('addReminderToDb failed:',err&& (err.code||err.message)||err);
@@ -901,19 +831,16 @@ function openReminderMenu(trigger) {
   btnClose.addEventListener('click', (e) => { e.stopPropagation(); dlg.close(); });
   wrap.appendChild(btnClose);
 
-  //force center position(ignore any previous anchoring)
   dlg.innerHTML = '';
   dlg.appendChild(wrap);
   dlg.removeAttribute('style');
   dlg.classList.add('popup-center');
   if (!dlg.open) dlg.showModal();
 
-  //when dialog closes, stop listening
   dlg.addEventListener('close', () => {
-  document.removeEventListener('meds-cache-updated', medCacheHandler);
+    document.removeEventListener('meds-cache-updated', medCacheHandler);
   }, { once: true });
 
-  //outside click to close
   dlg.addEventListener('click', (e) => {
     const r = wrap.getBoundingClientRect();
     const inside = e.clientX >= r.left && e.clientX <= r.right &&
@@ -922,7 +849,6 @@ function openReminderMenu(trigger) {
   }, { once: true });
 }
 
-  //wire top buttons
   if (btnMeds) {
     btnMeds.addEventListener('click', (e) => openManageMenu(e.currentTarget));
   }
@@ -931,5 +857,4 @@ function openReminderMenu(trigger) {
       openReminderMenu(e.currentTarget);
     });
   }
-})();
 });

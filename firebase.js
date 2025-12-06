@@ -3,7 +3,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getFirestore, collection, addDoc, deleteDoc, doc,
-  onSnapshot, updateDoc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  onSnapshot, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
 import {
   getAuth, onAuthStateChanged, signInAnonymously, EmailAuthProvider, 
@@ -26,27 +26,47 @@ const analytics = getAnalytics(app);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-//The rest is not from firebase lol
+async function upsertUserDocument(user) {
+  const userRef = doc(db, "users", user.uid);
+
+  console.log("upsertUserDocument() for UID:", user.uid);
+
+  try {
+    await setDoc(
+      userRef,
+      {
+        isAnonymous: user.isAnonymous ?? true,
+        lastLoginAt: serverTimestamp(),
+        createdAt: serverTimestamp(),
+      },
+      { merge: true }  //do not overwrite existing data
+    );
+    console.log("user doc written/updated for:", user.uid);
+  } catch (err) {
+    console.error("Error writing user doc:", err);
+  }
+}
 
 console.log("Firebase initialized");
 
 export let currentUser = null; 
 
 export function ensureUser() {
-//promises a user id before allowing saving
   return new Promise((resolve, reject) => {
     onAuthStateChanged(auth, async (user) => {
       try {
         if (user) {
-          //already signed in (could be anon or username/PIN)
           currentUser = user;
           console.log("User signed in:", user.uid);
+
+          await upsertUserDocument(user); 
           resolve(user);
         } else {
-          //sign in anonymously
           const cred = await signInAnonymously(auth);
           currentUser = cred.user;
           console.log("Signed in anonymously:", cred.user.uid);
+
+          await upsertUserDocument(cred.user);
           resolve(cred.user);
         }
       } catch (err) {
@@ -59,8 +79,31 @@ export function ensureUser() {
 
 export const userReady = ensureUser();
 
+//helper to get a subcollection under the current user
+export function userCollection(subpath) {
+  if (!currentUser) {
+    throw new Error("No currentUser yet, wait for userReady first.");
+  }
+  //tasks", "meds", "reminders", "foodLogs"
+  return collection(db, "users", currentUser.uid, subpath);
+}
+
+
 export {
-  db, collection, addDoc, deleteDoc, doc,
-  onSnapshot, updateDoc, query, orderBy, serverTimestamp,   onAuthStateChanged,
-  signInAnonymously, EmailAuthProvider, linkWithCredential, signInWithEmailAndPassword,
+  db,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  updateDoc,
+  query,
+  orderBy,
+  serverTimestamp,
+  onAuthStateChanged,
+  signInAnonymously,
+  EmailAuthProvider,
+  linkWithCredential,
+  signInWithEmailAndPassword,
+  setDoc
 };

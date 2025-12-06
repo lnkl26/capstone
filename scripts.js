@@ -1,15 +1,16 @@
 import {
-  auth, db, collection, addDoc,
-  serverTimestamp, onAuthStateChanged, signInAnonymously 
+  auth, db, addDoc, serverTimestamp,
+  userReady, currentUser, userCollection
 } from "./firebase.js";
+
+console.log("SCRIPTS.JS LOADED");
+
 // TASK STUFF
 //global
 let tasks = [];
 let currentSubtasks = []; // temporary subtasks for the task being created
 let isEditing = false;
 let editingTaskIndex = null;
-
-import { userReady, currentUser } from "../firebase.js";
 
 window.addEventListener("load", async () => {
   await userReady;
@@ -96,7 +97,7 @@ if (document.getElementById("taskCreate-btn")) {
     });
 
     // save a new task
-    saveTaskBtn.addEventListener("click", () => {
+    saveTaskBtn.addEventListener("click", async () => {
         const taskName = taskInputName.value.trim();
         const taskDesc = taskInputDesc.value.trim();
 
@@ -104,6 +105,8 @@ if (document.getElementById("taskCreate-btn")) {
             alert("Task name is required.");
             return;
         }
+
+        await userReady;
 
         let taskSetting = null;
 
@@ -116,7 +119,6 @@ if (document.getElementById("taskCreate-btn")) {
         } else {
             // TASK OBJECT IS HERE!!!
             const newTask = {
-                id: Date.now(),
                 name: taskName,
                 description: taskDesc || null,
                 subtasks: [...currentSubtasks],
@@ -124,6 +126,14 @@ if (document.getElementById("taskCreate-btn")) {
                 // reminderDelay: null, //i.e. remind me in 5 minutes
                 completed: false,
             };
+
+            const tasksCol = userCollection("tasks");
+            const docRef = await addDoc(tasksCol, {
+                ...newTask,
+                createdAt: serverTimestamp(),
+            });
+
+            newTask.id = docRef.id;
             taskSetting = "created";
             tasks.push(newTask);
         }
@@ -135,6 +145,7 @@ if (document.getElementById("taskCreate-btn")) {
 
         alert(`Task "${taskName}" "${taskSetting}" successfully!`);
     });
+
 
     // show all tasks
     taskListBtn.addEventListener("click", () => {
