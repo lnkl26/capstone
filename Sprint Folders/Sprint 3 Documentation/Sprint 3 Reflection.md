@@ -20,7 +20,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Leann Kahal
 
-(Text here)
+- Fix tasks not showing up on task list in task section.
+- Reworked editing, deleting, completing buttons for tasks.
+- Ensure that tasks and routines are showing up Firebase correctly.
 
 ## AI as a Tool
 
@@ -28,8 +30,8 @@ AI used to assist in debugging.
 
 ## Reflection
 
-(Text here)
+As a group, it felt like we weren't able to accomplish much during Sprint 3. This is mainly due to other classes encroaching on possible work time for this project. However, the group remains optimistic, and plan to continue working during winter break and gain back productivity during the next sprint.
 
 ## Next Sprint Goals
 
-(Text here)
+For the next sprint, we plan to move forward with the Sponsor's suggestion of porting this web app as a mobile application. Other plans include: connecting to a food database API, implementing an LLM for assisting in task breakdown, and possible task sharing.
