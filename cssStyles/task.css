@@ -81,7 +81,6 @@
 }
 
 /*list item layout*/
-.task-item,
 .routine-item {
     display: flex;
     justify-content: space-between;
@@ -89,6 +88,30 @@
     gap: 8px;
     padding: 8px 6px;
     border-bottom: 1px solid #eee;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between; /* text left, buttons right */
+    align-items: center;            /* vertically center text and buttons */
+    padding: 8px 6px;
+    border-bottom: 1px solid #eee;
+    gap: 8px;
+}
+
+.task-buttons {
+    display: flex;
+    gap: 5px;       /* spacing between edit/delete/check buttons */
+    flex-shrink: 0; /* prevent buttons from shrinking */
+}
+
+/* Make sure the task text can grow but leaves room for buttons */
+.task-item span {
+    flex-grow: 1;       /* takes remaining space */
+    min-width: 0;       /* allows ellipsis to work */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .task-item:last-child,
