@@ -38,7 +38,8 @@ start index.html
 | Sub-tasks cannot be edited or deleted when editing a task. | - | 10/14/2025 | mm/dd/yy |
 | Clicking outside of the window to cancel does not reset form | Navigate to task creation and fill in input >> Click outside of popup window to close. >> Open create task again. | 10/14/2025 | 10/14/2025 |
 | Subtask showing incorrectly | Create a task with subtask(s), check task list | 11/05/2025 | 11/06/2025 |
-| Pomodoro button not doing anything | Navigate to Focus Mode -> Click 45/5 | 11/17/2-25 | 11/24/2025 |
+| Pomodoro button not doing anything | Navigate to Focus Mode -> Click 45/5 | 11/17/2025 | 11/24/2025 |
+| Subtask styling \[checkbox] not working as intended | Create a task > add a subtask > look at task list | 12/6/2025 | --- |
 
 ## Notes
 
@@ -53,3 +54,5 @@ start index.html
 10/14/2025 | Jesselle Ballesil | On iOS, fonts for buttons are colored blue instead of black.
 
 10/14/2025 | Jesselle Ballesil | Resolved bug by making sure closing modal calls resetTaskForm(). May need to review code for redundancies, but the bug is resolved.
+
+12/06/2025 | Leann Kahal | Planning to use checkboxes for subtasks to reduce button clutter, currently not going as planned.

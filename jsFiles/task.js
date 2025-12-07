@@ -144,13 +144,17 @@ function renderTasks() {
   tasks.forEach(task => {
     const taskEl = document.createElement("div");
     taskEl.classList.add("task-item");
+    taskEl.style.display = "flex";
+    taskEl.style.justifyContent = "space-between";
+    taskEl.style.alignItems = "flex-start";
 
-    // Task title
+    // -------- Task text container --------
     const taskTextContainer = document.createElement("div");
-    taskTextContainer.style.flex = "1"; // take remaining space
+    taskTextContainer.style.flex = "1";
     taskTextContainer.style.display = "flex";
     taskTextContainer.style.flexDirection = "column";
 
+    // Task title
     const taskTitle = document.createElement("span");
     taskTitle.textContent = task.title;
     if (task.completed) {
@@ -170,26 +174,59 @@ function renderTasks() {
 
     // Subtasks
     if (task.subtasks && task.subtasks.length > 0) {
-      const subtaskUl = document.createElement("ul");
-      subtaskUl.style.listStyle = "disc";
-      subtaskUl.style.margin = "4px 0 0 16px";
-      subtaskUl.style.padding = "0";
-      subtaskUl.style.fontSize = "0.85rem";
-      subtaskUl.style.opacity = "0.8";
+      const subtaskContainer = document.createElement("div");
+      subtaskContainer.style.display = "flex";
+      subtaskContainer.style.flexDirection = "column";
+      subtaskContainer.style.marginTop = "4px";
 
-      task.subtasks.forEach(sub => {
-        const li = document.createElement("li");
-        li.textContent = sub;
-        subtaskUl.appendChild(li);
+      task.subtasks.forEach((sub, index) => {
+        const subtaskRow = document.createElement("div");
+        subtaskRow.style.display = "flex";
+        //subtaskRow.style.alignItems = "center";
+        subtaskRow.style.fontSize = "0.85rem";
+        subtaskRow.style.opacity = "0.85";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = sub.completed || false;
+
+        const subtaskText = document.createElement("span");
+        subtaskText.textContent = sub.text || sub;
+        if (checkbox.checked) {
+          subtaskText.style.textDecoration = "line-through";
+          subtaskText.style.color = "gray";
+        }
+
+        // Toggle subtask completion
+        checkbox.addEventListener("change", async () => {
+          const updatedSubtasks = task.subtasks.map((s, i) =>
+            i === index ? { text: s.text || s, completed: checkbox.checked } : s
+          );
+          try {
+            await updateDoc(doc(tasksCollection, task.id), { subtasks: updatedSubtasks });
+            renderTasks();
+          } catch (error) {
+            console.error("Error updating subtask:", error);
+          }
+        });
+
+        subtaskRow.appendChild(checkbox);
+        subtaskRow.appendChild(subtaskText);
+        subtaskContainer.appendChild(subtaskRow);
       });
-      taskTextContainer.appendChild(subtaskUl);
+
+      taskTextContainer.appendChild(subtaskContainer);
     }
+
 
     taskEl.appendChild(taskTextContainer);
 
-    // Buttons container
+    // -------- Buttons container --------
     const btnGroup = document.createElement("div");
     btnGroup.classList.add("task-buttons");
+    btnGroup.style.display = "flex";
+    btnGroup.style.gap = "6px";
+    btnGroup.style.marginLeft = "12px";
 
     const editBtn = document.createElement("button");
     editBtn.textContent = "...";
@@ -213,7 +250,6 @@ function renderTasks() {
     currentTasksDiv.appendChild(taskEl);
   });
 }
-
 // -------------------------
 // Firestore: Delete Task
 // -------------------------
