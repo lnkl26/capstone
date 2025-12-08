@@ -16,7 +16,10 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Chet Hefton
 
-(Text here)
+- Continued implementing the database, upon lauch, the app now assigns anon user IDs for DB organization, all DB collections now brranch from the User collection.
+- Hosted the web app via firebase.
+- Continued with UI improvements/consistency as well as codebase organization.
+- Began light preperation work to implement small API LLM to assit with task and subtask creation over the break.
 
 ### Leann Kahal
 
