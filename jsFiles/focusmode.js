@@ -233,7 +233,7 @@ function renderPomodoroTasks() {
       li.classList.toggle('completed', task.completed);
 
       try {
-        const taskRef = doc(db, "tasks", task.id);
+        const taskRef = doc(db, "users", currentUser.uid, "tasks", task.id);
         await updateDoc(taskRef, { completed: task.completed });
       } catch (error) {
         console.error("Error updating task:", error);
