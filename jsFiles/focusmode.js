@@ -36,6 +36,9 @@ let pomodoroTaskList;
 // -------------------------
 window.addEventListener("DOMContentLoaded", async () => {
   await userReady;
+  while (!currentUser || !currentUser.uid) {
+    await new Promise(r => setTimeout(r, 10));
+  }
   console.log("Final UID on load:", currentUser.uid);
 
   // Timer elements
@@ -171,8 +174,12 @@ function longPomodoro() {
 // -------------------------
 // Firebase Tasks Functions
 // -------------------------
-function loadFirebaseTasks() {
+async function loadFirebaseTasks() {
   firebaseTaskList.innerHTML = '';
+  while (!currentUser || !currentUser.uid) {
+    await new Promise(r => setTimeout(r, 10));
+  }
+  
   const q = query(collection(db, "users", currentUser.uid, "tasks"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
