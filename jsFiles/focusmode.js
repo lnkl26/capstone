@@ -1,6 +1,6 @@
 import {
   db, collection, addDoc, deleteDoc, doc, updateDoc,
-  onSnapshot, query, orderBy, serverTimestamp
+  onSnapshot, query, orderBy
 } from "../firebase.js";
 
 import { userReady, currentUser } from "../firebase.js";
@@ -173,7 +173,7 @@ function longPomodoro() {
 // -------------------------
 function loadFirebaseTasks() {
   firebaseTaskList.innerHTML = '';
-  const q = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
+  const q = query(collection(db, "users", currentUser.uid, "tasks"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
     firebaseTaskList.innerHTML = '';
@@ -183,7 +183,7 @@ function loadFirebaseTasks() {
       li.classList.toggle('completed', task.completed);
 
       const label = document.createElement('span');
-      label.innerHTML = `<strong>${task.name}</strong>${task.description ? `<p>${task.description}</p>` : ''}`;
+      label.innerHTML = `<strong>${task.title}</strong>${task.description ? `<p>${task.description}</p>` : ''}`;
 
       const addBtn = document.createElement('button');
       addBtn.textContent = 'Add to Your Tasks';
@@ -241,7 +241,7 @@ function renderPomodoroTasks() {
     });
 
     const label = document.createElement('span');
-    label.innerHTML = `<strong>${task.name}</strong>`;
+    label.innerHTML = `<strong>${task.title}</strong>`;
 
     const removeBtn = document.createElement('button');
     removeBtn.textContent = 'x';
