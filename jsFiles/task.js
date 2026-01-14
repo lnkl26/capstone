@@ -12,6 +12,9 @@ let currentSubtasks = []; // store subtasks before saving
 
 window.addEventListener("DOMContentLoaded", async () => {
   await userReady;
+  while (!currentUser || !currentUser.uid) {
+    await new Promise(r => setTimeout(r, 10));
+  }
   console.log("User ready in task.js:", currentUser?.uid);
 
   // Get reference to user's "tasks" collection
