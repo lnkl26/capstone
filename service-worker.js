@@ -1,4 +1,4 @@
-const VERSION = 'v23.0.5';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
+const VERSION = 'v23.0.6';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
   './',

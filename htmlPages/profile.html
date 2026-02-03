@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="../manifest.json" />
+  <title>User Profile</title>
+
+  <link rel="stylesheet" href="../cssStyles/profile.css" />
+      <script type="module" src="../firebase.js"></script>
+    <script type="module" defer src="../jsFiles/profile.js"></script>
+</head>
+
+<body>
+  <h1 class="title">User Profile</h1>
+
+  <div class="page-container">
+
+    <!--profile section-->
+    <section id="log-section">
+      <div class="section-title">My Profile</div>
+
+      <div class="form-row">
+        <label for="displayName">Name</label>
+        <input
+          id="displayName"
+          class="input full"
+          type="text"
+          placeholder="Your display name"
+        />
+      </div>
+
+      <div class="form-row">
+        <label for="shareCode">Share Code</label>
+        <input
+          id="shareCode"
+          class="input full"
+          type="text"
+          readonly
+        />
+      </div>
+
+      <div class="button-row">
+        <button id="saveProfile" class="button">Save Profile</button>
+      </div>
+    </section>
+
+    <!--sharing section-->
+    <section id="log-section">
+      <div class="section-title">Share With Someone</div>
+
+      <div class="form-row">
+        <label for="otherShareCode">Their Code</label>
+        <input
+          id="otherShareCode"
+          class="input full"
+          type="text"
+          placeholder="Enter share code"
+        />
+      </div>
+    <section class="log-section">
+    <div class="section-title">Incoming Invites</div>
+    <div id="incomingInvites" class="empty" style="text-align:center;">No invites yet.</div>
+    </section>
+
+      <div class="button-row">
+        <button id="sendInvite" class="button">Send Invite</button>
+      </div>
+
+      <p id="status" class="empty" style="text-align:center;"></p>
+    </section>
+
+    <!--back button-->
+    <div class="back-section">
+      <a href="./settings.html" class="button back-btn">Back</a>
+    </div>
+
+  </div>
+  <script type="module" src="../jsFiles/profile.js"></script>
+</body>
+</html>

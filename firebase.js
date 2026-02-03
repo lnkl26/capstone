@@ -87,8 +87,10 @@ export function userCollection(subpath) {
   //tasks", "meds", "reminders", "foodLogs"
   return collection(db, "users", currentUser.uid, subpath);
 }
-
-
+//helper for sharing
+export function collectionForUser(uid, subpath) {
+  return collection(db, "users", uid, subpath);
+}
 export {
   db,
   collection,
