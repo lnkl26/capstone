@@ -30,7 +30,7 @@ await userReady;
   //create a small "Viewing:" selector only if user has shared accounts
   async function setupViewSelector() {
     //sharedWith lives under the VIEWER (me)
-    const sharedWithRef = collection(db, "users", meUid, "sharedWith");
+    const sharedWithRef = collection(db, "users", meUid, "shares");
     const snap = await getDocs(sharedWithRef);
 
     //if no shared accounts, nothing to add
@@ -98,6 +98,13 @@ await userReady;
   readOnly = activeOwnerUid !== meUid;
   medsCol = collectionForUser(activeOwnerUid, "meds");
   remCol  = collectionForUser(activeOwnerUid, "reminders");
+
+  console.log("meUid:", meUid);
+  console.log("activeOwnerUid:", activeOwnerUid);
+  console.log("readOnly:", readOnly);
+  console.log("medsCol path:", medsCol.path);
+  console.log("remCol path:", remCol.path);
+
 
 /*const medsCol = userCollection("meds");
 const remCol = userCollection("reminders");*/
@@ -337,9 +344,6 @@ function renderMedLog(){
     });
   });
 }
-
-renderMedLog();
-renderRemLog();
 
 dlg.classList.add('popup-menu');
 
