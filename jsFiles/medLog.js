@@ -1,10 +1,12 @@
 import {
   db, collection, addDoc, deleteDoc, doc,
   onSnapshot, query, orderBy, serverTimestamp,
-  userCollection
+  userCollection, collectionForUser
 } from "../firebase.js";
 
 import { userReady, currentUser } from "../firebase.js";
+
+import { getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 window.addEventListener("load", async () => {
   await userReady;
@@ -16,8 +18,89 @@ console.log('medLog.js loaded');
 
 await userReady;
 
-const medsCol = userCollection("meds");
-const remCol = userCollection("reminders");
+  const meUid = currentUser.uid;
+  let activeOwnerUid = localStorage.getItem("activeOwnerUid") || meUid;
+  let readOnly = activeOwnerUid !== meUid;
+
+  //use the ACTIVE owner for reads/writes
+  //writes will be blocked if readOnly below
+  let medsCol = collectionForUser(activeOwnerUid, "meds");
+  let remCol  = collectionForUser(activeOwnerUid, "reminders");
+
+  //create a small "Viewing:" selector only if user has shared accounts
+  async function setupViewSelector() {
+    //sharedWith lives under the VIEWER (me)
+    const sharedWithRef = collection(db, "users", meUid, "sharedWith");
+    const snap = await getDocs(sharedWithRef);
+
+    //if no shared accounts, nothing to add
+    if (snap.empty) return;
+
+    //build UI
+    const container = document.querySelector(".page-container") || document.body;
+
+    const wrap = document.createElement("div");
+    wrap.style.maxWidth = "600px";
+    wrap.style.margin = "0 auto 10px auto";
+    wrap.style.width = "86%";
+
+    wrap.innerHTML = `
+      <div class="form-row">
+        <label for="viewAs">Viewing</label>
+        <select id="viewAs" class="input full"></select>
+      </div>
+      <div id="viewHint" class="empty" style="text-align:center; margin-top:6px;"></div>
+    `;
+
+    const titleEl = document.querySelector("h1.title");
+    if (titleEl && titleEl.parentNode) {
+      titleEl.parentNode.insertBefore(wrap, titleEl.nextSibling);
+    } else {
+      container.insertBefore(wrap, container.firstChild);
+    }
+
+    const sel = wrap.querySelector("#viewAs");
+    const hint = wrap.querySelector("#viewHint");
+
+    //me
+    const optMe = document.createElement("option");
+    optMe.value = meUid;
+    optMe.textContent = "Me";
+    sel.appendChild(optMe);
+
+    //shared owners
+    snap.forEach(d => {
+      const ownerUid = d.id;
+      const opt = document.createElement("option");
+      opt.value = ownerUid;
+      opt.textContent = `Shared: ${ownerUid.slice(0, 6)}…`;
+      sel.appendChild(opt);
+    });
+
+    //set current selection
+    sel.value = activeOwnerUid;
+
+    //hint for read-only view
+    hint.textContent = (activeOwnerUid !== meUid)
+      ? "Viewing shared data (read-only)."
+      : "";
+
+    sel.addEventListener("change", () => {
+      localStorage.setItem("activeOwnerUid", sel.value);
+      location.reload(); //simplest + safest with your current snapshot setup
+    });
+  }
+
+  await setupViewSelector();
+
+  //after selector might change owner, resolve these
+  activeOwnerUid = localStorage.getItem("activeOwnerUid") || meUid;
+  readOnly = activeOwnerUid !== meUid;
+  medsCol = collectionForUser(activeOwnerUid, "meds");
+  remCol  = collectionForUser(activeOwnerUid, "reminders");
+
+/*const medsCol = userCollection("meds");
+const remCol = userCollection("reminders");*/
 
 const dlg = document.getElementById('popupMenu');
 const btnMeds = document.getElementById('btnMeds');
@@ -310,13 +393,21 @@ function showMenuNear(trigger, items, title) {
 }
 
 function openManageMenu(trigger) {
-    showMenuNear(trigger, [
-      { label: 'Add New Medication', action: () => openAddSubmenu() },
-      { label: 'Manage Medications', action: () => openManageSubmenu() },
-      { label: 'Export / Import',    action: () => openExportSubmenu() },
-      { label: 'Close',              action: () => dlg.close(), className: 'danger' },
-    ], 'Medication Menu');
-}
+    const base = [
+      { label: 'Export / Import', action: () => openExportSubmenu() },
+      { label: 'Close', action: () => dlg.close(), className: 'danger' },
+    ];
+    if (readOnly) {
+      showMenuNear(trigger, base, 'Medication Menu');
+    } else {
+      showMenuNear(trigger, [
+        { label: 'Add New Medication', action: () => openAddSubmenu() },
+        { label: 'Manage Medications', action: () => openManageSubmenu() },
+        ...base
+      ], 'Medication Menu');
+    }
+  }
+
 let lastRect = null;
 
 function openAddSubmenu() {
