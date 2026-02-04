@@ -325,7 +325,7 @@ li.completed {
 }
 
 main.page-container {
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
     border: none;
     outline: none;
