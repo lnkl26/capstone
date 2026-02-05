@@ -95,6 +95,10 @@ async function acceptInvite(inviteId, invite) {
   const ownerUid = invite.toUid;   //receiver
   const viewerUid = invite.fromUid; //sender
 
+//get the owners profile to find their name
+  const ownerSnap = await getDoc(doc(db, "users", ownerUid));
+  const ownerName = ownerSnap.exists() ? (ownerSnap.data().displayName || "Unknown User") : "Unknown User";
+
   //permission doc under OWNER
   //users/{ownerUid}/shares/{viewerUid}
   await setDoc(doc(db, "users", ownerUid, "shares", viewerUid), {
@@ -106,6 +110,7 @@ async function acceptInvite(inviteId, invite) {
   //users/{viewerUid}/sharedWith/{ownerUid}
   await setDoc(doc(db, "users", viewerUid, "sharedWith", ownerUid), {
     role: "viewer",
+    ownerName: ownerName,
     createdAt: serverTimestamp()
   });
 
