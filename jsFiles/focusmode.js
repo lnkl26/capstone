@@ -25,7 +25,11 @@ let shortBtn;
 let mediumBtn;
 let longBtn;
 
-let taskButton;
+let customBtn;
+let customModal;
+let closeCustomModal;
+
+let taskBtn;
 let taskModal;
 let closeTaskModal;
 let firebaseTaskList;
@@ -48,9 +52,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   shortBtn = document.getElementById('shortPomodoroBtn');
   mediumBtn = document.getElementById('mediumPomodoroBtn');
   longBtn = document.getElementById('longPomodoroBtn');
+  customBtn = document.getElementById('customBtn');
+  customModal = document.getElementById('customModal');
+  closeCustomModal = document.getElementById('closeCustomModal');
 
   // Task modal elements
-  taskButton = document.getElementById('taskButton');
+  taskBtn = document.getElementById('taskButton');
   taskModal = document.getElementById('taskModal');
   closeTaskModal = document.getElementById('closeTaskModal');
   firebaseTaskList = document.getElementById('firebaseTaskList');
@@ -63,7 +70,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   mediumBtn.addEventListener('click', mediumPomodoro);
   longBtn.addEventListener('click', longPomodoro);
 
-  taskButton.addEventListener('click', () => {
+  taskBtn.addEventListener('click', () => {
     taskModal.classList.remove('hidden');
     loadFirebaseTasks();
   });
@@ -71,6 +78,15 @@ window.addEventListener("DOMContentLoaded", async () => {
   closeTaskModal.addEventListener('click', () => {
     taskModal.classList.add('hidden');
   });
+
+  customBtn.addEventListener('click', () => {
+    console.log('Custom clicked');
+    customModal.classList.remove('hidden');
+  })
+
+  closeCustomModal.addEventListener('click', () => {
+    customModal.classList.add('hidden');
+  })
 
   // Initialize timer display
   timerElement.textContent = formatTime(minutes, seconds);
@@ -169,6 +185,9 @@ function longPomodoro() {
   focusTime = 45;
   breakTime = 15;
   startFocus();
+}
+
+function customPomodoro() {
 }
 
 // -------------------------

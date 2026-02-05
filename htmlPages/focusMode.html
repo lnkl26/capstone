@@ -11,6 +11,9 @@
     <div class="pomodoro-timer">
         <div class="timer-circle" id="timer">00:00</div>
         <div class="timer-types">
+            <button id="customBtn">
+                set timer
+            </button>
             <button id="shortPomodoroBtn">
                 15/5 pomodoro
             </button>
@@ -35,6 +38,13 @@
                 <h2>Select Tasks</h2>
                 <ul id="firebaseTaskList"></ul>
                 <button id="closeTaskModal">Close</button>
+            </div>
+        </div>
+        <div id="customModal" class="modal hidden">
+            <div class="modal-content">
+                <input type="number" id="focusInput" placeholder="Minutes to Focus" min="0" value="0">
+                <input type="number" id="breakInput" placeholder="Minutes for Break" min="0" value="0">
+                <button id="closeCustomModal">Close</button>
             </div>
         </div>
     </div>
