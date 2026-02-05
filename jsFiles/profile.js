@@ -226,6 +226,36 @@ function listenForIncomingInvites(myUid) {
 (async () => {
   const user = await userReady;
 
+  const saveBtn = document.getElementById("saveProfile");
+  const nameInput = document.getElementById("displayName");
+
+  //load existing name if it exists
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  if (userSnap.exists() && userSnap.data().displayName) {
+    nameInput.value = userSnap.data().displayName;
+  }
+
+  if (saveBtn){
+    saveBtn.addEventListener("click", async () => {
+    try {
+    const newName = nameInput.value.trim();
+        if (!newName) {
+          setStatus("Please enter a name.", true);
+          return;
+        }
+        //update the user document with the display name
+        await setDoc(doc(db, "users", user.uid), {
+          displayName: newName,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        setStatus("Profile saved!");
+      } catch (e) {
+        setStatus(e.message || "Save failed.", true);
+      }
+  });
+  }
+
   //show/share code
   const code = await ensureShareCode(user.uid);
   const shareCodeInput = document.getElementById("shareCode");
