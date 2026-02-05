@@ -56,3 +56,5 @@ start index.html
 10/14/2025 | Jesselle Ballesil | Resolved bug by making sure closing modal calls resetTaskForm(). May need to review code for redundancies, but the bug is resolved.
 
 12/06/2025 | Leann Kahal | Planning to use checkboxes for subtasks to reduce button clutter, currently not going as planned.
+
+2/5/2026 | Chet Hefton | Invites to share and display show user id not display name.
