@@ -9,12 +9,12 @@ import { userReady, currentUser } from "../firebase.js";
 // Global Variables
 // -------------------------
 let timer;
-let minutes = 15;
+let minutes = 0;
 let seconds = 0;
 let isPaused = true;
 let isBreak = false;
-let focusTime = 15;
-let breakTime = 5;
+let focusTime = 0;
+let breakTime = 0;
 let pomodoroTasks = [];
 
 // DOM Elements (declared globally so accessible in all functions)
@@ -90,14 +90,16 @@ window.addEventListener("DOMContentLoaded", async () => {
   })
 
   closeCustomModal.addEventListener('click', () => {
-    //customPomodoro();
+    customPomodoro();
     customModal.classList.add('hidden');
   })
 
-  // Initialize timer display
-  timerElement.textContent = formatTime(minutes, seconds);
-
   renderPomodoroTasks();
+
+  // Initialize timer display
+  minutes = focusTime;
+  seconds = 0;
+  timerElement.textContent = formatTime(minutes, seconds);
 });
 
 // -------------------------
@@ -195,6 +197,9 @@ function longPomodoro() {
 }
 
 function customPomodoro() {
+  focusTime = focusInput.value;
+  breakTime = breakInput.value;
+  startFocus();
 }
 
 // -------------------------
