@@ -1,5 +1,5 @@
 import {
-  db, collection, addDoc, deleteDoc, doc, updateDoc,
+  db, collection, doc, updateDoc,
   onSnapshot, query, orderBy
 } from "../firebase.js";
 
@@ -22,9 +22,6 @@ let startedTimer = true;
 let timerElement;
 let stopBtn;
 let resetBtn;
-let shortBtn;
-let mediumBtn;
-let longBtn;
 
 let customBtn;
 let customModal;
@@ -52,9 +49,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   timerElement = document.getElementById('timer');
   stopBtn = document.getElementById('stopButton');
   resetBtn = document.getElementById('resetButton');
-  shortBtn = document.getElementById('shortPomodoroBtn');
-  mediumBtn = document.getElementById('mediumPomodoroBtn');
-  longBtn = document.getElementById('longPomodoroBtn');
 
   //custom timer elements
   customBtn = document.getElementById('customBtn');
@@ -73,9 +67,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Event listeners
   stopBtn.addEventListener('click', toggleStartStop);
   resetBtn.addEventListener('click', resetTimer);
-  shortBtn.addEventListener('click', shortPomodoro);
-  mediumBtn.addEventListener('click', mediumPomodoro);
-  longBtn.addEventListener('click', longPomodoro);
 
   taskBtn.addEventListener('click', () => {
     taskModal.classList.remove('hidden');
@@ -180,8 +171,7 @@ function toggleStartStop() {
 
 function resetTimer() {
   clearInterval(timer);
-  isPaused = true;
-  stopBtn.textContent = 'stop';
+  toggleStartStop();
   minutes = isBreak ? breakTime : focusTime;
   seconds = 0;
   updateTimeset(minutes, seconds);

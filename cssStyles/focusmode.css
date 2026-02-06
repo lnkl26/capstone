@@ -44,47 +44,7 @@ body {
     100% { transform: scale(1);    box-shadow: 0 0 20px #66ceed; }
 }
 
-.timer-button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1.3px solid #000;
-    background-color: rgb(170, 202, 230);
-    color: #000;
-    font-family: "Noto Sans", sans-serif;
-    font-weight: 550;
-    font-size: 0.95rem;
-    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
-    cursor: pointer;
-    transition: transform 120ms ease,
-                background-color 120ms ease,
-                box-shadow 120ms ease;
-}
-
-/*hover/focus */
-.timer-button:hover,
-.timer-button:focus-visible {
-    background-color: rgb(112, 174, 228);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-}
-
-/*pressed*/
-.timer-button:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-
 /*make the three mode buttons sit in a row */
-
-.timer-types {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.timer-types button {
-    min-width: 110px;
-}
 
 .control-buttons {
     display: flex;
@@ -97,7 +57,6 @@ body {
 }
 
 /*wire up both groups to the shared style without changing HTML*/
-.timer-types button,
 .control-buttons button {
     padding: 10px 20px;
     border-radius: 8px;
@@ -113,15 +72,12 @@ body {
         background-color 120ms ease,
         box-shadow 120ms ease;
 }
-.timer-types button:hover,
-.timer-types button:focus-visible,
 .control-buttons button:hover,
 .control-buttons button:focus-visible {
     background-color: rgb(112, 174, 228);
     transform: translateY(-1px);
     box-shadow: 0 6px 14px rgba(0,0,0,0.18);
 }
-.timer-types button:active,
 .control-buttons button:active {
     transform: translateY(0);
     box-shadow: none;
@@ -138,7 +94,6 @@ body {
 }
 /*base button style for ALL buttons*/
 .timer-button,
-.timer-types button,
 .control-buttons button,
 .back-btn {
     padding: 10px 20px;
