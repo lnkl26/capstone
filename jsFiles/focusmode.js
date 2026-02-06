@@ -9,7 +9,7 @@ import { userReady, currentUser } from "../firebase.js";
 // Global Variables
 // -------------------------
 let timer;
-let minutes = 0;
+let minutes = 15;
 let seconds = 0;
 let isPaused = true;
 let isBreak = false;
@@ -28,6 +28,8 @@ let longBtn;
 let customBtn;
 let customModal;
 let closeCustomModal;
+let focusInput;
+let breakInput;
 
 let taskBtn;
 let taskModal;
@@ -52,9 +54,13 @@ window.addEventListener("DOMContentLoaded", async () => {
   shortBtn = document.getElementById('shortPomodoroBtn');
   mediumBtn = document.getElementById('mediumPomodoroBtn');
   longBtn = document.getElementById('longPomodoroBtn');
+
+  //custom timer elements
   customBtn = document.getElementById('customBtn');
   customModal = document.getElementById('customModal');
   closeCustomModal = document.getElementById('closeCustomModal');
+  focusInput = document.getElementById('focusInput');
+  breakInput = document.getElementById('breakInput');
 
   // Task modal elements
   taskBtn = document.getElementById('taskButton');
@@ -80,11 +86,11 @@ window.addEventListener("DOMContentLoaded", async () => {
   });
 
   customBtn.addEventListener('click', () => {
-    console.log('Custom clicked');
     customModal.classList.remove('hidden');
   })
 
   closeCustomModal.addEventListener('click', () => {
+    //customPomodoro();
     customModal.classList.add('hidden');
   })
 
@@ -104,6 +110,7 @@ function startTimer() {
 }
 
 function updateTimer() {
+  if (isPaused) return;
   if (!isPaused) {
     if (minutes === 0 && seconds === 0) {
       clearInterval(timer);
