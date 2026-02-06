@@ -16,6 +16,7 @@ let isBreak = false;
 let focusTime = 0;
 let breakTime = 0;
 let pomodoroTasks = [];
+let startedTimer = true;
 
 // DOM Elements (declared globally so accessible in all functions)
 let timerElement;
@@ -99,7 +100,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   // Initialize timer display
   minutes = focusTime;
   seconds = 0;
-  timerElement.textContent = formatTime(minutes, seconds);
+  updateTimeset(minutes, seconds);
 });
 
 // -------------------------
@@ -112,7 +113,7 @@ function startTimer() {
 }
 
 function updateTimer() {
-  if (isPaused) return;
+  if (isPaused) return; //safety
   if (!isPaused) {
     if (minutes === 0 && seconds === 0) {
       clearInterval(timer);
@@ -125,8 +126,12 @@ function updateTimer() {
         minutes--;
       }
     }
-    timerElement.textContent = formatTime(minutes, seconds);
+    updateTimeset(minutes, seconds);
   }
+}
+
+function updateTimeset(m, s) {
+  timerElement.textContent = formatTime(m, s);
 }
 
 function formatTime(m, s) {
@@ -137,10 +142,16 @@ function startFocus() {
   isBreak = false;
   minutes = focusTime;
   seconds = 0;
-  timerElement.textContent = formatTime(minutes, seconds);
-  isPaused = false;
-  stopBtn.textContent = 'stop';
-  startTimer();
+  updateTimeset(minutes, seconds);
+
+  //auto start only after first manual start
+  if(startedTimer) {
+    isPaused = false;
+    stopBtn.textContent = 'stop';
+  } else { //wait for user to begin timer
+    isPaused = true;
+    stopBtn.textContent = 'start';
+  }
   renderPomodoroTasks();
 }
 
@@ -148,7 +159,7 @@ function startBreak() {
   isBreak = true;
   minutes = breakTime;
   seconds = 0;
-  timerElement.textContent = formatTime(minutes, seconds);
+  updateTimeset(minutes, seconds);
   isPaused = false;
   stopBtn.textContent = 'stop';
   startTimer();
@@ -157,6 +168,7 @@ function startBreak() {
 
 function toggleStartStop() {
   if (isPaused) {
+    startedTimer = true;
     startTimer();
     stopBtn.textContent = 'stop';
   } else {
@@ -172,7 +184,7 @@ function resetTimer() {
   stopBtn.textContent = 'stop';
   minutes = isBreak ? breakTime : focusTime;
   seconds = 0;
-  timerElement.textContent = formatTime(minutes, seconds);
+  updateTimeset(minutes, seconds);
 }
 
 // -------------------------
@@ -181,24 +193,32 @@ function resetTimer() {
 function shortPomodoro() {
   focusTime = 15;
   breakTime = 5;
+  seconds = 0;
+  startedTimer = false;
   startFocus();
 }
 
 function mediumPomodoro() {
   focusTime = 25;
   breakTime = 5;
+  seconds = 0;
+  startedTimer = false;
   startFocus();
 }
 
 function longPomodoro() {
   focusTime = 45;
   breakTime = 15;
+  seconds = 0;
+  startedTimer = false;
   startFocus();
 }
 
 function customPomodoro() {
   focusTime = focusInput.value;
   breakTime = breakInput.value;
+  seconds = 0;
+  startedTimer = false;
   startFocus();
 }
 
