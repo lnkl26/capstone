@@ -203,3 +203,22 @@ body {
     text-decoration: line-through;
     opacity: 0.5;
 }
+
+.focus-mode {
+    margin-top: 2.5em;
+    background-color: #fff;
+    align-items: center;
+}
+
+.pomodoro-time-face {
+    color: #efeac3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+
+    width: 7em;
+    height: 7em;
+    border-radius: 50%;
+    background-color: #19397d;
+}
