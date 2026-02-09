@@ -19,11 +19,7 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 
 ## How to Run
 
-Locally in the directory
-
-```text
-start index.html
-```
+Go to this website [https://lnkl26.github.io/capstone/](https://lnkl26.github.io/capstone/).
 
 ## Current Bugs
 
