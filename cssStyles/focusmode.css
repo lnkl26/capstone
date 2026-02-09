@@ -88,8 +88,10 @@ body {
 
 .control-buttons {
     display: flex;
+    justify-content: center;
+    justify-items: center;
     gap: 15px;
-    margin-top: 10px;
+    margin-top: 2em;
 }
 
 .control-buttons button {
@@ -204,13 +206,15 @@ body {
     opacity: 0.5;
 }
 
+/* LEANN i will move this to the right spots after everything is updated */
 .focus-mode {
     margin-top: 2.5em;
-    background-color: #fff;
+    /* background-color: #fff; */
     align-items: center;
 }
 
 .pomodoro-time-face {
+    margin-top: 1em;
     color: #efeac3;
     display: flex;
     justify-content: center;
@@ -221,4 +225,39 @@ body {
     height: 7em;
     border-radius: 50%;
     background-color: #19397d;
+}
+
+.pomodoro-settings-buttons {
+    margin-top: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+#pomodoro-type-selection, #pomodoro-pause-start, #pomodoro-restart {
+    font-size: 25px;
+}
+
+/* Pomodoro type selection pop up styling */
+.pomodoro-selection-modal {
+    background-color: white;
+    position: fixed;
+    width: 25em;
+    padding-left: 2.5em;
+    padding-right: 2.5em;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    
+}
+
+#short-pomodoro-setting, #med-pomodoro-setting, #long-pomodoro-setting {
+    font-size: 25px;
+}
+
+.pomodoro-task-list {
+    margin-top: 2.5em;
+    background-color: #fff;
+    padding: 1em;
 }
