@@ -1,14 +1,12 @@
 import {
   db, collection, doc, updateDoc,
-  onSnapshot, query, orderBy
+  onSnapshot, query, orderBy, userReady, currentUser
 } from "../firebase.js";
-
-import { userReady, currentUser } from "../firebase.js";
 
 // -------------------------
 // Global Variables
 // -------------------------
-let timer;
+let timerElement;
 let minutes = 15;
 let seconds = 0;
 let isPaused = true;
@@ -29,15 +27,15 @@ let timeRemaining;
 let stopBtn;
 let pomodoroTypeBtn;
 let pause_startBtn;
+let resetBtn;
+
 let shortPomodoroBtn;
 let medPomodoroBtn;
 let longPomodoroBtn;
 
-let pomodoroSelectionModal;
+let selectionModal;
+let closeSelectionModal;
 
-let customBtn;
-let customModal;
-let closeCustomModal;
 let focusInput;
 let breakInput;
 
@@ -58,24 +56,22 @@ window.addEventListener("DOMContentLoaded", async () => {
   console.log("Final UID on load:", currentUser.uid);
 
   // Timer elements
-  timerElement = document.getElementById('timer');
-  stopBtn = document.getElementById('stopButton');
-  resetBtn = document.getElementById('resetButton');
   timerElement = document.getElementById("pomodoro-timer");
+
   pomodoroTypeBtn = document.getElementById("pomodoro-type-selection");
   pause_startBtn = document.getElementById("pomodoro-pause-start");
   resetBtn = document.getElementById("pomodoro-restart");
 
+  //Pomodoro Session Elements
+  selectionModal = document.getElementById("selectionModal");
+  closeSelectionModal = document.getElementById("closeSelectionModal");
+
+  focusInput = document.getElementById("focusInput");
+  breakInput = document.getElementById("breakInput");
+
   shortPomodoroBtn = document.getElementById("short-pomodoro-setting");
   medPomodoroBtn = document.getElementById("med-pomodoro-setting");
   longPomodoroBtn = document.getElementById("long-pomodoro-setting");
-
-  //custom timer elements
-  customBtn = document.getElementById('customBtn');
-  customModal = document.getElementById('customModal');
-  closeCustomModal = document.getElementById('closeCustomModal');
-  focusInput = document.getElementById('focusInput');
-  breakInput = document.getElementById('breakInput');
 
   // Task modal elements
   taskBtn = document.getElementById('taskButton');
@@ -84,17 +80,16 @@ window.addEventListener("DOMContentLoaded", async () => {
   firebaseTaskList = document.getElementById('firebaseTaskList');
   pomodoroTaskList = document.getElementById('pomodoroTaskList');
 
-  // Event listeners
-  // stopBtn.addEventListener('click', toggleStartStop);
-  // resetBtn.addEventListener('click', resetTimer);
-  // shortBtn.addEventListener('click', shortPomodoro);
-  // mediumBtn.addEventListener('click', mediumPomodoro);
-  // longBtn.addEventListener('click', longPomodoro);
-  pomodoroTypeBtn.addEventListener('click', openPomodoroSelectionModal);
+  //Event Listeners
+  pomodoroTypeBtn.addEventListener('click', () => {
+    selectionModal.classList.remove("hidden"); 
+  });
+  closeSelectionModal.addEventListener('click', () => {
+    selectionModal.classList.add("hidden");
+  })
+
   pause_startBtn.addEventListener('click', pauseStartTimer);
   resetBtn.addEventListener('click', resetTimer);
-
-  // Event Listeners
 
   shortPomodoroBtn.addEventListener('click', useShortPomodoro);
   medPomodoroBtn.addEventListener('click', useMedPomodoro);
@@ -109,26 +104,12 @@ window.addEventListener("DOMContentLoaded", async () => {
     taskModal.classList.add('hidden');
   });
 
-  customBtn.addEventListener('click', () => {
-    customModal.classList.remove('hidden');
-  })
-
-  closeCustomModal.addEventListener('click', () => {
-    customPomodoro();
-    customModal.classList.add('hidden');
-  })
-
   renderPomodoroTasks();
 });
 
 // // -------------------------
 // // Timer Functions
 // // -------------------------
-function openPomodoroSelectionModal() {
-    pomodoroSelectionModal = document.querySelector(".pomodoro-selection-modal");
-    if (pomodoroSelectionModal) {
-        pomodoroSelectionModal.style.display = "flex";
-    }
 
 function updateTimer() {
   if (isPaused) return; //safety
@@ -192,19 +173,19 @@ function toggleStartStop() {
   }
 }
 
-function resetTimer() {
-  //stop timer
-  clearInterval(timer);
+// function resetTimer() {
+//   //stop timer
+//   clearInterval(timer);
 
-  //pause
-  isPaused = true;
-  stopBtn.textContent = 'start';
+//   //pause
+//   isPaused = true;
+//   stopBtn.textContent = 'start';
 
-  //reset time
-  minutes = isBreak ? breakTime : focusTime;
-  seconds = 0;
-  updateTimeset(minutes, seconds);
-}
+//   //reset time
+//   minutes = isBreak ? breakTime : focusTime;
+//   seconds = 0;
+//   updateTimeset(minutes, seconds);
+// }
 
 // -------------------------
 // Pomodoro Presets
@@ -223,14 +204,13 @@ function customPomodoro() {
   startedTimer = false;
   startFocus();
 }
-}
 
 function useShortPomodoro() {
     focusMin =  0.2; // 25 minutes of working
     breakMin = 5; // 5 minutes of break
     timerElement.innerHTML = '25:00';
     sessionSelected = true;
-    pomodoroSelectionModal.style.display = "none";
+    selectionModal.style.display = "none";
     console.log("short button");
 }
 
@@ -239,7 +219,7 @@ function useMedPomodoro() {
     breakMin = 5; // 5 minutes of break
     timerElement.innerHTML = '30:00';
     sessionSelected = true;
-    pomodoroSelectionModal.style.display = "none";
+    selectionModal.style.display = "none";
     console.log("med button");
 }
 
@@ -248,7 +228,7 @@ function useLongPomodoro() {
     breakMin = 5; // 5 minutes of break
     timerElement.innerHTML = '45:00';
     sessionSelected = true;
-    pomodoroSelectionModal.style.display = "none";
+    selectionModal.style.display = "none";
     console.log("long button");
 }
 
@@ -309,96 +289,6 @@ function resetTimer() {
         console.log("No session to reset");
     }
 }
-
-// function startTimer() {
-//   if (timer) clearInterval(timer);
-//   isPaused = false;
-//   timer = setInterval(updateTimer, 1000);
-// }
-
-// function updateTimer() {
-//   if (!isPaused) {
-//     if (minutes === 0 && seconds === 0) {
-//       clearInterval(timer);
-//       if (!isBreak) startBreak();
-//       else startFocus();
-//     } else {
-//       if (seconds > 0) seconds--;
-//       else {
-//         seconds = 59;
-//         minutes--;
-//       }
-//     }
-//     timerElement.textContent = formatTime(minutes, seconds);
-//   }
-// }
-
-// function formatTime(m, s) {
-//   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-// }
-
-// function startFocus() {
-//   isBreak = false;
-//   minutes = focusTime;
-//   seconds = 0;
-//   timerElement.textContent = formatTime(minutes, seconds);
-//   isPaused = false;
-//   stopBtn.textContent = 'stop';
-//   startTimer();
-//   renderPomodoroTasks();
-// }
-
-// function startBreak() {
-//   isBreak = true;
-//   minutes = breakTime;
-//   seconds = 0;
-//   timerElement.textContent = formatTime(minutes, seconds);
-//   isPaused = false;
-//   stopBtn.textContent = 'stop';
-//   startTimer();
-//   renderPomodoroTasks();
-// }
-
-// function toggleStartStop() {
-//   if (isPaused) {
-//     startTimer();
-//     stopBtn.textContent = 'stop';
-//   } else {
-//     isPaused = true;
-//     clearInterval(timer);
-//     stopBtn.textContent = 'start';
-//   }
-// }
-
-// function resetTimer() {
-//   clearInterval(timer);
-//   isPaused = true;
-//   stopBtn.textContent = 'stop';
-//   minutes = isBreak ? breakTime : focusTime;
-//   seconds = 0;
-//   timerElement.textContent = formatTime(minutes, seconds);
-// }
-
-// // -------------------------
-// // Pomodoro Presets
-// // -------------------------
-// function shortPomodoro() {
-//   focusTime = 15;
-//   breakTime = 5;
-//   startFocus();
-// }
-
-// function mediumPomodoro() {
-//   focusTime = 25;
-//   breakTime = 5;
-//   startFocus();
-// }
-
-// function longPomodoro() {
-//   focusTime = 45;
-//   breakTime = 15;
-//   startFocus();
-// }
 
 // -------------------------
 // Firebase Tasks Functions
