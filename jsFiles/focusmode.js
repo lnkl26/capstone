@@ -9,14 +9,14 @@ import { userReady, currentUser } from "../firebase.js";
 // Global Variables
 // -------------------------
 let timer;
-let minutes = 0;
+let minutes = 15;
 let seconds = 0;
 let isPaused = true;
 let isBreak = false;
-let focusTime = 0;
-let breakTime = 0;
+let focusTime = 15;
+let breakTime = 5;
 let pomodoroTasks = [];
-let startedTimer = true;
+let startedTimer = false;
 
 // DOM Elements (declared globally so accessible in all functions)
 let timerElement;
@@ -87,11 +87,6 @@ window.addEventListener("DOMContentLoaded", async () => {
   })
 
   renderPomodoroTasks();
-
-  // Initialize timer display
-  minutes = focusTime;
-  seconds = 0;
-  updateTimeset(minutes, seconds);
 });
 
 // -------------------------
@@ -170,8 +165,14 @@ function toggleStartStop() {
 }
 
 function resetTimer() {
+  //stop timer
   clearInterval(timer);
-  toggleStartStop();
+
+  //pause
+  isPaused = true;
+  stopBtn.textContent = 'start';
+
+  //reset time
   minutes = isBreak ? breakTime : focusTime;
   seconds = 0;
   updateTimeset(minutes, seconds);
@@ -180,33 +181,16 @@ function resetTimer() {
 // -------------------------
 // Pomodoro Presets
 // -------------------------
-function shortPomodoro() {
-  focusTime = 15;
-  breakTime = 5;
-  seconds = 0;
-  startedTimer = false;
-  startFocus();
-}
-
-function mediumPomodoro() {
-  focusTime = 25;
-  breakTime = 5;
-  seconds = 0;
-  startedTimer = false;
-  startFocus();
-}
-
-function longPomodoro() {
-  focusTime = 45;
-  breakTime = 15;
-  seconds = 0;
-  startedTimer = false;
-  startFocus();
-}
 
 function customPomodoro() {
-  focusTime = focusInput.value;
-  breakTime = breakInput.value;
+  const focusVal = parseInt(focusInput.value, 10);
+  const breakVal = parseInt(breakInput.value, 10);
+
+  //if values are empty, set defaults
+  //clamp to minimum
+  focusTime = Number.isFinite(focusVal) && focusVal >= 0 ? focusVal : 15;
+  breakTime = Number.isFinite(breakVal) && breakVal >= 0 ? breakVal : 5;
+
   seconds = 0;
   startedTimer = false;
   startFocus();
