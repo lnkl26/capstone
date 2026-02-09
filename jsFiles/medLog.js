@@ -30,7 +30,7 @@ await userReady;
   //create a small "Viewing:" selector only if user has shared accounts
   async function setupViewSelector() {
     //sharedWith lives under the VIEWER (me)
-    const sharedWithRef = collection(db, "users", meUid, "shares");
+    const sharedWithRef = collection(db, "users", meUid, "sharedWith");
     const snap = await getDocs(sharedWithRef);
 
     //if no shared accounts, nothing to add
@@ -71,9 +71,13 @@ await userReady;
     //shared owners
     snap.forEach(d => {
       const ownerUid = d.id;
+      const data = d.data();
+      //fallback if no name provided
+      const ownerName = data.ownerName || `${ownerUid.slice(0, 6)}…`;
+
       const opt = document.createElement("option");
       opt.value = ownerUid;
-      opt.textContent = `Shared: ${ownerUid.slice(0, 6)}…`;
+      opt.textContent = `Shared: ${ownerName}`;
       sel.appendChild(opt);
     });
 
@@ -82,7 +86,7 @@ await userReady;
 
     //hint for read-only view
     hint.textContent = (activeOwnerUid !== meUid)
-      ? "Viewing shared data (read-only)."
+      ? "Viewing shared data."
       : "";
 
     sel.addEventListener("change", () => {
@@ -98,6 +102,9 @@ await userReady;
   readOnly = activeOwnerUid !== meUid;
   medsCol = collectionForUser(activeOwnerUid, "meds");
   remCol  = collectionForUser(activeOwnerUid, "reminders");
+
+  subscribeAndRenderMeds(medsCol); 
+  subscribeAndRenderReminders(remCol);
 
   console.log("meUid:", meUid);
   console.log("activeOwnerUid:", activeOwnerUid);
@@ -151,7 +158,7 @@ function renderMeds(docs){
   });
 }
 
-function subscribeAndRenderMeds(){
+function subscribeAndRenderMeds(medsCol){
   const q=query(medsCol,orderBy("createdAt","desc"));
   onSnapshot(q,(snap)=>{
     mirrorMedsFromSnapshot(snap.docs)
@@ -209,7 +216,7 @@ async function deleteReminderFromDb(id){
   await deleteDoc(doc(remCol,id));
 }
 
-function subscribeAndRenderReminders(){
+function subscribeAndRenderReminders(remCol){
   const q=query(remCol,orderBy("when","asc"));
   onSnapshot(q,(snap)=>{
     mirrorRemsFromSnapshot(snap.docs)
@@ -254,8 +261,8 @@ function renderReminders(docs){
   remTickHandle=setInterval(tick,1000);
 }
 
-subscribeAndRenderMeds();
-subscribeAndRenderReminders();
+//subscribeAndRenderMeds(medsCol);
+//subscribeAndRenderReminders(remCol);
 
 const mirrorRemindersToLocal=true;
 
@@ -340,7 +347,7 @@ function renderMedLog(){
       const [n,d]=key.split('|');
       const all=getMeds();
       const i=all.findIndex(x=>(x.name||'')===n&&(x.dose||'')===d);
-      if(i>-1){all.splice(i,1);setMeds(all);renderMedLog()}
+      if(i>-1){all.splice(i,1);setMeds(all);/*renderMedLog()*/}
     });
   });
 }
@@ -510,49 +517,57 @@ function openManageSubmenu() {
   const list = document.createElement('div');
   wrap.appendChild(list);
 
-  function renderList(filter = '') {
-    const meds = getMeds();
-    list.innerHTML = '';
-    const q = filter.trim().toLowerCase();
-    const filtered = meds.filter(m =>
-      !q || (m.name || '').toLowerCase().includes(q) || (m.dose || '').toLowerCase().includes(q)
-    );
+function renderList(filter = '') {
+  list.innerHTML = '';
+  const q = filter.trim().toLowerCase();
 
-    if (!filtered.length) {
-      const empty = document.createElement('div');
-      empty.textContent = q ? 'No matches.' : 'No medications saved yet.';
-      empty.className = 'empty';
-      list.appendChild(empty);
-      return;
-    }
+  const filtered = medsCache.filter(m =>
+    !q ||
+    (m.name || '').toLowerCase().includes(q) ||
+    (m.dose || '').toLowerCase().includes(q)
+  );
 
-    filtered.forEach((m, idxInFiltered) => {
-      const row = document.createElement('div');
-      row.className = 'row';
-
-      const left = document.createElement('div');
-      left.innerHTML = `<strong>${m.name || '(unnamed)'}</strong>${m.dose ? ' — ' + m.dose : ''}`;
-
-      const del = document.createElement('button');
-      del.textContent = 'Delete';
-      del.classList.add('danger');
-      del.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const medsAll = getMeds();
-        const i = medsAll.findIndex(x => x === m || ((x.name||'') === (m.name||'') && (x.dose||'') === (m.dose||'')));
-        if (i > -1) {
-          medsAll.splice(i, 1);
-          setMeds(medsAll);
-          renderMedLog();
-          renderList(search.value);
-        }
-      });
-
-      row.appendChild(left);
-      row.appendChild(del);
-      list.appendChild(row);
-    });
+  if (!filtered.length) {
+    const empty = document.createElement('div');
+    empty.textContent = q ? 'No matches.' : 'No medications saved yet.';
+    empty.className = 'empty';
+    list.appendChild(empty);
+    return;
   }
+
+  filtered.forEach(m => {
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    const left = document.createElement('div');
+    left.innerHTML = `<strong>${m.name || '(unnamed)'}</strong>${m.dose ? ' — ' + m.dose : ''}`;
+
+    const del = document.createElement('button');
+    del.textContent = 'Delete';
+    del.classList.add('danger');
+    del.disabled = readOnly;
+    del.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      try {
+        await deleteMedFromDb(m.id);
+      } catch (err) {
+        console.error(err);
+        alert('failed to delete');
+      }
+    });
+
+    row.appendChild(left);
+    row.appendChild(del);
+    list.appendChild(row);
+  });
+}
+
+const medsHandler = () => renderList(search.value);
+document.addEventListener('meds-cache-updated', medsHandler);
+
+dlg.addEventListener('close', () => {
+  document.removeEventListener('meds-cache-updated', medsHandler);
+}, { once: true });
 
   renderList();
   search.addEventListener('input', () => renderList(search.value));
@@ -577,7 +592,7 @@ function openManageSubmenu() {
       return;
     }
     localStorage.setItem('meds', '[]');
-    renderMedLog();
+    //renderMedLog();
     confirmChk.checked = false;
     renderList('');
     search.value = '';
@@ -729,7 +744,7 @@ function openExportSubmenu() {
           if (!dup) merged.push(m);
         });
         setMeds(merged);
-        renderMedLog();
+        //renderMedLog();
       }
       alert('Import complete.');
     } catch (err) {

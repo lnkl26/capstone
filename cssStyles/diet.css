@@ -1,0 +1,210 @@
+body {
+    background-color: #f8f8f8;
+    font-family: "Noto Sans", sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+/*title*/
+.title {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+    color: rgb(0, 0, 0);
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+/*the containers*/
+.card, section.card {
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
+}
+/*buttons*/
+.button, button, #dietCreate-btn, #diet-save-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 20px;
+    color: black;
+    background-color: rgb(170, 202, 230);
+    border-radius: 6px;
+    box-shadow: -2.5px 4px 1px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    cursor: pointer;
+    border: 1.3px solid black;
+    font-family: "Noto Sans", sans-serif;
+    font-weight: 550;
+    transition: transform 120ms ease, background-color 120ms ease;
+}
+.button:hover, button:hover {
+    background-color: rgb(112, 174, 228);
+    transform: scale(1.02);
+}
+/*secondary buttons*/
+.btn-secondary, #diet-cancel-btn, #diet-reset-filter {
+    background-color: #f0f0f0 !important;
+}
+/*edit and delete button colors*/
+.edit-btn {
+    background-color: rgb(170, 202, 230) !important;
+}
+.delete-btn, .embDel {
+    background-color: rgb(255, 205, 205) !important;
+}
+/*table styling*/
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-family: "Noto Sans", sans-serif;
+}
+.table th {
+    background-color: #eee;
+    border: 1.3px solid black;
+    padding: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+.table td {
+    border: 1px solid #000;
+    padding: 10px;
+    text-align: center;
+}
+/*inputs*/
+input, select, textarea {
+    padding: 8px;
+    border: 1.3px solid #000;
+    border-radius: 6px;
+    font-family: "Noto Sans", sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+}
+/*grid helpers*/
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+/*utility classes*/
+.task-btns {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+/*responsive mobile view*/
+@media (max-width: 600px) {
+    .grid-2, .grid-3, .grid-4 {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+    .card {
+        width: 95%;
+        padding: 15px;
+        margin: auto;
+    }
+    .title {
+        font-size: 1.8rem;
+        margin: 20px auto;
+    }
+    /*center labels and inputs*/
+    label {
+        display: block;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    input:not([type="checkbox"]), select, textarea {
+        display: block;
+        margin: 0 auto 15px auto !important;
+        width: 95% !important;
+        text-align: center;
+    }
+    /*checkbox alignment fix*/
+    div:has(> input[type="checkbox"]) {
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin: 10px 0;
+    }
+    input[type="checkbox"] {
+        width: auto !important;
+        margin: 0 !important;
+    }
+    #dietCreate-btn {
+        width: 100%;
+        margin: 10px 0;
+    }
+    /*stacked table logic*/
+    .table, .table thead, .table tbody, .table th, .table td, .table tr { 
+        display: block; 
+    }
+    .table thead tr { 
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    .table tr {
+        border: 1.5px solid #000;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: -2px 2px 0px rgba(0,0,0,0.1);
+        padding: 5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .table td { 
+        border: none;
+        position: relative;
+        padding: 4px 5px 4px 45px;
+        text-align: left !important;
+        font-size: 0.85rem;
+        min-height: 20px;
+    }
+    /*full width main data*/
+    .table td:nth-of-type(1),
+    .table td:nth-of-type(3),
+    .table td:nth-of-type(8),
+    .table td:last-child {
+        grid-column: span 2;
+        border-top: 1px solid #f0f0f0;
+    }
+    /*mobile actions*/
+    .table td:last-child {
+        padding: 15px 0;
+        background: #fafafa;
+        justify-content: center;
+        display: flex;
+        gap: 25px;
+    }
+    .table td:last-child button {
+        padding: 10px 25px;
+    }
+    .table td:before { 
+        position: absolute;
+        left: 5px;
+        width: 35px; 
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 0.6rem;
+        color: #888;
+    }
+    /*inject cell labels*/
+    .table td:nth-of-type(1):before { content: "date"; }
+    .table td:nth-of-type(2):before { content: "meal"; }
+    .table td:nth-of-type(3):before { content: "food"; }
+    .table td:nth-of-type(4):before { content: "cal"; }
+    .table td:nth-of-type(5):before { content: "p"; }
+    .table td:nth-of-type(6):before { content: "c"; }
+    .table td:nth-of-type(7):before { content: "f"; }
+    .table td:nth-of-type(8):before { content: "note"; }
+    .table td:nth-of-type(9):before { content: "safe"; }
+}

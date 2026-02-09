@@ -27,15 +27,46 @@
                 <button id="closeTaskModal">Close</button>
             </div>
         </div>
-        <div id="customModal" class="modal hidden">
+    </div> -->
+    <div class="focus-mode">
+        <a href="productive.html" class="back-btn danger">x</a>
+        <div class="pomodoro-time-face" id="pomodoro-timer">00:00</div>
+        <div class="pomodoro-settings-buttons">
+            <button id="pomodoro-type-selection">⏲️</button>
+            <button id="pomodoro-pause-start">▶️</button>
+            <button id="pomodoro-restart">🔄️</button>
+        </div>
+        <div class="control-buttons">
+            <button id="taskButton">your tasks</button>
+        </div>
+        <div class="pomodoro-task-list">
+            <h3>Your Pomodoro Tasks</h3>
+            <ul id="pomodoroTaskList"></ul>
+        </div>
+        <div id="taskModal" class="modal hidden">
             <div class="modal-content">
-                <input type="number" id="focusInput" placeholder="Minutes to Focus" min="0">
-                <input type="number" id="breakInput" placeholder="Minutes for Break" min="0">
-                <button id="closeCustomModal">Close</button>
+                <h2>Select Tasks</h2>
+                <ul id="firebaseTaskList"></ul>
+                <button id="closeTaskModal">Close</button>
             </div>
+        </div>    
+    </div>
+    <div class="pomodoro-selection-modal">
+        <h1> pick how long your pomodoro session will be</h1>
+        <div id="customModal" class="modal hidden">
+        <div class="modal-content">
+            <input type="number" id="focusInput" placeholder="Minutes to Focus" min="0">
+            <input type="number" id="breakInput" placeholder="Minutes for Break" min="0">
+            <button id="closeCustomModal">Close</button>
+        </div>
+        </div>
+        <div class="pomdoro-selection-buttons">
+            <button id="short-pomodoro-setting">short</button>
+            <button id="med-pomodoro-setting">med</button>
+            <button id="long-pomodoro-setting">long</button>
         </div>
     </div>
-    <a href="productive.html" class="back-btn danger">Back</a>
+    
     <script type="module" src="../jsFiles/focusmode.js"></script>
 </body>
 </html>

@@ -95,6 +95,10 @@ async function acceptInvite(inviteId, invite) {
   const ownerUid = invite.toUid;   //receiver
   const viewerUid = invite.fromUid; //sender
 
+//get the owners profile to find their name
+  const ownerSnap = await getDoc(doc(db, "users", ownerUid));
+  const ownerName = ownerSnap.exists() ? (ownerSnap.data().displayName || "Unknown User") : "Unknown User";
+
   //permission doc under OWNER
   //users/{ownerUid}/shares/{viewerUid}
   await setDoc(doc(db, "users", ownerUid, "shares", viewerUid), {
@@ -106,6 +110,7 @@ async function acceptInvite(inviteId, invite) {
   //users/{viewerUid}/sharedWith/{ownerUid}
   await setDoc(doc(db, "users", viewerUid, "sharedWith", ownerUid), {
     role: "viewer",
+    ownerName: ownerName,
     createdAt: serverTimestamp()
   });
 
@@ -220,6 +225,36 @@ function listenForIncomingInvites(myUid) {
 
 (async () => {
   const user = await userReady;
+
+  const saveBtn = document.getElementById("saveProfile");
+  const nameInput = document.getElementById("displayName");
+
+  //load existing name if it exists
+  const userSnap = await getDoc(doc(db, "users", user.uid));
+  if (userSnap.exists() && userSnap.data().displayName) {
+    nameInput.value = userSnap.data().displayName;
+  }
+
+  if (saveBtn){
+    saveBtn.addEventListener("click", async () => {
+    try {
+    const newName = nameInput.value.trim();
+        if (!newName) {
+          setStatus("Please enter a name.", true);
+          return;
+        }
+        //update the user document with the display name
+        await setDoc(doc(db, "users", user.uid), {
+          displayName: newName,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        setStatus("Profile saved!");
+      } catch (e) {
+        setStatus(e.message || "Save failed.", true);
+      }
+  });
+  }
 
   //show/share code
   const code = await ensureShareCode(user.uid);
