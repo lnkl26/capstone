@@ -277,7 +277,7 @@ function renderPomodoroTasks() {
     pomodoroTaskList.innerHTML = '<li>Add tasks from "Your Tasks"</li>';
     return;
   }
-  if (isBreak) {
+  if (state.includes("BREAK")) {
     pomodoroTaskList.innerHTML = '<li>Break Time</li>';
     return;
   }
