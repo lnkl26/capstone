@@ -174,7 +174,7 @@ function pauseStartTimer() {
             timeRemaining = focusMin * 60;
         }
         isRunning = true;
-        pause_startBtn.innerHTML = '⏸️';
+        pause_startBtn.innerHTML = '❚❚';
         console.log("Time has started");
         
         timerInterval = setInterval(() => {
@@ -194,7 +194,7 @@ function pauseStartTimer() {
         // Pause the timer
         clearInterval(timerInterval);
         isRunning = false;
-        pause_startBtn.innerHTML = '▶️';
+        pause_startBtn.innerHTML = '▶︎';
         console.log("Time has paused");
     }
 }
@@ -204,7 +204,7 @@ function resetTimer() {
         if (isRunning) {
             clearInterval(timerInterval);
             isRunning = false; // Update running state
-            pause_startBtn.innerHTML = '▶️'; 
+            pause_startBtn.innerHTML = '▶︎'; 
         }
         
         sessionSelected = false;

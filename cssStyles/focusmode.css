@@ -152,6 +152,7 @@ body {
 
 .modal-content {
     background-color: #fff;
+    border-radius: 25px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     padding: 5%;
 }
@@ -195,11 +196,15 @@ body {
 }
 
 #short-pomodoro-setting, #med-pomodoro-setting, #long-pomodoro-setting {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-right: 1em;
     font-size: 25px;
 }
 
 .pomodoro-task-list {
     margin-top: 2.5em;
+    border-radius: 25px;
     background-color: #fff;
     padding: 1em;
 }
