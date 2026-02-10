@@ -6,25 +6,17 @@ import {
 // -------------------------
 // Global Variables
 // -------------------------
-let timerElement;
-let minutes = 15;
-let seconds = 0;
-let isPaused = true;
-let isBreak = false;
+let state = "IDLE"; //IDLE, RUNNING_FOCUS, RUNNING_BREAK, PAUSED_FOCUS, PAUSED_BREAK
 let focusTime = 15;
 let breakTime = 5;
-let pomodoroTasks = [];
-let startedTimer = false;
 
-let focusMin;
-let breakMin;
-let sessionSelected = false;
-let timerInterval;
-let isRunning = false;
-let timeRemaining;
+let timeRemaining = focusTime * 60; //convert to seconds
+let timerInterval = null;
+let pomodoroTasks = [];
 
 // DOM Elements (declared globally so accessible in all functions)
-let stopBtn;
+let timerElement;
+
 let pomodoroTypeBtn;
 let pause_startBtn;
 let resetBtn;
@@ -108,116 +100,92 @@ window.addEventListener("DOMContentLoaded", async () => {
   renderPomodoroTasks();
 });
 
-// // -------------------------
-// // Timer Functions
-// // -------------------------
-
-function updateTimer() {
-  if (isPaused) return; //safety
-  if (!isPaused) {
-    if (minutes === 0 && seconds === 0) {
-      clearInterval(timer);
-      if (!isBreak) startBreak();
-      else startFocus();
-    } else {
-        console.error("Modal element not found");
-    }
-    updateTimeset(minutes, seconds);
-  }
-}
-
-function updateTimeset(m, s) {
-  timerElement.textContent = formatTime(m, s);
-}
-
-function formatTime(m, s) {
-  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-}
-
-function startFocus() {
-  isBreak = false;
-  minutes = focusTime;
-  seconds = 0;
-  updateTimeset(minutes, seconds);
-
-  //auto start only after first manual start
-  if(startedTimer) {
-    isPaused = false;
-    stopBtn.textContent = 'stop';
-  } else { //wait for user to begin timer
-    isPaused = true;
-    stopBtn.textContent = 'start';
-  }
-  renderPomodoroTasks();
-}
-
-function startBreak() {
-  isBreak = true;
-  minutes = breakTime;
-  seconds = 0;
-  updateTimeset(minutes, seconds);
-  isPaused = false;
-  stopBtn.textContent = 'stop';
-  startTimer();
-  renderPomodoroTasks();
-}
+// -------------------------
+// State Machine Functions
+// -------------------------
 
 function pauseStartTimer() {
-    if (!sessionSelected) {
-        console.log("session hasn't been selected");
-        return; // Exit if no session is selected
+    switch (state) {
+      case "IDLE":
+        state = "RUNNING_FOCUS";
+        timeRemaining = focusTime * 60;
+        startInterval();
+        pause_startBtn.textContent = '❚❚';
+        break;
+
+      case "PAUSED_FOCUS":
+        state = "RUNNING_FOCUS";
+        startInterval();
+        pause_startBtn.textContent = '❚❚';
+        break;
+      
+      case "PAUSED_BREAK":
+        state = "RUNNING_BREAK";
+        startInterval();
+        pause_startBtn.textContent = '❚❚';
+        break;
+      
+      case "RUNNING_FOCUS":
+      case "RUNNING_BREAK":
+        pauseTimer();
+        break;
     }
-    
-    if (!isRunning) {
-        // Start the timer
-        if (timeRemaining == undefined) {
-            timeRemaining = focusMin * 60;
-        }
-        isRunning = true;
-        pause_startBtn.innerHTML = '❚❚';
-        console.log("Time has started");
-        
-        timerInterval = setInterval(() => {
-            if (timeRemaining <= 0) {
-                clearInterval(timerInterval);
-                timerElement.innerHTML = "00:00";
-                isRunning = false;
-            } else {
-                console.log(timeRemaining)
-                timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                timerElement.innerHTML = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }
-        }, 1000);
-    } else {
-        // Pause the timer
-        clearInterval(timerInterval);
-        isRunning = false;
-        pause_startBtn.innerHTML = '▶︎';
-        console.log("Time has paused");
-    }
+}
+
+function pauseTimer() {
+  clearInterval(timerInterval);
+
+  if (state === "RUNNING_FOCUS") state = "PAUSED_FOCUS";
+  if (state === "RUNNING_BREAK") state = "PAUSED_BREAK";
+
+  pause_startBtn.textContent = '▶︎';
 }
 
 function resetTimer() {
-    if (sessionSelected) {
-        if (isRunning) {
-            clearInterval(timerInterval);
-            isRunning = false; // Update running state
-            pause_startBtn.innerHTML = '▶︎'; 
-        }
-        
-        sessionSelected = false;
-        focusMin = 0;
-        breakMin = 0;
+  clearInterval(timerInterval);
 
-        // Reset timer display
-        timerElement.innerHTML = '00:00'; // Reset to 00:00
-        console.log("Timer reset");
-        
-    } else {
-        console.log("No session to reset");
+  if(state.includes("BREAK")) {
+    timeRemaining = breakTime * 60;
+    state = "PAUSED_BREAK";
+  } else {
+    timeRemaining = focusTime * 60;
+    state = "PAUSED_FOCUS";
+  }
+
+  updateDisplay();
+  pause_startBtn.textContent = '▶︎';
+}
+
+function startInterval() {
+  clearInterval(timerInterval);
+
+  timerInterval = setInterval(() => {
+    //time counts down
+    timeRemaining--;
+
+    //switch between focus/break modes
+    if(timeRemaining <= 0) {
+      if (state === "RUNNING_FOCUS") {
+        state = "RUNNING_BREAK";
+        timeRemaining = breakTime * 60;
+        startInterval();
+        renderPomodoroTasks();
+      }
+      else if (state === "RUNNING_BREAK") {
+        state = "RUNNING_FOCUS";
+        timeRemaining = focusTime * 60;
+        startInterval();
+        renderPomodoroTasks();
+      }
     }
+    updateDisplay();
+  }, 1000);
+}
+
+function updateDisplay() {
+  const m = Math.floor(timeRemaining / 60);
+  const s = timeRemaining % 60;
+  timerElement.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
 // -------------------------
@@ -233,15 +201,10 @@ function applyPomodoroSettings() {
   focusTime = Number.isFinite(focusVal) && focusVal >= 0 ? focusVal : 15;
   breakTime = Number.isFinite(breakVal) && breakVal >= 0 ? breakVal : 5;
 
-  //reset timer state
-  startedTimer = false;
-  isPaused = true;
-  isBreak = false;
+  state = "IDLE";
+  timeRemaining = focusTime * 60;
 
-  minutes = focusTime;
-  seconds = 0;
-  updateTimeset(minutes, seconds);
-
+  updateDisplay();
   renderPomodoroTasks();
 }
 
@@ -249,21 +212,18 @@ function useShortPomodoro() {
     focusInput.value =  15; // 15 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("short button");
-    sessionSelected = true;
 }
 
 function useMedPomodoro() {
     focusInput.value = 30; // 30 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("med button");
-    sessionSelected = true;
 }
 
 function useLongPomodoro() {
     focusInput.value = 45; // 45 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("long button");
-    sessionSelected = true;
 }
 
 // -------------------------
