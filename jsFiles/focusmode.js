@@ -23,7 +23,7 @@ let timerInterval;
 let isRunning = false;
 let timeRemaining;
 
-// // DOM Elements (declared globally so accessible in all functions)
+// DOM Elements (declared globally so accessible in all functions)
 let stopBtn;
 let pomodoroTypeBtn;
 let pause_startBtn;
@@ -249,18 +249,21 @@ function useShortPomodoro() {
     focusInput.value =  15; // 15 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("short button");
+    sessionSelected = true;
 }
 
 function useMedPomodoro() {
     focusInput.value = 30; // 30 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("med button");
+    sessionSelected = true;
 }
 
 function useLongPomodoro() {
     focusInput.value = 45; // 45 minutes of working
     breakInput.value = 5; // 5 minutes of break
     console.log("long button");
+    sessionSelected = true;
 }
 
 // -------------------------
