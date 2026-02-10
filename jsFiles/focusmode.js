@@ -85,6 +85,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     selectionModal.classList.remove("hidden"); 
   });
   closeSelectionModal.addEventListener('click', () => {
+    applyPomodoroSettings();
     selectionModal.classList.add("hidden");
   })
 
@@ -161,77 +162,6 @@ function startBreak() {
   renderPomodoroTasks();
 }
 
-function toggleStartStop() {
-  if (isPaused) {
-    startedTimer = true;
-    startTimer();
-    stopBtn.textContent = 'stop';
-  } else {
-    isPaused = true;
-    clearInterval(timer);
-    stopBtn.textContent = 'start';
-  }
-}
-
-// function resetTimer() {
-//   //stop timer
-//   clearInterval(timer);
-
-//   //pause
-//   isPaused = true;
-//   stopBtn.textContent = 'start';
-
-//   //reset time
-//   minutes = isBreak ? breakTime : focusTime;
-//   seconds = 0;
-//   updateTimeset(minutes, seconds);
-// }
-
-// -------------------------
-// Pomodoro Presets
-// -------------------------
-
-function customPomodoro() {
-  const focusVal = parseInt(focusInput.value, 10);
-  const breakVal = parseInt(breakInput.value, 10);
-
-  //if values are empty, set defaults
-  //clamp to minimum
-  focusTime = Number.isFinite(focusVal) && focusVal >= 0 ? focusVal : 15;
-  breakTime = Number.isFinite(breakVal) && breakVal >= 0 ? breakVal : 5;
-
-  seconds = 0;
-  startedTimer = false;
-  startFocus();
-}
-
-function useShortPomodoro() {
-    focusMin =  0.2; // 25 minutes of working
-    breakMin = 5; // 5 minutes of break
-    timerElement.innerHTML = '25:00';
-    sessionSelected = true;
-    selectionModal.style.display = "none";
-    console.log("short button");
-}
-
-function useMedPomodoro() {
-    focusMin = 30; // 30 minutes of working
-    breakMin = 5; // 5 minutes of break
-    timerElement.innerHTML = '30:00';
-    sessionSelected = true;
-    selectionModal.style.display = "none";
-    console.log("med button");
-}
-
-function useLongPomodoro() {
-    focusMin = 45; // 45 minutes of working
-    breakMin = 5; // 5 minutes of break
-    timerElement.innerHTML = '45:00';
-    sessionSelected = true;
-    selectionModal.style.display = "none";
-    console.log("long button");
-}
-
 function pauseStartTimer() {
     if (!sessionSelected) {
         console.log("session hasn't been selected");
@@ -288,6 +218,49 @@ function resetTimer() {
     } else {
         console.log("No session to reset");
     }
+}
+
+// -------------------------
+// Pomodoro Presets
+// -------------------------
+
+function applyPomodoroSettings() {
+  const focusVal = parseInt(focusInput.value, 10);
+  const breakVal = parseInt(breakInput.value, 10);
+
+  //if values are empty, set defaults
+  //clamp to minimum
+  focusTime = Number.isFinite(focusVal) && focusVal >= 0 ? focusVal : 15;
+  breakTime = Number.isFinite(breakVal) && breakVal >= 0 ? breakVal : 5;
+
+  //reset timer state
+  startedTimer = false;
+  isPaused = true;
+  isBreak = false;
+
+  minutes = focusTime;
+  seconds = 0;
+  updateTimeset(minutes, seconds);
+
+  renderPomodoroTasks();
+}
+
+function useShortPomodoro() {
+    focusInput.value =  15; // 15 minutes of working
+    breakInput.value = 5; // 5 minutes of break
+    console.log("short button");
+}
+
+function useMedPomodoro() {
+    focusInput.value = 30; // 30 minutes of working
+    breakInput.value = 5; // 5 minutes of break
+    console.log("med button");
+}
+
+function useLongPomodoro() {
+    focusInput.value = 45; // 45 minutes of working
+    breakInput.value = 5; // 5 minutes of break
+    console.log("long button");
 }
 
 // -------------------------
