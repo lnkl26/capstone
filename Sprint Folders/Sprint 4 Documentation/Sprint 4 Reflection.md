@@ -6,7 +6,12 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Jesselle Ballesil
 
-(text here)
+- Pomodoro Task List can access Firebase
+- Timer length for focus/break modes can be customized
+   - Timer has default values
+- Timer runs on state machine
+- Timer doesn’t start automatically
+- Fixed centering on Task page
 
 ### Jack Crawford
 
@@ -22,7 +27,7 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ## AI as a Tool
 
-(text here)
+Used AI for state machine outline and debugging.
 
 ## Reflection
 
