@@ -11,8 +11,8 @@ import {
 import { userReady, currentUser } from "../firebase.js";
 console.log("reminder.JS LOADED");
 window.addEventListener("load", async () => {
-  await userReady;
-  console.log("Final UID on load:", currentUser.uid);
+    await userReady;
+    console.log("Final UID on load:", currentUser.uid);
 });
 
 (function () {
@@ -41,6 +41,15 @@ window.addEventListener("load", async () => {
     const confirmModal = $("confirm-modal");
     const confirmDeleteBtn = $("confirm-delete");
     const confirmCancelBtn = $("confirm-cancel");
+
+    // Due modal elements
+    const dueModal = $("due-modal");
+    const dueMessage = $("due-message");
+    const dueDismissBtn = $("due-dismiss");
+    const dueSnoozeBtn = $("due-snooze");
+    const dueDoneBtn = $("due-done");
+
+    let activeDueReminder = null; // holds the reminder currently being shown
 
     const thead = document.querySelector("#reminder-table thead");
     let sortState = { key: "due", dir: "asc" };
@@ -78,7 +87,7 @@ window.addEventListener("load", async () => {
     function toLocalInputValue(dt) {
         const pad = (n) => String(n).padStart(2, "0");
         return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(
-            dt.getDate()
+            dt.getDate(),
         )}T${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
     }
 
@@ -191,8 +200,8 @@ window.addEventListener("load", async () => {
                 snapshotReminders.map((r) =>
                     r.id
                         ? deleteDoc(doc(remindersCol, r.id))
-                        : Promise.resolve()
-                )
+                        : Promise.resolve(),
+                ),
             );
         } catch (err) {
             console.error("Failed to clear reminders:", err);
@@ -202,6 +211,61 @@ window.addEventListener("load", async () => {
     });
 
     clearAllBtn?.addEventListener("click", openClearAll);
+
+    function openDueModal(reminder) {
+        if (!dueModal || !dueMessage) return;
+
+        activeDueReminder = reminder;
+        dueMessage.textContent = reminder?.title
+            ? `Reminder due: ${reminder.title}`
+            : "Reminder due.";
+
+        dueModal.style.display = "flex";
+    }
+
+    function closeDueModal() {
+        if (!dueModal) return;
+        dueModal.style.display = "none";
+        activeDueReminder = null;
+    }
+
+    // Buttons
+    dueDismissBtn?.addEventListener("click", closeDueModal);
+
+    dueDoneBtn?.addEventListener("click", async () => {
+        try {
+            if (activeDueReminder?.id) {
+                await updateDoc(doc(remindersCol, activeDueReminder.id), {
+                    done: true,
+                });
+            }
+        } catch (err) {
+            console.error("Failed to mark due reminder done:", err);
+        } finally {
+            closeDueModal();
+        }
+    });
+
+    dueSnoozeBtn?.addEventListener("click", async () => {
+        try {
+            if (!activeDueReminder?.id) return;
+
+            // Snooze by 5 minutes
+            const current = activeDueReminder.due
+                ? new Date(activeDueReminder.due)
+                : new Date();
+            const snoozed = new Date(current.getTime() + 5 * 60 * 1000);
+
+            await updateDoc(doc(remindersCol, activeDueReminder.id), {
+                due: snoozed.toISOString(),
+                done: false,
+            });
+        } catch (err) {
+            console.error("Failed to snooze due reminder:", err);
+        } finally {
+            closeDueModal();
+        }
+    });
 
     // Rendering & sorting
     function render() {
@@ -253,7 +317,7 @@ window.addEventListener("load", async () => {
                     ? sortState.dir === "asc"
                         ? "ascending"
                         : "descending"
-                    : "none"
+                    : "none",
             );
         });
 
@@ -386,7 +450,7 @@ window.addEventListener("load", async () => {
                     (err) => {
                         console.error("Failed to toggle reminder:", err);
                         alert("Error updating reminder. Please try again.");
-                    }
+                    },
                 );
             }
             return;
@@ -424,10 +488,10 @@ window.addEventListener("load", async () => {
             if (!r || r.done || !r.due) return;
             const dueMs = +new Date(r.due);
             if (dueMs && now - dueMs >= 0 && now - dueMs < 30000) {
-                alert(`Reminder due: ${r.title}`);
+                openDueModal(r);
                 if (r.id) {
                     updateDoc(doc(remindersCol, r.id), { done: true }).catch(
-                        console.error
+                        console.error,
                     );
                 }
             }
