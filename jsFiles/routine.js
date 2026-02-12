@@ -1,253 +1,222 @@
-import { userReady, currentUser } from "../firebase.js";
-console.log("routine.JS LOADED");
+import {
+  db, addDoc, deleteDoc, doc, updateDoc,
+  onSnapshot, query, orderBy,
+  userReady, currentUser, userCollection
+} from "../firebase.js";
+
+console.log("routine.js LOADED");
+let tasksCollection = null;
+let routinesCollection = null;
+let editingRoutineId = null; // Track the routine being edited
+let tasks = []; // Array to hold tasks
+
 window.addEventListener("load", async () => {
   await userReady;
+  while (!currentUser || !currentUser.uid) {
+    await new Promise(r => setTimeout(r, 10));
+  }
   console.log("Final UID on load:", currentUser.uid);
+
+  // Get reference to user's "tasks" and "routines" collections
+  tasksCollection = userCollection("tasks");
+  routinesCollection = userCollection("routines");
+
+  // Start listening for live updates on routines
+  startRoutineSnapshotListener();
+  
+  // Initialize button and form events
+  initializeEventListeners();
 });
 
-let editingRoutineId = null; // Track the routine being edited
+function initializeEventListeners() {
+  const routineModal = document.getElementById("routineModal");
+  const routineCreateBtn = document.getElementById("routineCreate-btn");
+  const saveRoutineBtn = document.getElementById("saveRoutine");
+  const cancelRoutineBtn = document.getElementById("cancelRoutine");
+  const routineTaskList = document.getElementById("routineTaskList");
+  const routineNameInput = document.getElementById("routineInput-name");
 
-function getRoutines() {
-    return JSON.parse(localStorage.getItem("routines")) || [];
-}
-
-function saveRoutines(routines) {
-    localStorage.setItem("routines", JSON.stringify(routines));
-}
-
-function getTasks() {
-    return JSON.parse(localStorage.getItem("tasks")) || [];
-}
-
-const routineModal = document.getElementById("routineModal");
-const routineCreateBtn = document.getElementById("routineCreate-btn");
-const saveRoutineBtn = document.getElementById("saveRoutine");
-const cancelRoutineBtn = document.getElementById("cancelRoutine");
-
-const routineTaskList = document.getElementById("routineTaskList");
-const routineNameInput = document.getElementById("routineInput-name");
-
-const routineTaskInput = document.getElementById("routineTaskInput");
-
-// Open modal + load tasks
-routineCreateBtn.addEventListener("click", () => {
+  // Open modal + load tasks
+  routineCreateBtn.addEventListener("click", async () => {
     routineModal.classList.add("active");
-    loadTasksForRoutine();
-});
+    await loadTasksForRoutine();
+  });
 
-// Close modal
-cancelRoutineBtn.addEventListener("click", () => {
+  // Close modal
+  cancelRoutineBtn.addEventListener("click", () => {
     routineModal.classList.remove("active");
     routineNameInput.value = "";
     routineTaskList.innerHTML = "";
-});
+  });
 
-// Load tasks as checkbox list
-function loadTasksForRoutine() {
-    routineTaskList.innerHTML = "";
-
-    const tasks = getTasks();
-
-    if (tasks.length === 0) {
-        routineTaskList.innerHTML = "<p>No tasks available. Create tasks first.</p>";
-        return;
-    }
-
-    tasks.forEach(task => {
-        const li = document.createElement("li");
-        li.classList.add("routine-task-item");
-
-        li.innerHTML = `
-            <label>
-                <input type="checkbox" class="routine-task-checkbox" value="${task.id}">
-                ${task.name}
-            </label>
-        `;
-
-        routineTaskList.appendChild(li);
-    });
+  // Save routine
+  saveRoutineBtn.addEventListener("click", saveRoutine);
 }
 
-// Save routine
-saveRoutineBtn.addEventListener("click", () => {
-    const routineName = routineNameInput.value.trim();
-    const selectedCheckboxes = document.querySelectorAll(".routine-task-checkbox:checked");
+async function loadTasksForRoutine() {
+  tasks = await fetchTasks();
 
-    if (!routineName) {
-        alert("Routine name is required.");
-        return;
-    }
+  const routineTaskList = document.getElementById("routineTaskList");
+  routineTaskList.innerHTML = "";
 
-    if (selectedCheckboxes.length === 0) {
-        alert("Please select at least one task.");
-        return;
-    }
+  if (tasks.length === 0) {
+    routineTaskList.innerHTML = "<p>No tasks available. Create tasks first.</p>";
+    return;
+  }
 
-    const taskIds = Array.from(selectedCheckboxes).map(cb => cb.value);
+  tasks.forEach(task => {
+    const li = document.createElement("li");
+    li.classList.add("routine-task-item");
 
-    const routines = getRoutines();
+    li.innerHTML = `
+      <label>
+        <input type="checkbox" class="routine-task-checkbox" value="${task.id}">
+        ${task.title}
+      </label>
+    `;
 
-    if (editingRoutineId) {
-        // Editing existing routine
-        const index = routines.findIndex(r => r.id === editingRoutineId);
-        if (index !== -1) {
-            routines[index].name = routineName;
-            routines[index].tasks = taskIds;
-        }
-        editingRoutineId = null; // Reset
-        alert("Routine updated!");
-    } else {
-        // Creating new routine
-        const newRoutine = {
-            id: Date.now(),
-            name: routineName,
-            tasks: taskIds
-        };
-        routines.push(newRoutine);
-        alert("Routine saved!");
-    }
+    routineTaskList.appendChild(li);
+  });
+}
 
-    saveRoutines(routines);
+async function fetchTasks() {
+  let fetchedTasks = [];
+  const tasksQuery = query(tasksCollection, orderBy("createdAt", "desc"));
+  const snapshot = await new Promise(resolve => {
+    onSnapshot(tasksQuery, (snap) => {
+      fetchedTasks = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      resolve(fetchedTasks);
+    });
+  });
 
-    // Reset modal
-    routineModal.classList.remove("active");
-    routineNameInput.value = "";
-    routineTaskList.innerHTML = "";
+  return fetchedTasks;
+}
 
-    renderRoutineList(); // Update routine list view
-});
+async function saveRoutine() {
+  const routineNameInput = document.getElementById("routineInput-name");
+  const routineTaskList = document.getElementById("routineTaskList");
+  const routineName = routineNameInput.value.trim();
+  const selectedCheckboxes = document.querySelectorAll(".routine-task-checkbox:checked");
 
-// const routineListViewBtn = document.getElementById("routineListView");
-const routineListModal = document.getElementById("routineListModal");
-const routineList = document.getElementById("routineList");
-const closeRoutineListBtn = document.getElementById("closeRoutineList");
+  if (!routineName) {
+    alert("Routine name is required.");
+    return;
+  }
 
-const addRoutineTaskBtn = document.getElementById("addRoutineTask-Btn");
+  if (selectedCheckboxes.length === 0) {
+    alert("Please select at least one task.");
+    return;
+  }
 
-const routineModalHeader = routineModal.querySelector("h2");
+  const taskIds = Array.from(selectedCheckboxes).map(cb => cb.value);
 
-// Open routine list modal
-// routineListViewBtn.addEventListener("click", () => {
-//     routineListModal.classList.add("active");
-//     renderRoutineList();
-// });
-
-addRoutineTaskBtn.addEventListener('click', () => {
-    const taskName = routineTaskInput.value.trim();
-    if(!taskName) return alert("Task name cannot be empty!");
-
-    const tasks = getTasks();
-
-    const newTask = {
-        id: Date.now(),
-        name: taskName,
-        description: ""
+  if (editingRoutineId) {
+    // Editing existing routine
+    const routineDocRef = doc(routinesCollection, editingRoutineId);
+    await updateDoc(routineDocRef, { name: routineName, tasks: taskIds });
+    alert("Routine updated!");
+    editingRoutineId = null; // Reset
+  } else {
+    // Creating new routine
+    const newRoutine = {
+      name: routineName,
+      tasks: taskIds,
+      createdAt: new Date().toISOString()
     };
+    await addDoc(routinesCollection, newRoutine);
+    alert("Routine saved!");
+  }
 
-    tasks.push(newTask);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+  // Reset modal
+  const routineModal = document.getElementById("routineModal");
+  routineModal.classList.remove("active");
+  routineNameInput.value = "";
+  routineTaskList.innerHTML = "";
 
-    routineTaskInput.value = "";
-
-    loadTasksForRoutine();
-});
-
-function renderRoutineList() {
-    routineList.innerHTML = ""; // Clear previous output
-
-    const routines = getRoutines();
-    const tasks = getTasks();
-
-    if (routines.length === 0) {
-        routineList.innerHTML = "<p>No routines created yet.</p>";
-        return;
-    }
-
-    routines.forEach(routine => {
-        const li = document.createElement("li");
-        li.classList.add("routine-item");
-
-        const routineTasks = routine.tasks
-            .map(id => tasks.find(t => t.id == id)?.name || "(Deleted Task)")
-            .join(", ");
-
-        li.innerHTML = `
-            <strong>${routine.name}</strong><br>
-            <small>${routineTasks}</small>
-            <button class="editRoutineBtn" data-id="${routine.id}">Edit</button>
-            <button class="deleteRoutineBtn" data-id="${routine.id}">Delete</button>
-        `;
-
-        routineList.appendChild(li);
-    });
-
-    // Add click listeners for delete buttons
-    const deleteButtons = document.querySelectorAll(".deleteRoutineBtn");
-    deleteButtons.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            const idToDelete = Number(e.target.dataset.id);
-            deleteRoutine(idToDelete);
-        });
-    });
-
-    // Add click listeners for edit buttons
-    const editButtons = document.querySelectorAll(".editRoutineBtn");
-    editButtons.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            const idToEdit = Number(e.target.dataset.id);
-            openRoutineForEdit(idToEdit);
-        });
-    });
+  renderRoutineList(); // Update routine list view
 }
 
-// Close routine list modal
-closeRoutineListBtn.addEventListener("click", () => {
-    routineListModal.classList.remove("active");
-});
+function startRoutineSnapshotListener() {
+  const routinesQuery = query(routinesCollection, orderBy("createdAt", "desc"));
+  
+  onSnapshot(routinesQuery, (snapshot) => {
+    const routines = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    renderRoutineList(routines);
+  });
+}
 
-function deleteRoutine(id) {
-    let routines = getRoutines();
-    routines = routines.filter(routine => routine.id !== id);
-    saveRoutines(routines);
-    renderRoutineList(); // Re-render the list after deletion
+function renderRoutineList(routines) {
+  const routineList = document.getElementById("routineList");
+  routineList.innerHTML = ""; // Clear previous output
+
+  if (routines.length === 0) {
+    routineList.innerHTML = "<p>No routines created yet.</p>";
+    return;
+  }
+
+  routines.forEach(routine => {
+    const li = document.createElement("li");
+    li.classList.add("routine-item");
+
+    const routineTasks = routine.tasks
+      .map(id => tasks.find(t => t.id === id)?.title || "(Deleted Task)")
+      .join(", ");
+      
+    li.innerHTML = `
+      <strong>${routine.name}</strong><br>
+      <small>${routineTasks}</small>
+      <button class="editRoutineBtn" data-id="${routine.id}">Edit</button>
+      <button class="deleteRoutineBtn" data-id="${routine.id}">Delete</button>
+    `;
+
+    routineList.appendChild(li);
+  });
+
+  // Add click listeners for delete buttons
+  const deleteButtons = document.querySelectorAll(".deleteRoutineBtn");
+  deleteButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const idToDelete = e.target.dataset.id;
+      deleteRoutine(idToDelete);
+    });
+  });
+
+  // Add click listeners for edit buttons
+  const editButtons = document.querySelectorAll(".editRoutineBtn");
+  editButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const idToEdit = e.target.dataset.id;
+      openRoutineForEdit(idToEdit);
+    });
+  });
+}
+
+async function deleteRoutine(id) {
+  try {
+    const routineDocRef = doc(routinesCollection, id);
+    await deleteDoc(routineDocRef);
     alert("Routine deleted!");
+  } catch (error) {
+    console.error("Error deleting routine:", error);
+  }
 }
 
-function openRoutineForEdit(id) {
-    const routines = getRoutines();
-    const routine = routines.find(r => r.id === id);
-    if (!routine) return alert("Routine not found!");
+async function openRoutineForEdit(id) {
+  const routines = []; // To be fetched from Firestore
+  const routine = routines.find(r => r.id === id);
+  if (!routine) return alert("Routine not found!");
 
-    routineListModal.classList.remove("active");
+  const routineModal = document.getElementById("routineModal");
+  routineModal.classList.add("active");
 
-    // Set editing ID
-    editingRoutineId = id;
+  // Set editing ID
+  editingRoutineId = id;
+  const routineModalHeader = routineModal.querySelector("h2");
+  routineModalHeader.textContent = "Update Your Routine";
 
-    routineModalHeader.textContent = "Update Your Routine";
+  // Pre-fill routine modal
+  const routineNameInput = document.getElementById("routineInput-name");
+  routineNameInput.value = routine.name;
 
-    // Pre-fill routine modal
-    routineNameInput.value = routine.name;
-    routineModal.classList.add("active");
-
-    // Load tasks and mark those included in this routine as checked
-    routineTaskList.innerHTML = "";
-    const tasks = getTasks();
-    if (tasks.length === 0) {
-        routineTaskList.innerHTML = "<p>No tasks available. Create tasks first.</p>";
-        return;
-    }
-
-    tasks.forEach(task => {
-        const li = document.createElement("li");
-        li.classList.add("routine-task-item");
-
-        li.innerHTML = `
-            <label>
-                <input type="checkbox" class="routine-task-checkbox" value="${task.id}" ${routine.tasks.includes(task.id.toString()) ? "checked" : ""}>
-                ${task.name}
-            </label>
-        `;
-
-        routineTaskList.appendChild(li);
-    });
+  await loadTasksForRoutine();
 }
