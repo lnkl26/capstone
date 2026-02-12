@@ -1,0 +1,296 @@
+{
+  "get_ready": [
+    "make bed",
+    "wash face",
+    "brush teeth",
+    "wear clothes"
+  ],
+  "go_shopping": [
+    "make a list",
+    "find wallet",
+    "grab keys",
+    "drive to store"
+  ],
+  "clean_house": [
+    "pick up clutter",
+    "dust surfaces",
+    "vacuum floors",
+    "take out trash"
+  ],
+  "clean_kitchen": [
+    "wash dishes",
+    "wipe counters",
+    "clean stove",
+    "sweep floor"
+  ],
+  "clean_bathroom": [
+    "scrub toilet",
+    "clean sink",
+    "wipe mirror",
+    "mop floor"
+  ],
+  "do_laundry": [
+    "sort clothes",
+    "load washer",
+    "add detergent",
+    "fold clothes"
+  ],
+  "study": [
+    "review notes",
+    "read material",
+    "take practice questions",
+    "summarize key points"
+  ],
+  "exercise": [
+    "warm up",
+    "do main workout",
+    "cool down",
+    "stretch"
+  ],
+  "plan_trip": [
+    "choose destination",
+    "book transport",
+    "reserve accommodation",
+    "pack bags"
+  ],
+  "cook_dinner": [
+    "choose recipe",
+    "prepare ingredients",
+    "cook food",
+    "clean up"
+  ],
+  "prepare_presentation": [
+    "outline topics",
+    "create slides",
+    "add visuals",
+    "practice delivery"
+  ],
+  "organize_room": [
+    "remove clutter",
+    "sort items",
+    "arrange furniture",
+    "clean surfaces"
+  ],
+  "write_blog_post": [
+    "choose topic",
+    "create outline",
+    "write draft",
+    "edit content"
+  ],
+  "start_project": [
+    "define goal",
+    "list requirements",
+    "create timeline",
+    "begin first task"
+  ],
+  "apply_for_job": [
+    "update resume",
+    "write cover letter",
+    "fill application",
+    "submit documents"
+  ],
+  "prepare_for_exam": [
+    "review syllabus",
+    "create study plan",
+    "practice questions",
+    "revise weak areas"
+  ],
+  "budget_finances": [
+    "list income",
+    "list expenses",
+    "categorize spending",
+    "set savings goal"
+  ],
+  "morning_routine": [
+    "wake up",
+    "brush teeth",
+    "shower",
+    "eat breakfast"
+  ],
+  "evening_routine": [
+    "clean up space",
+    "prepare for tomorrow",
+    "relax",
+    "sleep"
+  ],
+  "host_guests": [
+    "clean house",
+    "prepare food",
+    "set table",
+    "welcome guests"
+  ],
+  "move_apartment": [
+    "pack belongings",
+    "label boxes",
+    "hire transport",
+    "unpack items"
+  ],
+  "start_business": [
+    "research market",
+    "define offer",
+    "register business",
+    "launch product"
+  ],
+  "improve_health": [
+    "plan meals",
+    "exercise regularly",
+    "sleep adequately",
+    "track progress"
+  ],
+  "learn_skill": [
+    "choose resource",
+    "set schedule",
+    "practice daily",
+    "review progress"
+  ],
+  "network_professionally": [
+    "update profile",
+    "reach out to contacts",
+    "attend events",
+    "follow up"
+  ],
+  "fix_bug": [
+    "reproduce issue",
+    "identify cause",
+    "write fix",
+    "test solution"
+  ],
+  "build_website": [
+    "choose domain",
+    "design layout",
+    "develop pages",
+    "deploy site"
+  ],
+  "declutter": [
+    "sort items",
+    "donate unused items",
+    "discard trash",
+    "organize remaining"
+  ],
+  "plan_week": [
+    "review goals",
+    "list tasks",
+    "prioritize items",
+    "schedule calendar"
+  ],
+  "read_book": [
+    "choose book",
+    "set reading time",
+    "read chapters",
+    "take notes"
+  ],
+  "meal_prep": [
+    "plan meals",
+    "buy groceries",
+    "cook in batches",
+    "store portions"
+  ],
+  "start_workday": [
+    "review tasks",
+    "check emails",
+    "prioritize work",
+    "begin first task"
+  ],
+  "end_workday": [
+    "review progress",
+    "update task list",
+    "organize workspace",
+    "shut down computer"
+  ],
+  "organize_files": [
+    "create folders",
+    "rename files",
+    "delete duplicates",
+    "backup data"
+  ],
+  "car_maintenance": [
+    "check oil",
+    "check tires",
+    "refill fluids",
+    "schedule service"
+  ],
+  "self_care": [
+    "take shower",
+    "relax",
+    "journal thoughts",
+    "sleep early"
+  ],
+  "prepare_meeting": [
+    "set agenda",
+    "gather materials",
+    "invite participants",
+    "review objectives"
+  ],
+  "launch_product": [
+    "finalize features",
+    "test product",
+    "create marketing plan",
+    "announce launch"
+  ],
+  "improve_productivity": [
+    "identify distractions",
+    "set priorities",
+    "use time blocks",
+    "review results"
+  ],
+  "plan_event": [
+    "set date",
+    "choose venue",
+    "send invites",
+    "prepare materials"
+  ],
+  "write_report": [
+    "gather data",
+    "create outline",
+    "write draft",
+    "proofread"
+  ],
+  "renovate_room": [
+    "choose design",
+    "buy materials",
+    "prepare space",
+    "complete installation"
+  ],
+  "save_money": [
+    "track expenses",
+    "cut unnecessary costs",
+    "set budget",
+    "automate savings"
+  ],
+  "improve_diet": [
+    "reduce junk food",
+    "add vegetables",
+    "plan meals",
+    "drink more water"
+  ],
+  "practice_mindfulness": [
+    "find quiet space",
+    "set timer",
+    "focus on breathing",
+    "reflect"
+  ],
+  "create_portfolio": [
+    "select projects",
+    "write descriptions",
+    "design layout",
+    "publish online"
+  ],
+  "update_resume": [
+    "add recent experience",
+    "update skills",
+    "format document",
+    "proofread"
+  ],
+  "deep_clean": [
+    "move furniture",
+    "clean hidden areas",
+    "wash fabrics",
+    "sanitize surfaces"
+  ],
+  "prepare_interview": [
+    "research company",
+    "review job description",
+    "practice answers",
+    "prepare questions"
+  ]
+}

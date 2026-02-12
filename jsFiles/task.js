@@ -17,6 +17,9 @@ window.addEventListener("DOMContentLoaded", async () => {
   }
   console.log("User ready in task.js:", currentUser?.uid);
 
+  // Initialize large task selector
+  initLargeTaskSelector();
+
   // Get reference to user's "tasks" collection
   tasksCollection = userCollection("tasks");
 
@@ -48,6 +51,9 @@ function wireEventListeners() {
     taskInputDesc.value = "";
     currentSubtasks = [];
     renderSubtasks();
+    
+    // Initialize large task selector in the modal when opened
+    initLargeTaskSelector();
   });
 
   // Cancel modal
@@ -318,6 +324,112 @@ function startInlineEdit(taskEl, task) {
 
   input.addEventListener("blur", () => renderTasks());
 }
+
+// Function to load subtasks from a JSON file
+async function loadTasksFromJSON() {
+  try {
+    const response = await fetch('../jsFiles/tasks.json'); // Ensure the correct path to tasks.json
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
+  } catch (error) {
+    console.error('Error loading tasks JSON:', error);
+    return {};
+  }
+}
+
+// Function to decompose large task into subtasks
+async function decomposeLargeTask(largeTask) {
+  const tasksFromJSON = await loadTasksFromJSON();
+  const subtasks = tasksFromJSON[largeTask] || [];
+
+  if (subtasks.length === 0) {
+    console.warn(`No subtasks found for: ${largeTask}`);
+    return;
+  }
+
+  // Autofill the task name
+  const taskInputName = document.getElementById("taskInput-name");
+  taskInputName.value = largeTask.replace("_", " "); // Replace underscore with space for better user readability
+
+  currentSubtasks = []; // Clear existing subtasks
+  currentSubtasks.push(...subtasks); // Add new subtasks
+  renderSubtasks(); // Render the new subtasks
+}
+
+
+// Hook the decompose function into the UI
+function initLargeTaskSelector() {
+  const existingSelect = document.getElementById("largeTaskSelect");
+  if (existingSelect) {
+    return;
+  }
+
+  const largeTaskSelect = document.createElement("select");
+  largeTaskSelect.id = "largeTaskSelect";
+
+  largeTaskSelect.innerHTML = `
+    <option value="">Select a Large Task</option>
+    <option value="get_ready">Get Ready</option>
+    <option value="go_shopping">Go Shopping</option>
+    <option value="clean_house">Clean House</option>
+    <option value="clean_kitchen">Clean Kitchen</option>
+    <option value="clean_bathroom">Clean Bathroom</option>
+    <option value="do_laundry">Do Laundry</option>
+    <option value="study">Study</option>
+    <option value="exercise">Exercise</option>
+    <option value="plan_trip">Plan Trip</option>
+    <option value="cook_dinner">Cook Dinner</option>
+    <option value="prepare_presentation">Prepare Presentation</option>
+    <option value="organize_room">Organize Room</option>
+    <option value="write_blog_post">Write Blog Post</option>
+    <option value="start_project">Start Project</option>
+    <option value="apply_for_job">Apply For Job</option>
+    <option value="prepare_for_exam">Prepare For Exam</option>
+    <option value="budget_finances">Budget Finances</option>
+    <option value="morning_routine">Morning Routine</option>
+    <option value="evening_routine">Evening Routine</option>
+    <option value="host_guests">Host Guests</option>
+    <option value="move_apartment">Move Apartment</option>
+    <option value="start_business">Start Business</option>
+    <option value="improve_health">Improve Health</option>
+    <option value="learn_skill">Learn Skill</option>
+    <option value="network_professionally">Network Professionally</option>
+    <option value="fix_bug">Fix Bug</option>
+    <option value="build_website">Build Website</option>
+    <option value="declutter">Declutter</option>
+    <option value="plan_week">Plan Week</option>
+    <option value="read_book">Read Book</option>
+    <option value="meal_prep">Meal Prep</option>
+    <option value="start_workday">Start Workday</option>
+    <option value="end_workday">End Workday</option>
+    <option value="organize_files">Organize Files</option>
+    <option value="car_maintenance">Car Maintenance</option>
+    <option value="self_care">Self Care</option>
+    <option value="prepare_meeting">Prepare Meeting</option>
+    <option value="launch_product">Launch Product</option>
+    <option value="improve_productivity">Improve Productivity</option>
+    <option value="plan_event">Plan Event</option>
+    <option value="write_report">Write Report</option>
+    <option value="renovate_room">Renovate Room</option>
+    <option value="save_money">Save Money</option>
+    <option value="improve_diet">Improve Diet</option>
+    <option value="practice_mindfulness">Practice Mindfulness</option>
+    <option value="create_portfolio">Create Portfolio</option>
+    <option value="update_resume">Update Resume</option>
+    <option value="deep_clean">Deep Clean</option>
+    <option value="prepare_interview">Prepare Interview</option>
+  `;
+
+  const inputArea = document.querySelector(".input-area");
+  inputArea.prepend(largeTaskSelect);
+
+  largeTaskSelect.addEventListener("change", (event) => {
+    if (event.target.value) {
+      decomposeLargeTask(event.target.value);
+    }
+  });
+}
+
 
 // OLD CODE
 // import {
