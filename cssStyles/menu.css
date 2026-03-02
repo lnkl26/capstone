@@ -1,12 +1,25 @@
-body {
+/* body {
     background-color: #f8f8f8;
-}
+} */
 
-.noto-sans-font-style-normal {
+body, .noto-sans-font-style-normal {
+    display: flex;
+    text-align: center;
+    justify-content: center;
     font-family: "Noto Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 100;
     font-style: normal;
+}
+
+.header {
+    margin-top: 2rem;
+}
+
+.navigation-area button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .button {
