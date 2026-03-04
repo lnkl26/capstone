@@ -71,26 +71,6 @@ function wireEventListeners() {
     }
   });
 
-  function renderSubtasks() {
-    subtaskList.innerHTML = "";
-    currentSubtasks.forEach((sub, index) => {
-      const li = document.createElement("li");
-      li.textContent = sub;
-
-      // delete subtask button
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "x";
-      delBtn.style.marginLeft = "5px";
-      delBtn.addEventListener("click", () => {
-        currentSubtasks.splice(index, 1);
-        renderSubtasks();
-      });
-
-      li.appendChild(delBtn);
-      subtaskList.appendChild(li);
-    });
-  }
-
   // Save task
   saveTaskBtn.addEventListener("click", async () => {
     const title = taskInputName.value.trim();
@@ -112,7 +92,39 @@ function wireEventListeners() {
     await addTask(task);
     taskModal.classList.remove("active");
   });
+
+  const suggestBtn = document.getElementById("suggestSubtasksBtn");
+  const AItaskInputName = document.getElementById("taskInput-name");
+
+suggestBtn.addEventListener("click", () => {
+    const taskName = AItaskInputName.value.trim();
+    if (taskName) {
+        fetchAISuggestions(taskName);
+    } else {
+        alert("Please enter a task name first!");
+    }
+});
 }
+
+  function renderSubtasks() {
+    subtaskList.innerHTML = "";
+    currentSubtasks.forEach((sub, index) => {
+      const li = document.createElement("li");
+      li.textContent = sub;
+
+      // delete subtask button
+      const delBtn = document.createElement("button");
+      delBtn.textContent = "x";
+      delBtn.style.marginLeft = "5px";
+      delBtn.addEventListener("click", () => {
+        currentSubtasks.splice(index, 1);
+        renderSubtasks();
+      });
+
+      li.appendChild(delBtn);
+      subtaskList.appendChild(li);
+    });
+  }
 
 // -------------------------
 // Firestore: Add Task
@@ -430,6 +442,64 @@ function initLargeTaskSelector() {
   });
 }
 
+async function fetchAISuggestions(taskName) {
+    const suggestionList = document.getElementById("aiSuggestionList");
+    const container = document.getElementById("aiSuggestionContainer");
+    
+    const functionUrl = "https://suggestsubtasks-ie3j3rv3yq-uc.a.run.app"; 
+    
+    //show loading state
+    suggestionList.innerHTML = "<span style='font-style:italic; color:#666;'>Gemini is thinking...</span>";
+    container.style.display = "block";
+
+    try {
+        //call Firebase function
+        const response = await fetch(`${functionUrl}?taskName=${encodeURIComponent(taskName)}`);
+        
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        
+        const data = await response.json();
+        suggestionList.innerHTML = ""; // clear loading text
+
+        //handle the array of subtasks returned by gemini
+        if (data.subtasks && data.subtasks.length > 0) {
+            data.subtasks.forEach(sub => {
+                const pill = document.createElement("div");
+                pill.className = "ai-pill";
+                
+                //keep the same look and logic
+                pill.innerHTML = `
+                    <span>${sub}</span>
+                    <button type="button" class="accept-suggestion">+</button>
+                `;
+                
+                  pill.querySelector("button").addEventListener("click", () => {
+                  //add to groups global subtask array
+                  if (typeof currentSubtasks !== 'undefined') {
+                      currentSubtasks.push(sub);
+                      
+                      //call groups function that draws the list on the screen
+                      renderSubtasks(); 
+                      
+                      //visual feedback
+                      pill.style.backgroundColor = "#4ade80"; 
+                      setTimeout(() => pill.remove(), 200);
+                  } else {
+                      console.error("The variable 'currentSubtasks' isn't defined in your group's code!");
+                  }
+              });
+
+                suggestionList.appendChild(pill);
+            });
+        } else {
+            suggestionList.innerHTML = "<span>No suggestions found. Try a different task name.</span>";
+        }
+
+    } catch (error) {
+        console.error("AI Error:", error);
+        suggestionList.innerHTML = "<span style='color:red;'>Failed to reach AI. Check console.</span>";
+    }
+}
 
 // OLD CODE
 // import {

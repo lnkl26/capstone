@@ -46,28 +46,45 @@
     </section>
 
     <!--sharing section-->
-    <section id="log-section">
-      <div class="section-title">Share With Someone</div>
+  <section id="log-section">
+    <div class="section-title">Share My Account</div>
 
-      <div class="form-row">
-        <label for="otherShareCode">Their Code</label>
-        <input
-          id="otherShareCode"
-          class="input full"
-          type="text"
-          placeholder="Enter share code"
-        />
-      </div>
-    <section class="log-section">
-    <div class="section-title">Incoming Invites</div>
-    <div id="incomingInvites" class="empty" style="text-align:center;">No invites yet.</div>
-    </section>
+    <div class="form-row">
+    <label for="otherShareCode">Their Code</label>
+    <input id="otherShareCode" class="input full" type="text" placeholder="Enter share code" />
+    </div>
 
-      <div class="button-row">
-        <button id="sendInvite" class="button">Send Invite</button>
-      </div>
+    <div class="form-row">
+      <label for="sharePermission">Permission</label>
+      <select id="sharePermission" class="input full">
+      <option value="viewer">View Only</option>
+      <option value="editor">Can Edit</option>
+    </select>
+    </div>
 
-      <p id="status" class="empty" style="text-align:center;"></p>
+  <div class="button-row">
+    <button id="sendInvite" class="button">Send Invite</button>
+  </div>
+  </section>
+  
+  <section class="log-section">
+    <div class="section-title">Pending Sent Invites</div>
+    <div id="sentInvites" class="empty" style="text-align:center;">No pending sent invites.</div>
+  </section>
+
+  <section class="log-section">
+   <div class="section-title">Incoming Invites</div>
+   <div id="incomingInvites" class="empty" style="text-align:center;">No invites yet.</div>
+  </section>
+
+  <section class="log-section">
+    <div class="section-title">People with Access to My Account</div>
+    <div id="activeShares" class="empty" style="text-align:center;">No one has access yet.</div>
+  </section>
+
+  <section class="log-section">
+      <div class="section-title">Accounts Shared With Me</div>
+      <div id="sharedWithMe" class="empty" style="text-align:center;">No one is sharing with you.</div>
     </section>
 
     <!--back button-->
