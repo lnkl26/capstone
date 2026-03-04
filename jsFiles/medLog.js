@@ -30,70 +30,72 @@ await userReady;
   //create a small "Viewing:" selector only if user has shared accounts
   async function setupViewSelector() {
     //sharedWith lives under the VIEWER (me)
-    const sharedWithRef = collection(db, "users", meUid, "sharedWith");
-    const snap = await getDocs(sharedWithRef);
+  const sharedWithRef = collection(db, "users", meUid, "sharedWith");
+  const snap = await getDocs(sharedWithRef);
 
     //if no shared accounts, nothing to add
-    if (snap.empty) return;
+  if (snap.empty) return;
 
     //build UI
-    const container = document.querySelector(".page-container") || document.body;
+  const container = document.querySelector(".page-container") || document.body;
+  const wrap = document.createElement("div");
+  wrap.style.maxWidth = "600px";
+  wrap.style.margin = "0 auto 10px auto";
+  wrap.style.width = "86%";
 
-    const wrap = document.createElement("div");
-    wrap.style.maxWidth = "600px";
-    wrap.style.margin = "0 auto 10px auto";
-    wrap.style.width = "86%";
+  wrap.innerHTML = `
+    <div class="form-row">
+      <label for="viewAs">Viewing</label>
+      <select id="viewAs" class="input full"></select>
+    </div>
+    <div id="viewHint" class="empty" style="text-align:center; margin-top:6px;"></div>
+  `;
 
-    wrap.innerHTML = `
-      <div class="form-row">
-        <label for="viewAs">Viewing</label>
-        <select id="viewAs" class="input full"></select>
-      </div>
-      <div id="viewHint" class="empty" style="text-align:center; margin-top:6px;"></div>
-    `;
-
-    const titleEl = document.querySelector("h1.title");
-    if (titleEl && titleEl.parentNode) {
-      titleEl.parentNode.insertBefore(wrap, titleEl.nextSibling);
-    } else {
-      container.insertBefore(wrap, container.firstChild);
-    }
-
-    const sel = wrap.querySelector("#viewAs");
-    const hint = wrap.querySelector("#viewHint");
-
-    //me
-    const optMe = document.createElement("option");
-    optMe.value = meUid;
-    optMe.textContent = "Me";
-    sel.appendChild(optMe);
-
-    //shared owners
-    snap.forEach(d => {
-      const ownerUid = d.id;
-      const data = d.data();
-      //fallback if no name provided
-      const ownerName = data.ownerName || `${ownerUid.slice(0, 6)}…`;
-
-      const opt = document.createElement("option");
-      opt.value = ownerUid;
-      opt.textContent = `Shared: ${ownerName}`;
-      sel.appendChild(opt);
-    });
-
-    //set current selection
-    sel.value = activeOwnerUid;
-
-    //hint for read-only view
-    hint.textContent = (activeOwnerUid !== meUid)
-      ? "Viewing shared data."
-      : "";
-
-    sel.addEventListener("change", () => {
-      localStorage.setItem("activeOwnerUid", sel.value);
-      location.reload(); //simplest + safest with your current snapshot setup
-    });
+  const titleEl = document.querySelector("h1.title");
+  if (titleEl && titleEl.parentNode) {
+    titleEl.parentNode.insertBefore(wrap, titleEl.nextSibling);
+  } else {
+    container.insertBefore(wrap, container.firstChild);
   }
+
+  const sel = wrap.querySelector("#viewAs");
+  const hint = wrap.querySelector("#viewHint");
+  const myProfile = await getDoc(doc(db, "users", meUid));
+  const myName = (myProfile.exists() && myProfile.data().displayName) ? myProfile.data().displayName : "Me";
+  
+  const optMe = document.createElement("option");
+  optMe.value = meUid;
+  optMe.textContent = myName;
+  sel.appendChild(optMe);
+
+  //add Shared Owners
+  for (const d of snap.docs) {
+    const ownerUid = d.id;
+    const data = d.data();
+    let ownerName = data.ownerName;
+
+    //i the shared record has no name, fetch it from the owner's user doc
+    if (!ownerName) {
+      const ownerProfile = await getDoc(doc(db, "users", ownerUid));
+      if (ownerProfile.exists()) {
+        ownerName = ownerProfile.data().displayName;
+      }
+    }
+    //set current selection
+    const opt = document.createElement("option");
+    opt.value = ownerUid;
+    opt.textContent = `Shared: ${ownerName || ownerUid.slice(0, 6)}`;
+    sel.appendChild(opt);
+  }
+
+  sel.value = activeOwnerUid;
+  hint.textContent = (activeOwnerUid !== meUid) ? "Viewing shared data." : "";
+
+  sel.addEventListener("change", () => {
+    localStorage.setItem("activeOwnerUid", sel.value);
+    location.reload();
+  });
+}
 
   await setupViewSelector();
 
