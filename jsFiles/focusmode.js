@@ -32,6 +32,7 @@ let focusInput;
 let breakInput;
 
 let taskBtn;
+let pomodoroTaskHeading;
 let taskModal;
 let closeTaskModal;
 let firebaseTaskList;
@@ -67,6 +68,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
   // Task modal elements
   taskBtn = document.getElementById('taskButton');
+  pomodoroTaskHeading = document.getElementById('pomodoroTaskHeading');
   taskModal = document.getElementById('taskModal');
   closeTaskModal = document.getElementById('closeTaskModal');
   firebaseTaskList = document.getElementById('firebaseTaskList');
@@ -273,14 +275,17 @@ function addTaskToPomodoro(task) {
 // -------------------------
 function renderPomodoroTasks() {
   pomodoroTaskList.innerHTML = '';
+  pomodoroTaskHeading.innerHTML = 'Your Pomodoro Tasks';
+  if (state.includes("BREAK")) {
+    pomodoroTaskHeading.innerHTML = 'Break Time';
+    pomodoroTaskList.innerHTML = '<li></li>';
+    return;
+  }
   if (pomodoroTasks.length === 0) {
     pomodoroTaskList.innerHTML = '<li>Add tasks from "Your Tasks"</li>';
     return;
   }
-  if (state.includes("BREAK")) {
-    pomodoroTaskList.innerHTML = '<li>Break Time</li>';
-    return;
-  }
+  
 
   pomodoroTasks.forEach((task, index) => {
     const li = document.createElement('li');

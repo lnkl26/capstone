@@ -11,12 +11,19 @@ import {
 import { userReady, currentUser } from "../firebase.js";
 console.log("reminder.JS LOADED");
 window.addEventListener("load", async () => {
-  await userReady;
-  console.log("Final UID on load:", currentUser.uid);
+    await userReady;
+    console.log("Final UID on load:", currentUser.uid);
 });
 
 (function () {
-    if (!document.body || document.body.id !== "reminder-page") return;
+    if (!document.body || document.body.id !== "reminder-page") {
+        console.warn(
+            "[reminder.js] Body id is:",
+            document.body?.id,
+            "— expected 'reminder-page'. Script halted.",
+        );
+        return;
+    }
 
     const $ = (id) => document.getElementById(id);
 
@@ -78,7 +85,7 @@ window.addEventListener("load", async () => {
     function toLocalInputValue(dt) {
         const pad = (n) => String(n).padStart(2, "0");
         return `${dt.getFullYear()}-${pad(dt.getMonth() + 1)}-${pad(
-            dt.getDate()
+            dt.getDate(),
         )}T${pad(dt.getHours())}:${pad(dt.getMinutes())}`;
     }
 
@@ -191,8 +198,8 @@ window.addEventListener("load", async () => {
                 snapshotReminders.map((r) =>
                     r.id
                         ? deleteDoc(doc(remindersCol, r.id))
-                        : Promise.resolve()
-                )
+                        : Promise.resolve(),
+                ),
             );
         } catch (err) {
             console.error("Failed to clear reminders:", err);
@@ -253,7 +260,7 @@ window.addEventListener("load", async () => {
                     ? sortState.dir === "asc"
                         ? "ascending"
                         : "descending"
-                    : "none"
+                    : "none",
             );
         });
 
@@ -386,7 +393,7 @@ window.addEventListener("load", async () => {
                     (err) => {
                         console.error("Failed to toggle reminder:", err);
                         alert("Error updating reminder. Please try again.");
-                    }
+                    },
                 );
             }
             return;
@@ -417,17 +424,63 @@ window.addEventListener("load", async () => {
         }
     });
 
-    // Alert when reminder is due
+    // In-app notification
+    let toastContainer = document.getElementById("reminder-toast-container");
+    if (!toastContainer) {
+        toastContainer = document.createElement("div");
+        toastContainer.id = "reminder-toast-container";
+        document.body.appendChild(toastContainer);
+    }
+
+    // showReminderToast("Test", Date.now()) to test
+    window.showReminderToast = function showReminderToast(title, dueMs) {
+        const toast = document.createElement("div");
+        toast.className = "reminder-toast";
+
+        const timeStr = dueMs
+            ? new Date(dueMs).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+              })
+            : "";
+
+        toast.innerHTML = `
+            <div class="reminder-toast-icon">&#x1F514;</div>
+            <div class="reminder-toast-body">
+                <div class="reminder-toast-label">Reminder Due</div>
+                <div class="reminder-toast-title">${String(title).replace(/</g, "&lt;")}</div>
+                ${timeStr ? `<div class="reminder-toast-time">${timeStr}</div>` : ""}
+            </div>
+            <button class="reminder-toast-close" type="button">Dismiss</button>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        function dismiss() {
+            toast.classList.add("toast-leaving");
+            toast.addEventListener("animationend", () => toast.remove(), {
+                once: true,
+            });
+            setTimeout(() => toast.remove(), 400);
+        }
+
+        toast
+            .querySelector(".reminder-toast-close")
+            .addEventListener("click", dismiss);
+        setTimeout(dismiss, 10000); // auto-dismiss after 10 s
+    };
+
+    // Poll every 30 seconds
     setInterval(() => {
         const now = Date.now();
         reminders.forEach((r) => {
             if (!r || r.done || !r.due) return;
             const dueMs = +new Date(r.due);
             if (dueMs && now - dueMs >= 0 && now - dueMs < 30000) {
-                alert(`Reminder due: ${r.title}`);
+                window.showReminderToast(r.title, dueMs);
                 if (r.id) {
                     updateDoc(doc(remindersCol, r.id), { done: true }).catch(
-                        console.error
+                        console.error,
                     );
                 }
             }
