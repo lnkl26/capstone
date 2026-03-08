@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
@@ -11,6 +11,12 @@
 
         <div class="task-btns">
             <button id="dietCreate-btn" class="button">Log Food</button>
+            <button id="dietFilter-open-btn" class="button btn-secondary">
+                Filter
+            </button>
+            <button id="dietTools-open-btn" class="button btn-secondary">
+                Tools
+            </button>
             <a href="foodMed.html" class="button btn-secondary">Back</a>
         </div>
 
@@ -129,39 +135,60 @@
             </div>
         </div>
 
-        <!-- Filter / Totals / Table -->
-        <section class="card">
-            <h2>Filter</h2>
-            <div class="grid-3">
-                <label
-                    >From
-                    <input type="date" id="diet-filter-from" />
-                </label>
-                <label
-                    >To
-                    <input type="date" id="diet-filter-to" />
-                </label>
-                <label
-                    >Meal
-                    <select id="diet-filter-meal">
-                        <option value="">All</option>
-                        <option>Breakfast</option>
-                        <option>Lunch</option>
-                        <option>Dinner</option>
-                        <option>Snack</option>
-                    </select>
-                </label>
-            </div>
+        <div
+            id="diet-filter-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diet-filter-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="diet-filter-title">Filter Entries</h2>
+                <div class="task-input-area">
+                    <div class="grid-3">
+                        <label
+                            >From
+                            <input type="date" id="diet-filter-from" />
+                        </label>
+                        <label
+                            >To
+                            <input type="date" id="diet-filter-to" />
+                        </label>
+                        <label
+                            >Meal
+                            <select id="diet-filter-meal">
+                                <option value="">All</option>
+                                <option>Breakfast</option>
+                                <option>Lunch</option>
+                                <option>Dinner</option>
+                                <option>Snack</option>
+                            </select>
+                        </label>
+                    </div>
 
-            <div class="task-btns filter-actions">
-                <button id="diet-apply-filter" class="button btn-secondary">
-                    Apply
-                </button>
-                <button id="diet-reset-filter" class="button btn-secondary">
-                    Reset
-                </button>
+                    <div class="task-btns filter-actions">
+                        <button id="diet-apply-filter" class="button">
+                            Apply
+                        </button>
+                        <button
+                            type="button"
+                            id="diet-close-filter"
+                            class="button btn-secondary"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            id="diet-reset-filter"
+                            class="button btn-secondary"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
             </div>
-        </section>
+        </div>
 
         <section class="card">
             <h2>Totals</h2>
@@ -205,41 +232,57 @@
             </div>
         </section>
 
-        <section class="card">
-            <h2>Import / Export</h2>
-            <div class="task-btns import-actions">
-                <button
-                    type="button"
-                    id="diet-export-csv"
-                    class="button btn-secondary"
-                >
-                    Export CSV
-                </button>
-                <button
-                    type="button"
-                    id="diet-export-json"
-                    class="button btn-secondary"
-                >
-                    Export JSON
-                </button>
-                <label class="button btn-secondary">
-                    Import JSON
-                    <input
-                        type="file"
-                        id="diet-import-json"
-                        accept="application/json"
-                        style="display: none"
-                    />
-                </label>
-                <button
-                    type="button"
-                    id="diet-clear-all"
-                    class="button btn-secondary"
-                >
-                    Clear All
-                </button>
+        <div
+            id="diet-tools-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diet-tools-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="diet-tools-title">Import / Export</h2>
+                <div class="task-btns import-actions wrap-actions">
+                    <button
+                        type="button"
+                        id="diet-export-csv"
+                        class="button btn-secondary"
+                    >
+                        Export CSV
+                    </button>
+                    <button
+                        type="button"
+                        id="diet-export-json"
+                        class="button btn-secondary"
+                    >
+                        Export JSON
+                    </button>
+                    <label class="button btn-secondary">
+                        Import JSON
+                        <input
+                            type="file"
+                            id="diet-import-json"
+                            accept="application/json"
+                            style="display: none"
+                        />
+                    </label>
+                    <button
+                        type="button"
+                        id="diet-clear-all"
+                        class="button danger"
+                    >
+                        Clear All
+                    </button>
+                    <button
+                        type="button"
+                        id="diet-close-tools"
+                        class="button btn-secondary"
+                    >
+                        Close
+                    </button>
+                </div>
             </div>
-        </section>
+        </div>
         <script type="module" src="../firebase.js"></script>
         <script type="module" src="../jsFiles/dietLog.js"></script>
     </body>

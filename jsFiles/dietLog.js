@@ -11,10 +11,9 @@ import {
 import { userReady, currentUser } from "../firebase.js";
 
 window.addEventListener("load", async () => {
-  await userReady;
-  console.log("Final UID on load:", currentUser.uid);
+    await userReady;
+    console.log("Final UID on load:", currentUser.uid);
 });
-
 
 (function () {
     if (document.body.id !== "diet-log-page") return;
@@ -24,6 +23,12 @@ window.addEventListener("load", async () => {
     const dietModal = $("diet-modal");
     const dietCreateBtn = $("dietCreate-btn");
     const dietCancelBtn = $("diet-cancel-btn");
+    const filterModal = $("diet-filter-modal");
+    const toolsModal = $("diet-tools-modal");
+    const filterOpenBtn = $("dietFilter-open-btn");
+    const toolsOpenBtn = $("dietTools-open-btn");
+    const filterCloseBtn = $("diet-close-filter");
+    const toolsCloseBtn = $("diet-close-tools");
 
     const form = $("diet-form");
     const dateEl = $("diet-date");
@@ -82,6 +87,20 @@ window.addEventListener("load", async () => {
 
     dietModal?.addEventListener("click", (e) => {
         if (!e.target.closest(".task-modal-content")) closeModal(dietModal);
+    });
+
+    filterOpenBtn?.addEventListener("click", () => openModal(filterModal));
+    toolsOpenBtn?.addEventListener("click", () => openModal(toolsModal));
+
+    filterCloseBtn?.addEventListener("click", () => closeModal(filterModal));
+    toolsCloseBtn?.addEventListener("click", () => closeModal(toolsModal));
+
+    filterModal?.addEventListener("click", (e) => {
+        if (!e.target.closest(".task-modal-content")) closeModal(filterModal);
+    });
+
+    toolsModal?.addEventListener("click", (e) => {
+        if (!e.target.closest(".task-modal-content")) closeModal(toolsModal);
     });
 
     function clearForm() {
@@ -275,6 +294,7 @@ window.addEventListener("load", async () => {
             meal: filterMealEl.value || "",
         };
         render();
+        closeModal(filterModal);
     });
 
     resetFilterBtn?.addEventListener("click", (e) => {
@@ -289,6 +309,7 @@ window.addEventListener("load", async () => {
     // Export CSV
     exportCsvBtn?.addEventListener("click", (e) => {
         e.preventDefault();
+        closeModal(toolsModal);
 
         const rows = [
             [
@@ -319,9 +340,11 @@ window.addEventListener("load", async () => {
             .map((r) =>
                 r
                     .map((v) =>
-                        typeof v === "string" && /[",\n]/.test(v) ? `"${v}"` : v
+                        typeof v === "string" && /[",\n]/.test(v)
+                            ? `"${v}"`
+                            : v,
                     )
-                    .join(",")
+                    .join(","),
             )
             .join("\n");
 
@@ -341,6 +364,7 @@ window.addEventListener("load", async () => {
     // Export JSON
     exportJsonBtn?.addEventListener("click", (e) => {
         e.preventDefault();
+        closeModal(toolsModal);
 
         const data = Array.isArray(entries)
             ? entries.map((e) => {
@@ -369,6 +393,8 @@ window.addEventListener("load", async () => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        closeModal(toolsModal);
+
         const text = await file.text();
         let data;
         try {
@@ -385,7 +411,7 @@ window.addEventListener("load", async () => {
 
         if (
             !confirm(
-                "Importing will add these entries to your diet log in Firebase. Continue?"
+                "Importing will add these entries to your diet log in Firebase. Continue?",
             )
         )
             return;
@@ -404,8 +430,8 @@ window.addEventListener("load", async () => {
                         notes: entry.notes || "",
                         safe: !!entry.safe,
                         createdAt: entry.createdAt || Date.now(),
-                    })
-                )
+                    }),
+                ),
             );
             alert("Import complete.");
         } catch (err) {
@@ -419,14 +445,17 @@ window.addEventListener("load", async () => {
     // Clear all
     clearAllBtn?.addEventListener("click", async (e) => {
         e.preventDefault();
+        closeModal(toolsModal);
         if (!confirm("This will delete ALL diet entries. Continue?")) return;
 
         try {
             const snapshotEntries = [...entries];
             await Promise.all(
                 snapshotEntries.map((ent) =>
-                    ent.id ? deleteDoc(doc(dietCol, ent.id)) : Promise.resolve()
-                )
+                    ent.id
+                        ? deleteDoc(doc(dietCol, ent.id))
+                        : Promise.resolve(),
+                ),
             );
         } catch (err) {
             console.error("Failed to clear diet log:", err);
