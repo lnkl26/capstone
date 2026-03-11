@@ -9,6 +9,8 @@ console.log("task.js loaded");
 let tasks = [];
 let tasksCollection = null;
 let currentSubtasks = []; // store subtasks before saving
+let draggedItem = null;
+let taskList = null;
 
 window.addEventListener("DOMContentLoaded", async () => {
   await userReady;
@@ -42,6 +44,7 @@ function wireEventListeners() {
   const cancelTaskBtn = document.getElementById("cancelTask");
   const subtaskInput = document.getElementById("subtaskInput");
   const addSubtaskBtn = document.getElementById("addSubtask");
+  taskList = document.getElementById("currentTasks");
   const subtaskList = document.getElementById("subtaskList");
 
   // Open modal
@@ -86,7 +89,8 @@ function wireEventListeners() {
       description: desc,
       subtasks: currentSubtasks,
       completed: false,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
+      order: tasks.length
     };
 
     await addTask(task);
@@ -142,11 +146,14 @@ async function addTask(task) {
 // Firestore: Snapshot Listener
 // -------------------------
 function startTaskSnapshotListener() {
-  const q = query(tasksCollection, orderBy("createdAt", "desc"));
+  console.log("start snapshot called");
+  const q = query(tasksCollection, orderBy("order", "asc"));
 
   onSnapshot(q, (snapshot) => {
     tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     renderTasks();
+    console.log("Tasks from Firestore:");
+    tasks.forEach(t => console.log(t.title, "->", t.order));
   });
 }
 
@@ -166,6 +173,7 @@ function renderTasks() {
     const taskEl = document.createElement("li");
     taskEl.draggable = "true";
     taskEl.classList.add("task-item");
+    taskEl.dataset.id = task.id;
     taskEl.style.display = "flex";
     taskEl.style.justifyContent = "space-between";
     taskEl.style.alignItems = "flex-start";
@@ -279,23 +287,22 @@ function renderTasks() {
 // -------------------------
 
 function attachDragHandlers() {
-  const taskList = document.getElementById("currentTasks");
-  let draggedItem = null;
   taskList.querySelectorAll('li').forEach(item=>{
     item.addEventListener('dragstart', e=>{
       draggedItem = item;
       item.classList.add('dragging');
     });
-    item.addEventListener('dragend', e=>{
+    item.addEventListener('dragend', async ()=>{
       draggedItem = null;
       item.classList.remove('dragging');
+      await updateTaskOrder();
+      // console.log("Saving order to Firestone");
     });
   });
   taskList.addEventListener('dragover', e=>{
+    // console.log("draggedItem in dragover:", draggedItem);
     e.preventDefault();
     const afterElement = getDragAfterElement (taskList, e.clientY);
-    console.log("draggedItem:", draggedItem);
-    console.log("afterElement:", afterElement);
     if (afterElement == null) {
       taskList.appendChild(draggedItem);
     } else {
@@ -320,6 +327,18 @@ function getDragAfterElement(container, y) {
   return closest.element; //always null or real item
 }
 
+// -------------------------
+// Firestore: Update Task Order
+// -------------------------
+async function updateTaskOrder() {
+  const items = taskList.querySelectorAll("li");
+  // console.log("updateTaskOrder items:", items.length);
+  items.forEach((li, index)=> {
+    const id = li.dataset.id;
+    const ref = doc(tasksCollection, id);
+    updateDoc(ref, {order: Number(index)});
+  });
+}
 
 // -------------------------
 // Firestore: Delete Task
