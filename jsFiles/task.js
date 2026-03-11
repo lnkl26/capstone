@@ -163,7 +163,8 @@ function renderTasks() {
   }
 
   tasks.forEach(task => {
-    const taskEl = document.createElement("div");
+    const taskEl = document.createElement("li");
+    taskEl.draggable = "true";
     taskEl.classList.add("task-item");
     taskEl.style.display = "flex";
     taskEl.style.justifyContent = "space-between";
@@ -270,7 +271,56 @@ function renderTasks() {
     taskEl.appendChild(btnGroup);
     currentTasksDiv.appendChild(taskEl);
   });
+  attachDragHandlers();
 }
+
+// -------------------------
+// Drag List Items
+// -------------------------
+
+function attachDragHandlers() {
+  const taskList = document.getElementById("currentTasks");
+  let draggedItem = null;
+  taskList.querySelectorAll('li').forEach(item=>{
+    item.addEventListener('dragstart', e=>{
+      draggedItem = item;
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', e=>{
+      draggedItem = null;
+      item.classList.remove('dragging');
+    });
+  });
+  taskList.addEventListener('dragover', e=>{
+    e.preventDefault();
+    const afterElement = getDragAfterElement (taskList, e.clientY);
+    console.log("draggedItem:", draggedItem);
+    console.log("afterElement:", afterElement);
+    if (afterElement == null) {
+      taskList.appendChild(draggedItem);
+    } else {
+     taskList.insertBefore(draggedItem, afterElement);
+    }
+  });
+}
+
+function getDragAfterElement(container, y) {
+  const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+  let closest = {offset: Number.NEGATIVE_INFINITY, element: null};
+
+  draggableElements.forEach(child=> {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      closest = {offset, element: child};
+    }
+  });
+
+  return closest.element; //always null or real item
+}
+
+
 // -------------------------
 // Firestore: Delete Task
 // -------------------------

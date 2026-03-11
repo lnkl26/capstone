@@ -72,6 +72,13 @@
     border-bottom: 1px solid #eee;
     gap: 10px;
     flex-wrap: wrap; /* prevents button overlap */
+    cursor: grab;
+    user-select: none;
+}
+
+.task-item.dragging {
+    opacity: 0.5;
+    background-color: lightgray;
 }
 
 .task-buttons {
