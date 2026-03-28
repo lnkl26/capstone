@@ -1,5 +1,28 @@
 /* task top nav */
 
+.input {
+    padding: 8px;
+    border: 1.3px solid #000;
+    border-radius: 8px;
+}
+
+/* is this needed for task.css? */
+.full {
+    width: 94%;
+}
+
+.empty {
+    opacity: .7;
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 17px;
+    margin-bottom: 6px;
+    text-align: center;
+    border-bottom: 1px solid #d1d1d1;
+}
+
 .task-nav {
     display: flex;
     flex-direction: column;
@@ -213,6 +236,10 @@ button {
     background: #fee !important;
     border-color: #f99 !important;
     color: #900 !important;
+}
+
+.danger:hover {
+    background: #fdd;
 }
 
 .button.back-btn {
