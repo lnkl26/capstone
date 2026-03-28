@@ -1,136 +1,130 @@
 body {
-    background-color: #f8f8f8;
-    font-family: "Noto Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-
-    /*center the timer on the page*/
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
-
-.pomodoro-timer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-/* timer circle */
-.timer-circle {
-    width: 220px;
-    height: 220px;
-    border-radius: 50%;
-    box-shadow: 0 0 30px rgba(0,0,0,0.1);
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-size: 3rem;
-    color: #333;
     background-color: #fff;
-
-    animation: pulse 3s infinite ease-in-out;
-}
-
-@keyframes pulse {
-    0%   { transform: scale(1);    box-shadow: 0 0 20px #66ceed; }
-    50%  { transform: scale(1.05); box-shadow: 0 0 30px rgba(60, 231, 160, 0.6); }
-    100% { transform: scale(1);    box-shadow: 0 0 20px #66ceed; }
-}
-
-/*make the three mode buttons sit in a row */
-
-.control-buttons {
-    display: flex;
-    justify-content: center;
-    justify-items: center;
-    gap: 15px;
-    margin-top: 2em;
-}
-
-.control-buttons button {
-    min-width: 120px;
-}
-
-/*wire up both groups to the shared style without changing HTML*/
-.control-buttons button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1.3px solid #000;
-    background-color: rgb(170, 202, 230);
-    color: #000;
     font-family: "Noto Sans", sans-serif;
-    font-weight: 550;
-    font-size: 0.95rem;
-    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
-    cursor: pointer;
+}
+
+input {
+    font-family: "Noto Sans", sans-serif;
+}
+
+button {
+    font-family: "Noto Sans", sans-serif;
     transition: transform 120ms ease,
         background-color 120ms ease,
         box-shadow 120ms ease;
 }
-.control-buttons button:hover,
-.control-buttons button:focus-visible {
-    background-color: rgb(112, 174, 228);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
-}
-.control-buttons button:active {
-    transform: translateY(0);
-    box-shadow: none;
-}
-.control-buttons button.danger {
-    background: #fee;
-    border-color: #f99;
-    color: #900;
-}
 
-.control-buttons button.danger:hover,
-.control-buttons button.danger:focus-visible {
-    background: #fdd;
-}
-/*base button style for ALL buttons*/
-.timer-button,
-.control-buttons button,
-.back-btn {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 1.3px solid #000;
-    background-color: rgb(170, 202, 230);
-    color: #000;
-    font-family: "Noto Sans", sans-serif;
-    font-weight: 550;
-    font-size: 0.95rem;
-    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.3);
+button:hover {
     cursor: pointer;
-    text-align: center;
-    transition: transform 120ms ease,
-                background-color 120ms ease,
-                box-shadow 120ms ease;
-    display: inline-flex;
+}
+
+.focus-mode {
+    margin-top: 5vw;
+    background-color: #fff;
+    align-items: center;
     justify-content: center;
-    text-decoration: none;
 }
 
-/*hover */
-.back-btn:hover {
+.pomodoro-time-face {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #8babfb;
+    width: 350px;
+    height: 350px;
+    color: #fff;
+    font-size: 50px;
+}
+
+.pomodoro-settings-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2.5vw;
+    gap: 2.5vw;
+}
+
+#pomodoro-type-selection,
+#pomodoro-pause-start,
+#pomodoro-restart {
+    font-size: 25px;
+    border: none;
+    border-radius: 15px;
+    background: #8babfb;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+#pomodoro-type-selection:hover,
+#pomodoro-pause-start:hover,
+#pomodoro-restart:hover {
+    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-/*red back button*/
-.back-btn.danger {
-    background: rgb(255, 192, 192);
-    border-color: rgb(0, 0, 0);
-    color: rgb(0, 0, 0);
+#short-pomodoro-setting,
+#med-pomodoro-setting,
+#long-pomodoro-setting {
+    border: none;
+    border-radius: 15px;
+    background: #8babfb;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    margin-right: 2vw;
+    padding: 1vw 2vw;
+    font-size: 15px;
 }
-.back-btn.danger:hover {
-    background: #fdd;
+
+#short-pomodoro-setting:hover,
+#med-pomodoro-setting:hover,
+#long-pomodoro-setting:hover {
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* your task button */
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    margin-top: 2.5vw;
+}
+
+.control-buttons button {
+    font-size: 15px;
+    border: none;
+    border-radius: 15px;
+    background: #8babfb;
+    padding: 1vw;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+.control-buttons button:hover {
+    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.pomodoro-task-list {
+    margin-top: 2.5em;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background-color: #fff;
+    padding: 1vw 2.5vw;
+}
+
+.pomodoro-task-list li {
+    list-style: none;
 }
 
 .modal {
@@ -140,7 +134,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.25);
     justify-content: center;
     align-items: center;
     z-index: 1050;
@@ -152,9 +146,9 @@ body {
 
 .modal-content {
     background-color: #fff;
-    border-radius: 25px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 5%;
+    border-radius: 15px;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+    padding: 5vw;
 }
 
 .completed {
@@ -162,49 +156,61 @@ body {
     opacity: 0.5;
 }
 
-/* LEANN i will move this to the right spots after everything is updated */
-.focus-mode {
-    margin-top: 2.5em;
-    /* background-color: #fff; */
-    align-items: center;
+/*red back button*/
+.back-btn.danger {
+    background: #fee;
+    border: none;
+    border-radius: 15px;
+    color: #900;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
 }
 
-.pomodoro-time-face {
-    margin-top: 1em;
-    color: #efeac3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 50px;
-
-    width: 7em;
-    height: 7em;
-    border-radius: 50%;
-    background-color: #19397d;
+.back-btn.danger:hover {
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-.pomodoro-settings-buttons {
-    margin-top: 2.5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1em;
+/* styling for mobile screens */
+@media screen and (max-width: 600px) {
+
+    #pomodoro-type-selection,
+    #pomodoro-pause-start,
+    #pomodoro-restart {
+        padding: 4vw;
+    }
+
+    .control-buttons {
+        margin-top: 4vw;
+    }
+
+    .control-buttons button {
+        padding: 4vw;
+    }
+
+    .back-btn.danger {
+        padding: 4vw;
+    }
 }
 
-#pomodoro-type-selection, #pomodoro-pause-start, #pomodoro-restart {
-    font-size: 25px;
-}
+@media screen and (min-width: 768px) {
 
-#short-pomodoro-setting, #med-pomodoro-setting, #long-pomodoro-setting {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-right: 1em;
-    font-size: 25px;
-}
+    #pomodoro-type-selection,
+    #pomodoro-pause-start,
+    #pomodoro-restart {
+        padding: 1vw;
+    }
 
-.pomodoro-task-list {
-    margin-top: 2.5em;
-    border-radius: 25px;
-    background-color: #fff;
-    padding: 1em;
+    .control-buttons {
+        margin-top: 2.5vw;
+    }
+
+    .control-buttons button {
+        padding: 1vw;
+    }
+
+    .back-btn.danger {
+        padding: 1vw;
+    }
 }
