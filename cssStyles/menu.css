@@ -435,17 +435,26 @@ dialog::backdrop {
     color: #222;
 }
 
-/* styling for mobile screens */
-@media screen and (max-width: 600px) {
-    #main-menu {
-        background-image: url(/cssStyles/mmbg.png);
-        height: 1000px;
+/* SCREEN OPTIMIZING STARTS HERE */
+
+#main-menu {
+    height: 1000px;
         background-repeat: no-repeat;
         background-size: cover;
         margin: 0;
         overflow: hidden;
+}
+
+/* styling for mobile screens */
+@media screen and (max-width: 600px) {
+    #main-menu {
+        background-image: url(/cssStyles/mmbg.png);
     }
 }
 
 /* styling for desktop screens */
-@media screen and (min-width: 768px) {}
+@media screen and (min-width: 768px) {
+    #main-menu {
+        background-image: url(/cssStyles/mmbgd.jpg);
+    }
+}
