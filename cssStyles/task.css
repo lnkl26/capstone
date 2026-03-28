@@ -23,14 +23,7 @@
     border-bottom: 1px solid #d1d1d1;
 }
 
-.task-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    width: 90%;
-    max-width: 450px;
-    margin: 40px auto 32px;
-}
+
 
 .task-tab {
     padding: 14px 18px;
@@ -41,7 +34,7 @@
     font-family: "Noto Sans", sans-serif;
     font-weight: 550;
     font-size: 0.95rem;
-    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.25);
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
     cursor: pointer;
     text-align: center;
     width: 100%;
@@ -51,15 +44,10 @@
 .task-tab:hover {
     background: rgb(112, 174, 228);
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
 }
 
-/* main content box */
-.page-container {
-    background: none;
-    margin: 0 auto;
-    max-width: 800px;
-}
+
 
 /* middle summary area tasks | routines side by side */
 .task-summary-wrapper {
@@ -94,7 +82,8 @@
     padding: 10px 6px;
     border-bottom: 1px solid #eee;
     gap: 10px;
-    flex-wrap: wrap; /* prevents button overlap */
+    flex-wrap: wrap;
+    /* prevents button overlap */
 }
 
 .task-buttons {
@@ -185,7 +174,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,0.25);
+    background: rgba(0, 0, 0, 0.25);
     justify-content: center;
     align-items: center;
     z-index: 1050;
@@ -202,7 +191,7 @@
     border: 2px solid #000;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: -4px 4px 0px rgba(0,0,0,0.2);
+    box-shadow: -4px 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 /* input fields */
@@ -223,7 +212,7 @@ button {
     background-color: rgb(170, 202, 230);
     font-weight: 600;
     cursor: pointer;
-    box-shadow: -2px 2px 0px rgba(0,0,0,0.2);
+    box-shadow: -2px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 .modal-buttons {
@@ -252,4 +241,40 @@ button {
     text-decoration: none;
     color: black;
     align-items: center;
+}
+
+/* ui screen optimization */
+.task-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+/* styling for mobile screens */
+@media screen and (max-width: 600px) {
+    .page-container {
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+
+    .task-nav {
+        gap: 2.5vw;
+        margin-top: 10vw;
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+}
+
+/* for desktop styling */
+@media screen and (min-width: 768px) {
+    .page-container {
+        margin-left: 2.5vw;
+        margin-right: 2.5vw;
+    }
+
+    .task-nav {
+        gap: 1vw;
+        max-width: 450px;
+        margin: 10vw auto 1vw;
+        margin-top: 5vw;
+    }
 }
