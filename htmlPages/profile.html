@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,92 +8,82 @@
   <title>User Profile</title>
 
   <link rel="stylesheet" href="../cssStyles/profile.css" />
-      <script type="module" src="../firebase.js"></script>
-    <script type="module" defer src="../jsFiles/profile.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <script type="module" src="../firebase.js"></script>
+  <script type="module" defer src="../jsFiles/profile.js"></script>
 </head>
 
 <body>
   <h1 class="title">User Profile</h1>
-
   <div class="page-container">
-
     <!--profile section-->
-    <section id="log-section">
-      <div class="section-title">My Profile</div>
+    <div class="user-codes-container">
+      <section id="log-section">
+        <div class="section-title">My Profile</div>
 
-      <div class="form-row">
-        <label for="displayName">Name</label>
-        <input
-          id="displayName"
-          class="input full"
-          type="text"
-          placeholder="Your display name"
-        />
-      </div>
+        <div class="form-row">
+          <label for="displayName">Name</label>
+          <input id="displayName" class="input full" type="text" placeholder="Your display name" />
+        </div>
 
-      <div class="form-row">
-        <label for="shareCode">Share Code</label>
-        <input
-          id="shareCode"
-          class="input full"
-          type="text"
-          readonly
-        />
-      </div>
+        <div class="form-row">
+          <label for="shareCode">Share Code</label>
+          <input id="shareCode" class="input full" type="text" readonly />
+        </div>
 
-      <div class="button-row">
-        <button id="saveProfile" class="button">Save Profile</button>
-      </div>
-    </section>
-
-    <!--sharing section-->
-  <section id="log-section">
-    <div class="section-title">Share My Account</div>
-
-    <div class="form-row">
-    <label for="otherShareCode">Their Code</label>
-    <input id="otherShareCode" class="input full" type="text" placeholder="Enter share code" />
+        <div class="button-row">
+          <button id="saveProfile" class="button">Save Profile</button>
+        </div>
+      </section>
+      <!--sharing section-->
+      <section id="log-section">
+        <div class="section-title">Share My Account</div>
+        <div class="form-row">
+          <label for="otherShareCode">Their Code</label>
+          <input id="otherShareCode" class="input full" type="text" placeholder="Enter share code" />
+        </div>
+        <div class="form-row">
+          <label for="sharePermission">Permission</label>
+          <select id="sharePermission" class="input full">
+            <option value="viewer">View Only</option>
+            <option value="editor">Can Edit</option>
+          </select>
+        </div>
+        <div class="button-row">
+          <button id="sendInvite" class="button">Send Invite</button>
+        </div>
+      </section>
     </div>
+    <div class="pending-section">
+      <section class="log-section">
+        <div class="section-title">Pending Sent Invites</div>
+        <div id="sentInvites" class="empty" style="text-align:center;">No pending sent invites.</div>
+      </section>
 
-    <div class="form-row">
-      <label for="sharePermission">Permission</label>
-      <select id="sharePermission" class="input full">
-      <option value="viewer">View Only</option>
-      <option value="editor">Can Edit</option>
-    </select>
+      <section class="log-section">
+        <div class="section-title">Incoming Invites</div>
+        <div id="incomingInvites" class="empty" style="text-align:center;">No invites yet.</div>
+      </section>
     </div>
+    <div class="access-list-section">
+      <section class="log-section">
+        <div class="section-title">People with Access to My Account</div>
+        <div id="activeShares" class="empty" style="text-align:center;">No one has access yet.</div>
+      </section>
 
-  <div class="button-row">
-    <button id="sendInvite" class="button">Send Invite</button>
+      <section class="log-section">
+        <div class="section-title">Accounts Shared With Me</div>
+        <div id="sharedWithMe" class="empty" style="text-align:center;">No one is sharing with you.</div>
+      </section>
+    </div>
   </div>
-  </section>
-  
-  <section class="log-section">
-    <div class="section-title">Pending Sent Invites</div>
-    <div id="sentInvites" class="empty" style="text-align:center;">No pending sent invites.</div>
-  </section>
-
-  <section class="log-section">
-   <div class="section-title">Incoming Invites</div>
-   <div id="incomingInvites" class="empty" style="text-align:center;">No invites yet.</div>
-  </section>
-
-  <section class="log-section">
-    <div class="section-title">People with Access to My Account</div>
-    <div id="activeShares" class="empty" style="text-align:center;">No one has access yet.</div>
-  </section>
-
-  <section class="log-section">
-      <div class="section-title">Accounts Shared With Me</div>
-      <div id="sharedWithMe" class="empty" style="text-align:center;">No one is sharing with you.</div>
-    </section>
-
-    <!--back button-->
-    <div class="back-section">
-      <a href="./settings.html" class="button back-btn">Back</a>
-    </div>
-
+  <!--back button-->
+  <div class="back-section">
+    <a href="./settings.html" class="button back-btn">Back</a>
   </div>
   <script type="module" src="../jsFiles/profile.js"></script>
 </body>
+
 </html>
