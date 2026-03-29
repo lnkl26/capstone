@@ -1,33 +1,27 @@
 body {
-    background-color: #f8f8f8;
+    background-color: whitesmoke;
     font-family: "Noto Sans", sans-serif;
-    margin: 0;
-    padding: 20px;
 }
+
 /*title*/
 .title {
     display: flex;
     justify-content: center;
-    margin: 40px auto;
-    color: rgb(0, 0, 0);
-    font-size: 2.5rem;
+    color: black;
     font-weight: 800;
-    letter-spacing: 0.5px;
     text-transform: uppercase;
     text-align: center;
 }
+
 /*the containers*/
 .card,
 section.card {
     background-color: #fff;
-    border: 1px solid #000;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px auto;
-    width: 90%;
-    max-width: 800px;
-    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
+    border: 1.5px solid black;
+    border-radius: 15px;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
 }
+
 /*buttons*/
 .button,
 button,
@@ -36,255 +30,115 @@ button,
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    padding: 12px 20px;
+    border-radius: 15px;
+    border: 1.5px solid black;
+    background-color: #8babfb;
     color: black;
-    background-color: rgb(170, 202, 230);
-    border-radius: 6px;
-    box-shadow: -2.5px 4px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
     text-decoration: none;
-    cursor: pointer;
-    border: 1.3px solid black;
     font-family: "Noto Sans", sans-serif;
     font-weight: 550;
     transition:
         transform 120ms ease,
         background-color 120ms ease;
 }
+
 .button:hover,
 button:hover {
-    background-color: rgb(112, 174, 228);
-    transform: scale(1.02);
+    cursor: pointer;
+    background-color: #414080;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
+
 /*secondary buttons*/
 .btn-secondary,
 #diet-cancel-btn,
 #diet-reset-filter {
     background-color: #f0f0f0 !important;
 }
+
 /*edit and delete button colors*/
 .edit-btn {
-    background-color: rgb(170, 202, 230) !important;
+    background-color: #8babfb !important;
 }
+
 .delete-btn,
 .embDel {
     background-color: rgb(255, 205, 205) !important;
 }
+
 /*table styling*/
 .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    font-family: "Noto Sans", sans-serif;
 }
+
 .table th {
     background-color: #eee;
-    border: 1.3px solid black;
-    padding: 10px;
+    border: 1.5px solid black;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.8rem;
 }
+
 .table td {
-    border: 1px solid #000;
-    padding: 10px;
+    border: 1.5px solid black;
     text-align: center;
 }
+
 /*inputs*/
 input,
 select,
 textarea {
-    padding: 8px;
-    border: 1.3px solid #000;
-    border-radius: 6px;
-    font-family: "Noto Sans", sans-serif;
+    border: 1.5px solid black;
+    border-radius: 15px;
     width: 100%;
     box-sizing: border-box;
+    font-family: "Noto Sans", sans-serif;
 }
+
 /*grid helpers*/
+/* log date and meal */
 .grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
 }
+
+/* filter */
 .grid-3 {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
 }
+
+/* total nutrients */
 .grid-4 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
 }
+
 /*utility classes*/
 .task-btns {
     display: flex;
     justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-/*responsive mobile view*/
-@media (max-width: 600px) {
-    .grid-2,
-    .grid-3,
-    .grid-4 {
-        grid-template-columns: 1fr !important;
-        gap: 10px;
-    }
-    .card {
-        width: 95%;
-        padding: 15px;
-        margin: auto;
-    }
-    .title {
-        font-size: 1.8rem;
-        margin: 20px auto;
-    }
-    /*center labels and inputs*/
-    label {
-        display: block;
-        text-align: center;
-        margin-bottom: 5px;
-    }
-    input:not([type="checkbox"]),
-    select,
-    textarea {
-        display: block;
-        margin: 0 auto 15px auto !important;
-        width: 95% !important;
-        text-align: center;
-    }
-    /*checkbox alignment fix*/
-    div:has(> input[type="checkbox"]) {
-        display: flex !important;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        margin: 10px 0;
-    }
-    input[type="checkbox"] {
-        width: auto !important;
-        margin: 0 !important;
-    }
-    #dietCreate-btn {
-        width: 100%;
-        margin: 10px 0;
-    }
-    /*stacked table logic*/
-    .table,
-    .table thead,
-    .table tbody,
-    .table th,
-    .table td,
-    .table tr {
-        display: block;
-    }
-    .table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-    }
-    .table tr {
-        border: 1.5px solid #000;
-        margin-bottom: 12px;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: -2px 2px 0px rgba(0, 0, 0, 0.1);
-        padding: 5px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .table td {
-        border: none;
-        position: relative;
-        padding: 4px 5px 4px 45px;
-        text-align: left !important;
-        font-size: 0.85rem;
-        min-height: 20px;
-    }
-    /*full width main data*/
-    .table td:nth-of-type(1),
-    .table td:nth-of-type(3),
-    .table td:nth-of-type(8),
-    .table td:last-child {
-        grid-column: span 2;
-        border-top: 1px solid #f0f0f0;
-    }
-    /*mobile actions*/
-    .table td:last-child {
-        padding: 15px 0;
-        background: #fafafa;
-        justify-content: center;
-        display: flex;
-        gap: 25px;
-    }
-    .table td:last-child button {
-        padding: 10px 25px;
-    }
-    .table td:before {
-        position: absolute;
-        left: 5px;
-        width: 35px;
-        font-weight: 800;
-        text-transform: uppercase;
-        font-size: 0.6rem;
-        color: #888;
-    }
-    /*inject cell labels*/
-    .table td:nth-of-type(1):before {
-        content: "date";
-    }
-    .table td:nth-of-type(2):before {
-        content: "meal";
-    }
-    .table td:nth-of-type(3):before {
-        content: "food";
-    }
-    .table td:nth-of-type(4):before {
-        content: "cal";
-    }
-    .table td:nth-of-type(5):before {
-        content: "p";
-    }
-    .table td:nth-of-type(6):before {
-        content: "c";
-    }
-    .table td:nth-of-type(7):before {
-        content: "f";
-    }
-    .table td:nth-of-type(8):before {
-        content: "note";
-    }
-    .table td:nth-of-type(9):before {
-        content: "safe";
-    }
 }
 
-.no-scroll {
-    overflow: hidden;
-}
-
+/* add entry bg */
 .task-modal {
     display: none;
     position: fixed;
+    justify-content: center;
+    align-items: center;
     inset: 0;
     background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(2px);
-    justify-content: center;
-    align-items: center;
     z-index: 1050;
-    padding: 20px;
 }
 
 .task-modal-content {
     background: #fff;
-    border: 1.5px solid #000;
-    border-radius: 14px;
-    width: min(720px, 95vw);
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: -4px 5px 0 rgba(0, 0, 0, 0.18);
-    padding: 22px 24px 20px;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .sheet-handle {
@@ -296,34 +150,17 @@ textarea {
 }
 
 .task-modal-content h2 {
-    margin: 0 0 18px;
-    font-size: 1.15rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .task-input-area label {
     display: block;
     font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.task-input-area input,
-.task-input-area select,
-.task-input-area textarea {
-    margin-top: 6px;
-}
-
-.safe-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    margin-top: 12px;
 }
 
 .safe-row input[type="checkbox"] {
+    cursor: pointer;
     width: auto;
     transform: scale(1.1);
 }
@@ -338,46 +175,252 @@ textarea {
 
 .danger:hover {
     background-color: rgb(255, 200, 200) !important;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .task-btns a.button.btn-secondary {
     background-color: #ffdbdb !important;
-    color: #000 !important;
-    border: 1.3px solid #000 !important;
+    color: black !important;
+    border: 1.5px solid black !important;
 }
 
 .task-btns a.button.btn-secondary:hover {
     background-color: #ffc8c8 !important;
     transform: none;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .table-wrap {
     overflow-x: auto;
 }
 
-.button--small {
-    padding: 9px 14px;
-    font-size: 0.9rem;
-}
 
-#diet-totals {
-    align-items: center;
-    font-size: 1.05rem;
-}
-
-@media (max-width: 700px) {
-    .task-modal-content {
-        width: min(96vw, 96vw);
-        padding: 18px 16px;
+@media screen and (max-width: 600px) {
+    .title {
+        margin: 10vw 0 2.5vw;
     }
 
-    .safe-row {
-        flex-direction: row;
-        justify-content: space-between;
+    .card {
+        margin: 5vw;
+        padding: 5vw;
+    }
+
+    .grid-4 {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 15px;
+    }
+
+    .nutrition-total {
+        width: 100%;
+    }
+
+    /*center labels and inputs*/
+    label {
+        display: block;
+        padding: 0 5vw 5vw;
+    }
+
+    input:not([type="checkbox"]),
+    select,
+    textarea {
+        padding: 0.5vw 2.5vw;
+    }
+
+    #diet-modal-title {
+        margin-left: 5vw;
+    }
+
+    #diet-filter-title,
+    #diet-tools-title {
+        margin-left: 5vw;
+    }
+
+    .task-modal-content {
+        margin: 5vw;
+        max-width: 350px;
+    }
+
+    .task-btns button {
+        margin: 0 2vw;
     }
 
     .task-btns {
+        display: flex;
         flex-wrap: wrap;
+        margin: 0 5vw 5vw;
+    }
+
+    #dietCreate-btn {
+        width: 100%;
+        padding: 1vw 2vw;
+        margin-bottom: 5vw;
+    }
+
+    #dietFilter-open-btn,
+    #dietTools-open-btn {
+        width: 30%;
+        margin: 1vw;
+    }
+
+    .btn-secondary {
+        font-size: 15px;
+        width: 30%;
+        margin: 1vw;
+    }
+
+    /*stacked table logic*/
+    .table,
+    .table thead,
+    .table tbody,
+    .table th,
+    .table td,
+    .table tr {
+        display: block;
+    }
+
+    .table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .table tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border: 1.5px solid black;
+        border-radius: 15px;
+        padding: 1vw;
+    }
+
+    .table td {
+        border: none;
+        position: relative;
+        text-align: left !important;
+        min-height: 20px;
+        font-size: 12px;
+        padding: 2.5vw 1vw 1vw 15vw;
+    }
+
+    /*full width main data*/
+    .table td:nth-of-type(1),
+    .table td:nth-of-type(3),
+    .table td:nth-of-type(8),
+    .table td:last-child {
+        grid-column: span 2;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    /*mobile actions*/
+    .table td:last-child {
+        display: flex;
+        justify-content: center;
+        background: #fafafa;
+        gap: 1vw;
+        padding: 1vw;
+    }
+
+    /* ??? */
+    .table td:last-child button {
+        padding: 10px 25px;
+    }
+
+    .table td:before {
+        position: absolute;
+        left: 5px;
+        width: 35px;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 12px;
+        color: black;
+    }
+
+    /*inject cell labels*/
+    .table td:nth-of-type(1):before {
+        content: "date";
+    }
+
+    .table td:nth-of-type(2):before {
+        content: "meal";
+    }
+
+    .table td:nth-of-type(3):before {
+        content: "food";
+    }
+
+    .table td:nth-of-type(4):before {
+        content: "cal";
+    }
+
+    .table td:nth-of-type(5):before {
+        content: "p";
+    }
+
+    .table td:nth-of-type(6):before {
+        content: "c";
+    }
+
+    .table td:nth-of-type(7):before {
+        content: "f";
+    }
+
+    .table td:nth-of-type(8):before {
+        content: "note";
+    }
+
+    .table td:nth-of-type(9):before {
+        content: "safe";
+    }
+
+}
+
+@media screen and (min-width: 768px) {
+    .title {
+        margin-top: 5vw;
+    }
+
+    /*the containers*/
+    .card,
+    section.card {
+        padding: 1vw 2vw 2vw;
+        margin: 0 5vw 1vw;
+    }
+
+    /*buttons*/
+    .button,
+    button,
+    #dietCreate-btn,
+    #diet-save-btn {
+        padding: 0.5vw 1vw;
+    }
+
+    .table th {
+        padding: 0.5vw 0;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 0.5vw 1vw;
+    }
+
+    .grid-2,
+    .grid-3 {
+        gap: 1vw;
+    }
+
+    .task-btns {
+        gap: 1vw;
+        margin: 0 5vw 1vw;
+    }
+
+    .task-modal-content {
+        padding: 2.5vw;
+    }
+
+    .task-input-area input,
+    .task-input-area select,
+    .task-input-area textarea {
+        margin: 0.5vw 0 1vw;
     }
 }

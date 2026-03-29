@@ -9,6 +9,7 @@
 
 body, button, input {
     font-family: "Noto Sans", sans-serif;
+    background: white;
 }
 
 /* temp button styling, need to change this later to use icon assets */
