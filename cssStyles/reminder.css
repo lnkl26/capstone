@@ -277,6 +277,7 @@ button:active {
     padding: 1vw;
     margin: 2vw 2.5vw;
     box-shadow: var(--shadow-card);
+    min-height: 300px;
 }
 
 /* section heading inside a card ???*/

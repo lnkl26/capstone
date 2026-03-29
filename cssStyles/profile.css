@@ -127,6 +127,11 @@ body {
         margin: 0 7vw;
         width: 100%;
     }
+
+    .button.back-btn {
+        padding: 2.5vw;
+        margin: 0 0 5vw;
+    }
 }
 
 @media screen and (min-width: 768px) {

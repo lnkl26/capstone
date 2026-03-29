@@ -9,6 +9,16 @@ const ASSETS = [  //files to be available offline immediately
   './firebase.js',
   './style.css',
 
+  './assets/fmbg.png',
+  './assets/fmpgd.png',
+  './assets/logo.png',
+  './assets/mmbg.png',
+  './assets/mmbgd.jpg',
+  './assets/pmbg.png',
+  './assets/pmbgd.jpg',
+  './assets/smbg.png',
+  './assets/smbgd.png',
+
   './cssStyles/focusmode.css',
   './cssStyles/medLog.css',
   './cssStyles/menu.css',
