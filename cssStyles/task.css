@@ -1,139 +1,177 @@
-/* task top nav */
+/* is this needed for task.css? */
+.full {
+    width: 94%;
+}
 
+.empty {
+    opacity: .7;
+}
+
+body, button, input {
+    font-family: "Noto Sans", sans-serif;
+    background: white;
+}
+
+/* temp button styling, need to change this later to use icon assets */
+button {
+    border: none;
+    border-radius: 15px;
+    background: #eeeeee;
+    padding: 0 0.5vw 0;
+    /* border: 1.5px solid black;
+    border-radius: 15px;
+    padding: 0.5vw 1vw;
+    margin-right: 0.5vw;
+    background-color: #8babfb;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+    font-weight: 550; */
+}
+
+button:hover {
+    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* ui screen optimization */
 .task-nav {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    width: 90%;
-    max-width: 450px;
-    margin: 40px auto 32px;
 }
 
 .task-tab {
-    padding: 14px 18px;
-    border-radius: 8px;
-    border: 1.3px solid #000;
-    background: rgb(170, 202, 230);
-    color: #000;
-    font-family: "Noto Sans", sans-serif;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background: #8babfb;
+    color: black;
     font-weight: 550;
-    font-size: 0.95rem;
-    box-shadow: -2px 3px 0.5px rgba(0,0,0,0.25);
     cursor: pointer;
-    text-align: center;
-    width: 100%;
     transition: all 120ms ease;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
 }
 
 .task-tab:hover {
-    background: rgb(112, 174, 228);
+    background: #414080;
+    color: whitesmoke;
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0,0,0,0.18);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-/* main content box */
-.page-container {
-    background: none;
-    margin: 0 auto;
-    max-width: 800px;
-}
-
-/* middle summary area tasks | routines side by side */
 .task-summary-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    margin: 10px auto 30px;
-    justify-content: center;
 }
 
-/* fix individual box spillover */
 .summary-section {
-    background-color: #fff;
-    border: 1.5px solid #000;
-    border-radius: 12px;
-    padding: 20px;
-    width: 100%;
-    max-width: 360px;
-    min-height: 150px;
-    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.3);
-    font-family: "Noto Sans", sans-serif;
-    font-weight: 500;
     display: flex;
     flex-direction: column;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background-color: #fff;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    min-height: 200px;
+    font-weight: 550;
 }
 
-/* fix task item buttons and text */
-.task-item {
+.section-title {
+    font-weight: 600;
+    font-size: 15px;
+    text-align: center;
+    border-bottom: 1px solid #d1d1d1;
+}
+
+.modal {
+    display: none;
+}
+
+.modal-content {
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+/* shadow overlay */
+.modal.active {
     display: flex;
-    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.25);
+    justify-content: center;
     align-items: center;
-    padding: 10px 6px;
-    border-bottom: 1px solid #eee;
-    gap: 10px;
-    flex-wrap: wrap; /* prevents button overlap */
+    z-index: 1050;
 }
 
-.task-buttons {
-    display: flex;
-    gap: 6px;
-    flex-shrink: 0;
+/* input fields */
+input[type="text"] {
+    border-radius: 15px;
+    border: 1.5px solid black;
+    width: 100%;
+    box-sizing: border-box;
+    /*ensures input border stays within modal*/
 }
 
-/* list styling */
+/* list styling for create task modal*/
 .clean-list {
     list-style: none;
     padding: 0;
-    margin: 10px 0;
 }
 
 .clean-list li {
-    background: #f9f9f9;
-    margin-bottom: 6px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.9rem;
+    border-radius: 15px;
+    background: #eeeeee;
+    font-size: 15px;
+}
+
+/* trigger button */
+.ai-trigger-btn {
+    border: 1.5px solid #b18cff !important;
+    border-radius: 15px;
+    background: #e0ccff !important;
+    width: 100%;
 }
 
 /* AI BOX AND PILLS */
 .ai-box {
-    background: #f3ebff;
     border: 1.5px dashed #b18cff;
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 12px;
+    border-radius: 15px;
+    background: #f3ebff;
 }
 
+/* "GEMINI SUGGESTIONS" */
 .ai-label {
-    font-size: 0.75rem;
-    font-weight: 700;
     color: #6200ea;
     text-transform: uppercase;
-    margin: 0 0 8px 0;
+    font-size: 15px;
+    font-weight: 700;
 }
 
 .pill-container {
     display: flex;
-    gap: 8px;
+    gap: 1vw;
     flex-wrap: wrap;
+    font-size: 15px;
 }
 
 .ai-pill {
-    background: white;
-    border: 1.2px solid #b18cff;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 8px;
-    box-shadow: 1px 2px 0px rgba(177, 140, 255, 0.3);
+    border: 1.5px solid #b18cff;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 1px 2px 0px rgba(177, 140, 255, 0.25);
 }
 
+/* add gemini suggest (+) button */
 .ai-pill button {
     background: #b18cff !important;
     color: white !important;
@@ -142,71 +180,18 @@
     width: 22px !important;
     height: 22px !important;
     padding: 0 !important;
-    font-size: 16px !important;
+    font-size: 15px !important;
     box-shadow: none !important;
 }
 
-/* trigger button */
-.ai-trigger-btn {
-    background: #e0ccff !important;
-    border: 1.3px solid #b18cff !important;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-/*modal bg */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.25);
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    min-width: 300px;
-    max-width: 90%;
-    background: #fff;
-    border: 2px solid #000;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: -4px 4px 0px rgba(0,0,0,0.2);
-}
-
-/* input fields */
-input[type="text"] {
-    padding: 12px;
-    border-radius: 10px;
-    border: 1.5px solid #000;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: "Noto Sans", sans-serif;
-}
-
-/* buttons */
-button {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1.5px solid #000;
-    background-color: rgb(170, 202, 230);
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: -2px 2px 0px rgba(0,0,0,0.2);
-}
-
+/* save and cancel task buttons */
 .modal-buttons {
     display: grid;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 1vw;
+}
+
+.modal-buttons button {
+    padding: 2vw 0;
 }
 
 .danger {
@@ -215,14 +200,183 @@ button {
     color: #900 !important;
 }
 
-.button.back-btn {
-    width: 90%;
-    max-width: 450px;
-    margin: 28px auto;
+/* not affecting anything? */
+.danger:hover {
+    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.task-item {
     display: flex;
-    justify-content: center;
-    background: #ffdbdb;
-    text-decoration: none;
-    color: black;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
+    padding: 1vw 0;
+    border-bottom: 1px solid #eee;
+    margin-top: 1vw;
+    gap: 1vw;
+    
+}
+
+/* task edit buttons */
+.task-buttons {
+    display: flex;
+    flex-shrink: 0;
+}
+
+#home-button {
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background: #8babfb;
+    color: black;
+    font-weight: 550;
+    cursor: pointer;
+    transition: all 120ms ease;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+/* styling for mobile screens */
+@media screen and (max-width: 600px) {
+    .page-container {
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+
+    .task-nav {
+        gap: 2.5vw;
+        margin-top: 10vw;
+        margin-left: 5vw;
+        margin-right: 5vw;
+    }
+
+    .task-tab {
+        padding: 2.5vw;
+        font-size: 4vw;
+    }
+
+    .task-summary-wrapper {
+        margin: 5vw;
+        gap: 2.5vw;
+    }
+
+    .summary-section {
+        padding: 2.5vw;
+        gap: 2.5vw;
+    }
+
+    .modal-content {
+        padding: 2.5vw;
+        margin: auto 2.5vw auto;
+    }
+
+    input[type="text"] {
+        margin: 2.5vw 0 0;
+        padding: 2.5vw;
+    }
+
+    .clean-list li {
+        margin: 2.5vw 0 2.5vw;
+        padding: 2.5vw;
+    }
+
+    .ai-trigger-btn {
+        padding: 2.5vw;
+        margin-bottom: 2.5vw;
+    }
+
+    .ai-box {
+        padding: 2.5vw;
+        margin-bottom: 2.5vw;
+    }
+
+    .ai-label {
+        margin: 2.5vw 0;
+    }
+
+    .ai-pill {
+        padding: 1vw 2.5vw;
+        gap: 1vw;
+    }
+
+    .modal-buttons button {
+        padding: 2.5vw 0;
+    }
+
+    #home-button {
+        padding: 2.5vw;
+        margin-top: 5vw;
+    }
+}
+
+/* for desktop styling */
+@media screen and (min-width: 768px) {
+    .page-container {
+        margin-left: 2.5vw;
+        margin-right: 2.5vw;
+    }
+
+    .task-nav {
+        gap: 1vw;
+        max-width: 450px;
+        margin: 10vw auto 1vw;
+        margin-top: 5vw;
+    }
+
+    .task-tab {
+        padding: 1vw;
+        font-size: 1vw;
+    }
+
+    .task-summary-wrapper {
+        margin: 1vw 5vw 1vw;
+        gap: 1vw;
+        justify-content: center;
+    }
+
+    .summary-section {
+        padding: 1vw;
+        max-width: 500px;
+    }
+
+    .modal-content {
+        padding: 2vw;
+        max-width: 500px;
+    }
+
+    input[type="text"] {
+        margin: 1vw 0 0;
+        padding: 1vw;
+    }
+
+    .clean-list li {
+        margin: 1vw 0 1vw;
+        padding: 1vw;
+    }
+
+    .ai-trigger-btn {
+        padding: 1vw;
+        margin-bottom: 1vw;
+    }
+
+    .ai-box {
+        padding: 1vw;
+        margin-bottom: 1vw;
+    }
+
+    .ai-label {
+        margin: 1vw 0;
+    }
+
+    .ai-pill {
+        padding: 0.5vw 1vw;
+        gap: 0.5vw;
+    }
+
+    #home-button {
+        padding: 1vw;
+        margin-top: 10vw;
+    }
 }
