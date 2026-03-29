@@ -7,6 +7,26 @@ dialog::backdrop {
     background: rgba(0, 0, 0, .25);
 }
 
+button {
+    display: flex;
+    justify-content: center;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background-color: #8babfb;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+    color: black;
+    text-decoration: none;
+    font-weight: 550;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
 .button,
 .pop-button {
     display: flex;
@@ -208,6 +228,11 @@ dialog::backdrop {
 }
 
 @media screen and (max-width: 600px) {
+    button {
+        padding: 1vw;
+        margin: 0 0 2vw;
+    }
+
     .button,
     .pop-button {
         padding: 2.5vw;
@@ -242,6 +267,7 @@ dialog::backdrop {
     .input {
         padding: 1vw;
         font-size: 10px;
+        margin: 1vw 0;
     }
 
     .section-title {
@@ -262,7 +288,11 @@ dialog::backdrop {
 }
 
 @media screen and (min-width: 768px) {
-
+    button {
+        padding: 0.5vw;
+        margin: 0 0 0.5vw;
+    }
+    
     .button,
     .pop-button {
         padding: 1vw;
