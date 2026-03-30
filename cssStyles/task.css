@@ -38,6 +38,7 @@ button:hover {
 /* ui screen optimization */
 .task-nav {
     display: flex;
+    justify-content: center;
 }
 
 .task-tab {
@@ -334,7 +335,6 @@ option {
 
     .task-nav {
         align-items: center;
-        justify-content: center;
         gap: 1vw;
         margin: 5vw 0 0;
     }
