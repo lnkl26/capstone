@@ -405,7 +405,8 @@ textarea {
     }
 
     .grid-2,
-    .grid-3 {
+    .grid-3,
+    .grid-4 {
         gap: 1vw;
     }
 

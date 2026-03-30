@@ -38,7 +38,6 @@ button:hover {
 /* ui screen optimization */
 .task-nav {
     display: flex;
-    flex-direction: column;
 }
 
 .task-tab {
@@ -209,7 +208,8 @@ input[type="text"] {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-.task-item {
+.task-item,
+.routine-item {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -236,6 +236,21 @@ input[type="text"] {
     cursor: pointer;
     transition: all 120ms ease;
     box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+.routine-item {
+    list-style: none;
+}
+
+select {
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background: white;
+    font-family: "Noto Sans", sans-serif;
+}
+
+option {
+    font-family: "Noto Sans", sans-serif;
 }
 
 /* styling for mobile screens */
@@ -314,20 +329,20 @@ input[type="text"] {
 /* for desktop styling */
 @media screen and (min-width: 768px) {
     .page-container {
-        margin-left: 2.5vw;
-        margin-right: 2.5vw;
+        margin: 0 10vw;
     }
 
     .task-nav {
+        align-items: center;
+        justify-content: center;
         gap: 1vw;
-        max-width: 450px;
-        margin: 10vw auto 1vw;
-        margin-top: 5vw;
+        margin: 5vw 0 0;
     }
 
     .task-tab {
         padding: 1vw;
         font-size: 1vw;
+        min-width: 350px;
     }
 
     .task-summary-wrapper {
@@ -378,5 +393,9 @@ input[type="text"] {
     #home-button {
         padding: 1vw;
         margin-top: 10vw;
+    }
+
+    select {
+        padding: 1vw;
     }
 }

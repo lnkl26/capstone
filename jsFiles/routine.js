@@ -21,6 +21,8 @@ window.addEventListener("load", async () => {
   tasksCollection = userCollection("tasks");
   routinesCollection = userCollection("routines");
 
+  tasks = await fetchTasks();
+
   // Start listening for live updates on routines
   startRoutineSnapshotListener();
   
