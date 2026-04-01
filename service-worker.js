@@ -1,44 +1,51 @@
-const VERSION = 'v31.3.0';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
+const VERSION = 'v31.4.0';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
-  './',
+'./',
   './index.html',
   './manifest.json',
   './scripts.js',
   './swConfig.js',
   './firebase.js',
-  './style.css',
+  './favicon.ico',
+  './404.html',
 
-  './assets/fmbg.png',
-  './assets/fmpgd.png',
-  './assets/logo.png',
-  './assets/mmbg.png',
-  './assets/mmbgd.jpg',
-  './assets/pmbg.png',
-  './assets/pmbgd.jpg',
-  './assets/smbg.png',
-  './assets/smbgd.png',
+  './assets/bgimg/fmbg.png',
+  './assets/bgimg/fmbgd.jpg', 
+  './assets/bgimg/logo.png',
+  './assets/bgimg/mmbg.png',
+  './assets/bgimg/mmbgd.jpg',
+  './assets/bgimg/pmbg.png',
+  './assets/bgimg/pmbgd.jpg',
+  './assets/bgimg/smbg.png',
+  './assets/bgimg/smbgd.jpg', 
 
+  './cssStyles/diet.css',
   './cssStyles/focusmode.css',
   './cssStyles/medLog.css',
   './cssStyles/menu.css',
+  './cssStyles/profile.css',
+  './cssStyles/reminder.css',
   './cssStyles/task.css',
 
   './htmlPages/focusMode.html',
   './htmlPages/foodMed.html',
   './htmlPages/productive.html',
+  './htmlPages/profile.html',
   './htmlPages/reminder.html',
   './htmlPages/settings.html',
   './htmlPages/task.html',
   './htmlPages/trackDiet.html',
   './htmlPages/trackMed.html',
 
+  './jsFiles/dietLog.js',
   './jsFiles/focusmode.js',
   './jsFiles/medLog.js',
+  './jsFiles/profile.js',
+  './jsFiles/reminder.js',
   './jsFiles/routine.js',
   './jsFiles/task.js',
-  './jsFiles/reminder.js',
-  './jsFiles/dietLog.js'
+  './jsFiles/tasks.json'
   ];
 
 //install precache core assets
