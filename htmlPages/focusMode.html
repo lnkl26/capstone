@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width; initial-scale=1; viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="../manifest.json">
     <title>Focus Mode</title>
-     <link rel="stylesheet" href="../cssStyles/focusmode.css">
+    <link rel="stylesheet" href="../cssStyles/focusmode.css">
+    
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="focus-mode">
         <a href="productive.html" class="back-btn danger">x</a>
@@ -29,7 +36,7 @@
                 <ul id="firebaseTaskList"></ul>
                 <button id="closeTaskModal">Close</button>
             </div>
-        </div>    
+        </div>
     </div>
     <div id="selectionModal" class="modal hidden">
         <div class="modal-content">
@@ -39,14 +46,16 @@
                 <input type="number" id="breakInput" placeholder="Minutes for Break" min="0">
             </div>
             <div class="pomdoro-selection-buttons">
-                <button id="short-pomodoro-setting" title="15 minutes of focusing, and 5 minutes of break!">short</button>
+                <button id="short-pomodoro-setting"
+                    title="15 minutes of focusing, and 5 minutes of break!">short</button>
                 <button id="med-pomodoro-setting" title="30 minutes of focusing, and 5 minutes of break!">med</button>
                 <button id="long-pomodoro-setting" title="45 miuntes of focusing, and 5 minutes of break!">long</button>
             </div>
             <button id="closeSelectionModal">X</button>
         </div>
     </div>
-    
+
     <script type="module" src="../jsFiles/focusmode.js"></script>
 </body>
+
 </html>

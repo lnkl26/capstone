@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="../manifest.json">
-    <title>Med Logging</title>
-    <link rel="stylesheet" href="../cssStyles/medLog.css">
-    <script type="module" src="../firebase.js"></script>
-    <script type="module" defer src="../jsFiles/medLog.js"></script>
-    <!--<script type="module" src="../firebase.js"></script>-->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width; initial-scale=1; viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="../manifest.json">
+  <title>Med Logging</title>
+  <link rel="stylesheet" href="../cssStyles/medLog.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <script type="module" src="../firebase.js"></script>
+  <script type="module" defer src="../jsFiles/medLog.js"></script>
 </head>
+
 <body>
-<div class="top-buttons">
-  <div class="button-row-top">
-    <button id="btnMeds" class="pop-button">Manage Log</button>
-    <button id="btnService" class="pop-button">Medication Reminder</button>
+  <div class="top-buttons">
+    <div class="button-row-top">
+      <button id="btnMeds" class="pop-button">Manage Log</button>
+      <button id="btnService" class="pop-button">Medication Reminder</button>
+    </div>
+    <a href="foodMed.html" class="button back-btn">Back</a>
   </div>
-  <a href="foodMed.html" class="button back-btn">Back</a>
-</div>
- <!--menu host, will be used for both buttons-->
+  <!--menu host, will be used for both buttons-->
   <dialog id="popupMenu" class="popup-menu"></dialog>
   <main class="page-container">
     <!-- white-space area for the Med Log-->
     <section id="log-section" class="log-section">
       <div class="section-title">Medication Log</div>
       <div id="medLog"></div>
-    <!--content dynamically loaded here later-->
-  </section>
+      <!--content dynamically loaded here later-->
+    </section>
     <section id="reminder-section" class="log-section">
-  <div class="section-title">Scheduled Reminders</div>
-  <div id="remLog"></div>
-</section>
+      <div class="section-title">Scheduled Reminders</div>
+      <div id="remLog"></div>
+    </section>
   </main>
 </body>
+
 </html>

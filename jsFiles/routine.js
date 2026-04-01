@@ -7,8 +7,8 @@ import {
 console.log("routine.js LOADED");
 let tasksCollection = null;
 let routinesCollection = null;
-let editingRoutineId = null; // Track the routine being edited
-let tasks = []; // Array to hold tasks
+let editingRoutineId = null; 
+let tasks = []; 
 
 window.addEventListener("load", async () => {
   await userReady;
@@ -20,6 +20,8 @@ window.addEventListener("load", async () => {
   // Get reference to user's "tasks" and "routines" collections
   tasksCollection = userCollection("tasks");
   routinesCollection = userCollection("routines");
+
+  tasks = await fetchTasks();
 
   // Start listening for live updates on routines
   startRoutineSnapshotListener();
@@ -39,6 +41,7 @@ function initializeEventListeners() {
   // Open modal + load tasks
   routineCreateBtn.addEventListener("click", async () => {
     routineModal.classList.add("active");
+    console.log("Routine modal opened for task loading.");
     await loadTasksForRoutine();
   });
 
@@ -47,6 +50,7 @@ function initializeEventListeners() {
     routineModal.classList.remove("active");
     routineNameInput.value = "";
     routineTaskList.innerHTML = "";
+    console.log("Routine modal closed without saving.");
   });
 
   // Save routine
@@ -55,12 +59,14 @@ function initializeEventListeners() {
 
 async function loadTasksForRoutine() {
   tasks = await fetchTasks();
+  console.log("Tasks loaded for routine:", tasks);
 
   const routineTaskList = document.getElementById("routineTaskList");
   routineTaskList.innerHTML = "";
 
   if (tasks.length === 0) {
     routineTaskList.innerHTML = "<p>No tasks available. Create tasks first.</p>";
+    console.log("No tasks available for creating a routine.");
     return;
   }
 
@@ -89,6 +95,7 @@ async function fetchTasks() {
     });
   });
 
+  console.log("Fetched tasks:", fetchedTasks);
   return fetchedTasks;
 }
 
@@ -114,8 +121,9 @@ async function saveRoutine() {
     // Editing existing routine
     const routineDocRef = doc(routinesCollection, editingRoutineId);
     await updateDoc(routineDocRef, { name: routineName, tasks: taskIds });
+    console.log("Routine updated:", { id: editingRoutineId, name: routineName, tasks: taskIds });
     alert("Routine updated!");
-    editingRoutineId = null; // Reset
+    editingRoutineId = null; 
   } else {
     // Creating new routine
     const newRoutine = {
@@ -124,6 +132,7 @@ async function saveRoutine() {
       createdAt: new Date().toISOString()
     };
     await addDoc(routinesCollection, newRoutine);
+    console.log("New routine created:", newRoutine);
     alert("Routine saved!");
   }
 
@@ -133,7 +142,7 @@ async function saveRoutine() {
   routineNameInput.value = "";
   routineTaskList.innerHTML = "";
 
-  renderRoutineList(); // Update routine list view
+  renderRoutineList(routines); 
 }
 
 function startRoutineSnapshotListener() {
@@ -141,16 +150,18 @@ function startRoutineSnapshotListener() {
   
   onSnapshot(routinesQuery, (snapshot) => {
     const routines = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log("Routine list updated:", routines);
     renderRoutineList(routines);
   });
 }
 
 function renderRoutineList(routines) {
-  const routineList = document.getElementById("routineList");
-  routineList.innerHTML = ""; // Clear previous output
+  const routineList = document.getElementById("currentRoutines");
+  routineList.innerHTML = "";
 
   if (routines.length === 0) {
     routineList.innerHTML = "<p>No routines created yet.</p>";
+    console.log("No routines have been created yet.");
     return;
   }
 
@@ -177,6 +188,7 @@ function renderRoutineList(routines) {
   deleteButtons.forEach(btn => {
     btn.addEventListener("click", (e) => {
       const idToDelete = e.target.dataset.id;
+      console.log("Attempting to delete routine id:", idToDelete);
       deleteRoutine(idToDelete);
     });
   });
@@ -186,6 +198,7 @@ function renderRoutineList(routines) {
   editButtons.forEach(btn => {
     btn.addEventListener("click", (e) => {
       const idToEdit = e.target.dataset.id;
+      console.log("Editing routine id:", idToEdit);
       openRoutineForEdit(idToEdit);
     });
   });
@@ -195,6 +208,7 @@ async function deleteRoutine(id) {
   try {
     const routineDocRef = doc(routinesCollection, id);
     await deleteDoc(routineDocRef);
+    console.log("Routine deleted id:", id);
     alert("Routine deleted!");
   } catch (error) {
     console.error("Error deleting routine:", error);
@@ -209,12 +223,10 @@ async function openRoutineForEdit(id) {
   const routineModal = document.getElementById("routineModal");
   routineModal.classList.add("active");
 
-  // Set editing ID
   editingRoutineId = id;
   const routineModalHeader = routineModal.querySelector("h2");
   routineModalHeader.textContent = "Update Your Routine";
 
-  // Pre-fill routine modal
   const routineNameInput = document.getElementById("routineInput-name");
   routineNameInput.value = routine.name;
 

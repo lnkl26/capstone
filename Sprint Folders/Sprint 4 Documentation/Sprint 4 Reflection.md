@@ -1,4 +1,4 @@
-# JJaCL Sprint 3 Submission
+# JJaCL Sprint 4 Submission
 
 Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
@@ -19,7 +19,9 @@ Team Members: Jesselle Ballesil, Jack Crawford, Chet Hefton, and Leann Kahal
 
 ### Chet Hefton
 
-(text here)
+- LLM powered subtask suggestion AI agent.
+- Continued and finshed developing the share feature.
+   - Share now shows username, has permissions, and can be revoked from either party.
 
 ### Leann Kahal
 
