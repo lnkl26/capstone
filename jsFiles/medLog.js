@@ -51,9 +51,10 @@ await userReady;
     <div id="viewHint" class="empty" style="text-align:center; margin-top:6px;"></div>
   `;
 
-  const titleEl = document.querySelector("h1.title");
-  if (titleEl && titleEl.parentNode) {
-    titleEl.parentNode.insertBefore(wrap, titleEl.nextSibling);
+  const topNav = document.querySelector(".top-buttons");
+  if (topNav) {
+    //appends the dropdown cleanly to the bottom of top navigation area
+    topNav.appendChild(wrap); 
   } else {
     container.insertBefore(wrap, container.firstChild);
   }
