@@ -58,19 +58,19 @@ body,
 /* styling for mobile screens */
 @media screen and (max-width: 600px) {
     #main-menu {
-        background-image: url(/assets/bgimg/mmbg.png);
+        background-image: url('../assets/bgimg/mmbg.png');
     }
 
     #productive-menu {
-        background-image: url(/assets/bgimg/pmbg.png);
+        background-image: url('../assets/bgimg/pmbg.png');
     }
 
     #food-med-menu {
-        background-image: url(/assets/bgimg/fmbg.png);
+        background-image: url('../assets/bgimg/fmbg.png');
     }
 
     #settings-menu {
-        background-image: url(/assets/bgimg/smbg.png);
+        background-image: url('../assets/bgimg/smbg.png');
     }
 
     .header {
@@ -92,19 +92,19 @@ body,
 /* styling for desktop screens */
 @media screen and (min-width: 768px) {
     #main-menu {
-        background-image: url(/assets/bgimg/mmbgd.jpg);
+        background-image: url('../assets/bgimg/mmbgd.jpg');
     }
 
     #productive-menu {
-        background-image: url(/assets/bgimg/pmbgd.jpg);
+        background-image: url('../assets/bgimg/pmbgd.jpg');
     }
 
     #food-med-menu {
-        background-image: url(/assets/bgimg/fmbgd.jpg);
+        background-image: url('../assets/bgimg/fmbgd.jpg');
     }
 
     #settings-menu {
-        background-image: url(/assets/bgimg/smbgd.jpg);
+        background-image: url('../assets/bgimg/smbgd.jpg');
     }
 
     .header {
