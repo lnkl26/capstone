@@ -9,7 +9,8 @@ console.log("task.js loaded");
 let tasks = [];
 let tasksCollection = null;
 let currentSubtasks = []; // store subtasks before saving
-let draggedItem = null;
+let draggedTask = null;
+let draggedSubtask = null;
 let taskList = null;
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -45,7 +46,6 @@ function wireEventListeners() {
   const subtaskInput = document.getElementById("subtaskInput");
   const addSubtaskBtn = document.getElementById("addSubtask");
   taskList = document.getElementById("currentTasks");
-  const subtaskList = document.getElementById("subtaskList");
 
   // Open modal
   taskCreateBtn.addEventListener("click", () => {
@@ -152,7 +152,7 @@ function startTaskSnapshotListener() {
   onSnapshot(q, (snapshot) => {
     tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     renderTasks();
-    console.log("Tasks from Firestore:");
+    // console.log("Tasks from Firestore:");
     tasks.forEach(t => console.log(t.title, "->", t.order));
   });
 }
@@ -204,17 +204,21 @@ function renderTasks() {
 
     // Subtasks
     if (task.subtasks && task.subtasks.length > 0) {
-      const subtaskContainer = document.createElement("div");
+      const subtaskContainer = document.createElement("ul");
       subtaskContainer.style.display = "flex";
       subtaskContainer.style.flexDirection = "column";
       subtaskContainer.style.marginTop = "4px";
 
       task.subtasks.forEach((sub, index) => {
-        const subtaskRow = document.createElement("div");
+        const subtaskRow = document.createElement("li");
         subtaskRow.style.display = "flex";
         //subtaskRow.style.alignItems = "center";
+        subtaskRow.classList.add("subtask-item");
         subtaskRow.style.fontSize = "0.85rem";
         subtaskRow.style.opacity = "0.85";
+        subtaskRow.draggable = "true";
+        
+        subtaskRow.dataset.subtaskIndex = index;
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -246,6 +250,7 @@ function renderTasks() {
       });
 
       taskTextContainer.appendChild(subtaskContainer);
+      attachDragHandlers(subtaskContainer, "li.subtask-item", () => updateSubtaskOrder(task.id, subtaskContainer));
     }
 
 
@@ -279,40 +284,52 @@ function renderTasks() {
     taskEl.appendChild(btnGroup);
     currentTasksDiv.appendChild(taskEl);
   });
-  attachDragHandlers();
+  attachDragHandlers(taskList, "li.task-item", () => updateTaskOrder());
 }
 
 // -------------------------
 // Drag List Items
 // -------------------------
 
-function attachDragHandlers() {
-  taskList.querySelectorAll('li').forEach(item=>{
+function attachDragHandlers(container, itemSelector, onDragEnd) {
+  container.querySelectorAll(itemSelector).forEach(item=>{
     item.addEventListener('dragstart', e=>{
-      draggedItem = item;
+      e.stopPropagation();
+      if (itemSelector === "li.task-item") draggedTask = item;
+      else draggedSubtask = item;
       item.classList.add('dragging');
     });
     item.addEventListener('dragend', async ()=>{
-      draggedItem = null;
       item.classList.remove('dragging');
-      await updateTaskOrder();
+      if (itemSelector === "li.task-item") draggedTask = null;
+      else draggedSubtask = null;
+      await onDragEnd();
       // console.log("Saving order to Firestone");
     });
+    item.addEventListener('dragover', e=>{
+      // console.log("draggedItem in dragover:", draggedItem);
+      e.preventDefault();
+      e.stopPropagation();
+    });
   });
-  taskList.addEventListener('dragover', e=>{
-    // console.log("draggedItem in dragover:", draggedItem);
+  container.addEventListener('dragover', e => {
     e.preventDefault();
-    const afterElement = getDragAfterElement (taskList, e.clientY);
-    if (afterElement == null) {
-      taskList.appendChild(draggedItem);
-    } else {
-     taskList.insertBefore(draggedItem, afterElement);
-    }
+    e.stopPropagation();
+
+    const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
+      if (!draggedItem) return;
+
+      const afterElement = getDragAfterElement (container, e.clientY, itemSelector);
+      if (afterElement == null) {
+        container.appendChild(draggedItem);
+      } else {
+      container.insertBefore(draggedItem, afterElement);
+      }
   });
 }
 
-function getDragAfterElement(container, y) {
-  const draggableElements = [...container.querySelectorAll('li:not(.dragging)')];
+function getDragAfterElement(container, y, selector) {
+  const draggableElements = [...container.querySelectorAll(`${selector}:not(.dragging)`)];
   let closest = {offset: Number.NEGATIVE_INFINITY, element: null};
 
   draggableElements.forEach(child=> {
@@ -335,8 +352,29 @@ async function updateTaskOrder() {
   // console.log("updateTaskOrder items:", items.length);
   items.forEach((li, index)=> {
     const id = li.dataset.id;
+    if (!id) return;
+
     const ref = doc(tasksCollection, id);
     updateDoc(ref, {order: Number(index)});
+  });
+}
+
+async function updateSubtaskOrder(taskId, container) {
+  const items = container.querySelectorAll("li.subtask-item");
+
+  const newSubtasks = [ ...items].map((el, index) => {
+    const checkbox = el.querySelector("input[type='checkbox']");
+    const text = el.querySelector("span").textContent;
+
+    return {
+      text,
+      completed: checkbox.checked,
+      order: index
+    };
+  });
+
+  await updateDoc(doc(tasksCollection, taskId), {
+    subtasks: newSubtasks
   });
 }
 

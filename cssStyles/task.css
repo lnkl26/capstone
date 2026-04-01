@@ -114,11 +114,6 @@ button:hover {
         z-index: 1050;
 }
 
-.task-item.dragging {
-    opacity: 0.5;
-    background-color: lightgray;
-}
-
 /* input fields */
 input[type="text"] {
     border-radius: 15px;
@@ -230,7 +225,19 @@ input[type="text"] {
     border-bottom: 1px solid #eee;
     margin-top: 1vw;
     gap: 1vw;
-    
+}
+
+.subtask-item {
+    display: flex;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #eee;
+    margin-top: 1vw;
+    gap: 1vw;
+}
+
+.task-item.dragging, .subtask-item.dragging {
+    opacity: 0.5;
+    background-color: lightgray;
 }
 
 /* task edit buttons */
