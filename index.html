@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#66d6ff">
@@ -12,16 +14,19 @@
     <link rel="stylesheet" href="./cssStyles/menu.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
 <body id="main-menu">
     <div class="header">
         <img src="assets/bgimg/logo.png" alt="OnTrack by JJaCL" style="width:350px;">
         <div class="navigation-area">
-            <a href="htmlPages/productive.html" class="mm-button">⏲️ Productivity 📝</a>
-            <a href="htmlPages/foodMed.html" class="mm-button">🍽️ Dietary 💊</a>
-            <a href="htmlPages/settings.html" class="mm-button">⚙️ Settings 🔧</a>
+            <a href="htmlPages/productive.html" class="mm-button"> 
+                <span class="material-symbols-outlined">library_add</span> Productivity </a>
+            <a href="htmlPages/foodMed.html" class="mm-button">
+                <span class="material-symbols-outlined">food_bank</span> Dietary </a>
+            <a href="htmlPages/settings.html" class="mm-button">
+                <span class="material-symbols-outlined">settings </span> Settings </a>
         </div>
     </div>
 </body>
