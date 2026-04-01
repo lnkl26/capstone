@@ -6,7 +6,7 @@ import {
 
 import { userReady, currentUser } from "../firebase.js";
 
-import { getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getDocs, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 window.addEventListener("load", async () => {
   await userReady;
