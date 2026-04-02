@@ -268,6 +268,7 @@ button:hover {
         padding: 1vw;
         font-size: 10px;
         margin: 1vw 0;
+        max-width: 300px;
     }
 
     .section-title {
@@ -305,7 +306,7 @@ button:hover {
 
     .popup-menu .menu {
         min-width: 350px;
-        padding: 1vw 2vw;
+        padding: 2.5vw;
         gap: 1vw;
     }
 
@@ -314,8 +315,9 @@ button:hover {
     }
 
     .input {
-        padding: 0.5vw 1vw 0.5vw;
         font-size: 15px;
+        padding: 0.5vw;
+        width: 350px;
     }
 
     .section-title {
