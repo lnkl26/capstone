@@ -1,201 +1,330 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width; initial-scale=1; viewport-fit=cover"
+        />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <title>Diet Log</title>
+        <link rel="stylesheet" href="../cssStyles/diet.css" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width; initial-scale=1; viewport-fit=cover" />
-    <meta name="mobile-web-app-capable" content="yes">
-    <title>Diet Log</title>
-    <link rel="stylesheet" href="../cssStyles/diet.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
-</head>
+    <body id="diet-log-page">
+        <h1 class="title">Diet Log</h1>
 
-<body id="diet-log-page">
-    <h1 class="title">Diet Log</h1>
-
-    <div class="task-btns">
-        <button id="dietCreate-btn" class="button">Log Food</button>
-        <button id="dietFilter-open-btn" class="button btn-secondary">
-            Filter
-        </button>
-        <button id="dietTools-open-btn" class="button btn-secondary">
-            Tools
-        </button>
-        <a href="foodMed.html" class="button btn-secondary">Back</a>
-    </div>
-
-    <!-- Diet modal styled like task modal -->
-    <div id="diet-modal" class="task-modal" role="dialog" aria-modal="true" aria-labelledby="diet-modal-title">
-        <div class="task-modal-content">
-            <div class="sheet-handle" aria-hidden="true"></div>
-            <h2 id="diet-modal-title" style="margin-top: 0">
-                Add / Edit Entry
-            </h2>
-            <form id="diet-form" class="task-input-area">
-                <div class="grid-2">
-                    <label>Date
-                        <input type="date" id="diet-date" required />
-                    </label>
-                    <label>Meal
-                        <select id="diet-meal" required>
-                            <option>Breakfast</option>
-                            <option>Lunch</option>
-                            <option>Dinner</option>
-                            <option>Snack</option>
-                        </select>
-                    </label>
-                </div>
-
-                <label>Food name
-                    <input type="text" id="diet-food" placeholder="e.g., Chicken salad" required />
-                </label>
-
-                <div class="grid-4">
-                    <label>Calories
-                        <input type="number" id="diet-cal" inputmode="numeric" min="0" step="1" placeholder="0" />
-                    </label>
-                    <label>Protein (g)
-                        <input type="number" id="diet-protein" inputmode="numeric" min="0" step="0.1" placeholder="0" />
-                    </label>
-                    <label>Carbs (g)
-                        <input type="number" id="diet-carbs" inputmode="numeric" min="0" step="0.1" placeholder="0" />
-                    </label>
-                    <label>Fat (g)
-                        <input type="number" id="diet-fat" inputmode="numeric" min="0" step="0.1" placeholder="0" />
-                    </label>
-                </div>
-
-                <label>Notes
-                    <textarea id="diet-notes" rows="2" placeholder="Optional…"></textarea>
-                </label>
-
-                <label class="safe-row">
-                    <span>Mark as “Safe Food”</span>
-                    <input type="checkbox" id="diet-safe" />
-                </label>
-
-                <input type="hidden" id="diet-edit-index" value="" />
-
-                <div class="task-btns" style="margin-top: 10px">
-                    <button type="submit" id="diet-save-btn">
-                        Save Entry
-                    </button>
-                    <button type="button" id="diet-cancel-btn">
-                        Cancel
-                    </button>
-                </div>
-            </form>
+        <div class="task-btns">
+            <button id="dietCreate-btn" class="button">Log Food</button>
+            <button id="dietFilter-open-btn" class="button btn-secondary">
+                Filter
+            </button>
+            <button id="dietTools-open-btn" class="button btn-secondary">
+                Tools
+            </button>
+            <a href="foodMed.html" class="button btn-secondary">Back</a>
         </div>
-    </div>
 
-    <div id="diet-filter-modal" class="task-modal" role="dialog" aria-modal="true" aria-labelledby="diet-filter-title">
-        <div class="task-modal-content">
-            <div class="sheet-handle" aria-hidden="true"></div>
-            <h2 id="diet-filter-title">Filter Entries</h2>
-            <div class="task-input-area">
-                <div class="grid-3">
-                    <label>From
-                        <input type="date" id="diet-filter-from" />
+        <!-- Diet modal styled like task modal -->
+        <div
+            id="diet-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diet-modal-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="diet-modal-title" style="margin-top: 0">
+                    Add / Edit Entry
+                </h2>
+                <form id="diet-form" class="task-input-area">
+                    <div class="grid-2">
+                        <label
+                            >Date
+                            <input type="date" id="diet-date" required />
+                        </label>
+                        <label
+                            >Meal
+                            <select id="diet-meal" required>
+                                <option>Breakfast</option>
+                                <option>Lunch</option>
+                                <option>Dinner</option>
+                                <option>Snack</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <label
+                        >Food name
+                        <div
+                            class="search-row"
+                            style="display: flex; gap: 8px; align-items: center"
+                        >
+                            <input
+                                type="text"
+                                id="diet-food"
+                                placeholder="e.g., Chicken salad"
+                                required
+                                style="flex: 1"
+                            />
+                            <button
+                                type="button"
+                                id="diet-search-btn"
+                                class="button btn-secondary"
+                            >
+                                Search
+                            </button>
+                        </div>
+                        <ul
+                            id="diet-search-results"
+                            class="search-results"
+                            style="
+                                list-style: none;
+                                margin: 8px 0 0;
+                                padding: 0;
+                                max-height: 200px;
+                                overflow: auto;
+                                border: 1px solid #ddd;
+                                display: none;
+                                background: #fff;
+                                position: relative;
+                                z-index: 50;
+                                width: 100%;
+                            "
+                        ></ul>
                     </label>
-                    <label>To
-                        <input type="date" id="diet-filter-to" />
+
+                    <div class="grid-4">
+                        <label
+                            >Calories
+                            <input
+                                type="number"
+                                id="diet-cal"
+                                inputmode="numeric"
+                                min="0"
+                                step="1"
+                                placeholder="0"
+                            />
+                        </label>
+                        <label
+                            >Protein (g)
+                            <input
+                                type="number"
+                                id="diet-protein"
+                                inputmode="numeric"
+                                min="0"
+                                step="0.1"
+                                placeholder="0"
+                            />
+                        </label>
+                        <label
+                            >Carbs (g)
+                            <input
+                                type="number"
+                                id="diet-carbs"
+                                inputmode="numeric"
+                                min="0"
+                                step="0.1"
+                                placeholder="0"
+                            />
+                        </label>
+                        <label
+                            >Fat (g)
+                            <input
+                                type="number"
+                                id="diet-fat"
+                                inputmode="numeric"
+                                min="0"
+                                step="0.1"
+                                placeholder="0"
+                            />
+                        </label>
+                    </div>
+
+                    <label
+                        >Notes
+                        <textarea
+                            id="diet-notes"
+                            rows="2"
+                            placeholder="Optional…"
+                        ></textarea>
                     </label>
-                    <label>Meal
-                        <select id="diet-filter-meal">
-                            <option value="">All</option>
-                            <option>Breakfast</option>
-                            <option>Lunch</option>
-                            <option>Dinner</option>
-                            <option>Snack</option>
-                        </select>
+
+                    <label class="safe-row">
+                        <span>Mark as “Safe Food”</span>
+                        <input type="checkbox" id="diet-safe" />
                     </label>
-                </div>
 
-                <div class="task-btns filter-actions">
-                    <button id="diet-apply-filter" class="button">
-                        Apply
-                    </button>
-                    <button type="button" id="diet-close-filter" class="button btn-secondary">
-                        Cancel
-                    </button>
-                    <button type="button" id="diet-reset-filter" class="button btn-secondary">
-                        Reset
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <input type="hidden" id="diet-edit-index" value="" />
 
-    <section class="card">
-        <h2>Totals</h2>
-        <div class="grid-4" id="diet-totals">
-            <div class="nutrition-total">
-                <strong>Calories:</strong> <span id="total-cal">0</span>
-            </div>
-            <div class="nutrition-total">
-                <strong>Protein(g):</strong>
-                <span id="total-protein">0</span>
-            </div>
-            <div class="nutrition-total">
-                <strong>Carbs(g):</strong> <span id="total-carbs">0</span>
-            </div>
-            <div class="nutrition-total">
-                <strong>Fat(g):</strong> <span id="total-fat">0</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>Entries</h2>
-        <div class="table-wrap">
-            <table class="table" id="diet-table">
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Meal</th>
-                        <th>Food</th>
-                        <th>Cal</th>
-                        <th>P</th>
-                        <th>C</th>
-                        <th>F</th>
-                        <th>Notes</th>
-                        <th>Safe</th>
-                        <th style="width: 140px">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="diet-tbody"></tbody>
-            </table>
-        </div>
-    </section>
-
-    <div id="diet-tools-modal" class="task-modal" role="dialog" aria-modal="true" aria-labelledby="diet-tools-title">
-        <div class="task-modal-content">
-            <div class="sheet-handle" aria-hidden="true"></div>
-            <h2 id="diet-tools-title">Import / Export</h2>
-            <div class="task-btns import-actions wrap-actions">
-                <button type="button" id="diet-export-csv" class="button btn-secondary">
-                    Export CSV
-                </button>
-                <button type="button" id="diet-export-json" class="button btn-secondary">
-                    Export JSON
-                </button>
-                <label class="button btn-secondary">
-                    Import JSON
-                    <input type="file" id="diet-import-json" accept="application/json" style="display: none" />
-                </label>
-                <button type="button" id="diet-clear-all" class="button danger">
-                    Clear All
-                </button>
-                <button type="button" id="diet-close-tools" class="button btn-secondary">
-                    Close
-                </button>
+                    <div class="task-btns" style="margin-top: 10px">
+                        <button type="submit" id="diet-save-btn">
+                            Save Entry
+                        </button>
+                        <button type="button" id="diet-cancel-btn">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
-    <script type="module" src="../firebase.js"></script>
-    <script type="module" src="../jsFiles/dietLog.js"></script>
-</body>
 
+        <div
+            id="diet-filter-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diet-filter-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="diet-filter-title">Filter Entries</h2>
+                <div class="task-input-area">
+                    <div class="grid-3">
+                        <label
+                            >From
+                            <input type="date" id="diet-filter-from" />
+                        </label>
+                        <label
+                            >To
+                            <input type="date" id="diet-filter-to" />
+                        </label>
+                        <label
+                            >Meal
+                            <select id="diet-filter-meal">
+                                <option value="">All</option>
+                                <option>Breakfast</option>
+                                <option>Lunch</option>
+                                <option>Dinner</option>
+                                <option>Snack</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="task-btns filter-actions">
+                        <button id="diet-apply-filter" class="button">
+                            Apply
+                        </button>
+                        <button
+                            type="button"
+                            id="diet-close-filter"
+                            class="button btn-secondary"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            id="diet-reset-filter"
+                            class="button btn-secondary"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="card">
+            <h2>Totals</h2>
+            <div class="grid-4" id="diet-totals">
+                <div class="nutrition-total">
+                    <strong>Calories:</strong> <span id="total-cal">0</span>
+                </div>
+                <div class="nutrition-total">
+                    <strong>Protein(g):</strong>
+                    <span id="total-protein">0</span>
+                </div>
+                <div class="nutrition-total">
+                    <strong>Carbs(g):</strong> <span id="total-carbs">0</span>
+                </div>
+                <div class="nutrition-total">
+                    <strong>Fat(g):</strong> <span id="total-fat">0</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Entries</h2>
+            <div class="table-wrap">
+                <table class="table" id="diet-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Meal</th>
+                            <th>Food</th>
+                            <th>Cal</th>
+                            <th>P</th>
+                            <th>C</th>
+                            <th>F</th>
+                            <th>Notes</th>
+                            <th>Safe</th>
+                            <th style="width: 140px">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="diet-tbody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <div
+            id="diet-tools-modal"
+            class="task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="diet-tools-title"
+        >
+            <div class="task-modal-content">
+                <div class="sheet-handle" aria-hidden="true"></div>
+                <h2 id="diet-tools-title">Import / Export</h2>
+                <div class="task-btns import-actions wrap-actions">
+                    <button
+                        type="button"
+                        id="diet-export-csv"
+                        class="button btn-secondary"
+                    >
+                        Export CSV
+                    </button>
+                    <button
+                        type="button"
+                        id="diet-export-json"
+                        class="button btn-secondary"
+                    >
+                        Export JSON
+                    </button>
+                    <label class="button btn-secondary">
+                        Import JSON
+                        <input
+                            type="file"
+                            id="diet-import-json"
+                            accept="application/json"
+                            style="display: none"
+                        />
+                    </label>
+                    <button
+                        type="button"
+                        id="diet-clear-all"
+                        class="button danger"
+                    >
+                        Clear All
+                    </button>
+                    <button
+                        type="button"
+                        id="diet-close-tools"
+                        class="button btn-secondary"
+                    >
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script type="module" src="../firebase.js"></script>
+        <script type="module" src="../jsFiles/dietLog.js"></script>
+    </body>
 </html>
