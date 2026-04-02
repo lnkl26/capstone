@@ -122,7 +122,7 @@ async function saveRoutine() {
     const routineDocRef = doc(routinesCollection, editingRoutineId);
     await updateDoc(routineDocRef, { name: routineName, tasks: taskIds });
     console.log("Routine updated:", { id: editingRoutineId, name: routineName, tasks: taskIds });
-    alert("Routine updated!");
+    // alert("Routine updated!");
     editingRoutineId = null; 
   } else {
     // Creating new routine

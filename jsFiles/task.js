@@ -185,7 +185,7 @@ function renderTasks() {
     taskTextContainer.style.flexDirection = "column";
 
     // Task title
-    const taskTitle = document.createElement("li");
+    const taskTitle = document.createElement("span");
     taskTitle.textContent = task.title;
     if (task.completed) {
       taskTitle.style.textDecoration = "line-through";

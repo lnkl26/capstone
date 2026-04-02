@@ -420,3 +420,7 @@ option {
         padding: 1vw;
     }
 }
+
+#currentTasks {
+    padding: 0;
+}
