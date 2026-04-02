@@ -9,6 +9,9 @@ console.log("task.js loaded");
 let tasks = [];
 let tasksCollection = null;
 let currentSubtasks = []; // store subtasks before saving
+let draggedTask = null;
+let draggedSubtask = null;
+let taskList = null;
 
 window.addEventListener("DOMContentLoaded", async () => {
   await userReady;
@@ -42,7 +45,7 @@ function wireEventListeners() {
   const cancelTaskBtn = document.getElementById("cancelTask");
   const subtaskInput = document.getElementById("subtaskInput");
   const addSubtaskBtn = document.getElementById("addSubtask");
-  const subtaskList = document.getElementById("subtaskList");
+  taskList = document.getElementById("currentTasks");
 
   // Open modal
   taskCreateBtn.addEventListener("click", () => {
@@ -51,7 +54,7 @@ function wireEventListeners() {
     taskInputDesc.value = "";
     currentSubtasks = [];
     renderSubtasks();
-    
+
     // Initialize large task selector in the modal when opened
     initLargeTaskSelector();
   });
@@ -86,7 +89,8 @@ function wireEventListeners() {
       description: desc,
       subtasks: currentSubtasks,
       completed: false,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
+      order: tasks.length
     };
 
     await addTask(task);
@@ -96,35 +100,35 @@ function wireEventListeners() {
   const suggestBtn = document.getElementById("suggestSubtasksBtn");
   const AItaskInputName = document.getElementById("taskInput-name");
 
-suggestBtn.addEventListener("click", () => {
+  suggestBtn.addEventListener("click", () => {
     const taskName = AItaskInputName.value.trim();
     if (taskName) {
-        fetchAISuggestions(taskName);
+      fetchAISuggestions(taskName);
     } else {
-        alert("Please enter a task name first!");
+      alert("Please enter a task name first!");
     }
-});
+  });
 }
 
-  function renderSubtasks() {
-    subtaskList.innerHTML = "";
-    currentSubtasks.forEach((sub, index) => {
-      const li = document.createElement("li");
-      li.textContent = sub;
+function renderSubtasks() {
+  subtaskList.innerHTML = "";
+  currentSubtasks.forEach((sub, index) => {
+    const li = document.createElement("li");
+    li.textContent = sub;
 
-      // delete subtask button
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "x";
-      delBtn.style.marginLeft = "5px";
-      delBtn.addEventListener("click", () => {
-        currentSubtasks.splice(index, 1);
-        renderSubtasks();
-      });
-
-      li.appendChild(delBtn);
-      subtaskList.appendChild(li);
+    // delete subtask button
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "x";
+    delBtn.style.marginLeft = "5px";
+    delBtn.addEventListener("click", () => {
+      currentSubtasks.splice(index, 1);
+      renderSubtasks();
     });
-  }
+
+    li.appendChild(delBtn);
+    subtaskList.appendChild(li);
+  });
+}
 
 // -------------------------
 // Firestore: Add Task
@@ -142,11 +146,14 @@ async function addTask(task) {
 // Firestore: Snapshot Listener
 // -------------------------
 function startTaskSnapshotListener() {
-  const q = query(tasksCollection, orderBy("createdAt", "desc"));
+  console.log("start snapshot called");
+  const q = query(tasksCollection, orderBy("order", "asc"));
 
   onSnapshot(q, (snapshot) => {
     tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     renderTasks();
+    // console.log("Tasks from Firestore:");
+    tasks.forEach(t => console.log(t.title, "->", t.order));
   });
 }
 
@@ -163,8 +170,10 @@ function renderTasks() {
   }
 
   tasks.forEach(task => {
-    const taskEl = document.createElement("div");
+    const taskEl = document.createElement("li");
+    taskEl.draggable = "true";
     taskEl.classList.add("task-item");
+    taskEl.dataset.id = task.id;
     taskEl.style.display = "flex";
     taskEl.style.justifyContent = "space-between";
     taskEl.style.alignItems = "flex-start";
@@ -195,17 +204,21 @@ function renderTasks() {
 
     // Subtasks
     if (task.subtasks && task.subtasks.length > 0) {
-      const subtaskContainer = document.createElement("div");
+      const subtaskContainer = document.createElement("ul");
       subtaskContainer.style.display = "flex";
       subtaskContainer.style.flexDirection = "column";
       subtaskContainer.style.marginTop = "4px";
 
       task.subtasks.forEach((sub, index) => {
-        const subtaskRow = document.createElement("div");
+        const subtaskRow = document.createElement("li");
         subtaskRow.style.display = "flex";
         //subtaskRow.style.alignItems = "center";
+        subtaskRow.classList.add("subtask-item");
         subtaskRow.style.fontSize = "0.85rem";
         subtaskRow.style.opacity = "0.85";
+        subtaskRow.draggable = "true";
+        
+        subtaskRow.dataset.subtaskIndex = index;
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
@@ -237,6 +250,7 @@ function renderTasks() {
       });
 
       taskTextContainer.appendChild(subtaskContainer);
+      attachDragHandlers(subtaskContainer, "li.subtask-item", () => updateSubtaskOrder(task.id, subtaskContainer));
     }
 
 
@@ -270,7 +284,100 @@ function renderTasks() {
     taskEl.appendChild(btnGroup);
     currentTasksDiv.appendChild(taskEl);
   });
+  attachDragHandlers(taskList, "li.task-item", () => updateTaskOrder());
 }
+
+// -------------------------
+// Drag List Items
+// -------------------------
+
+function attachDragHandlers(container, itemSelector, onDragEnd) {
+  container.querySelectorAll(itemSelector).forEach(item=>{
+    item.addEventListener('dragstart', e=>{
+      e.stopPropagation();
+      if (itemSelector === "li.task-item") draggedTask = item;
+      else draggedSubtask = item;
+      item.classList.add('dragging');
+    });
+    item.addEventListener('dragend', async ()=>{
+      item.classList.remove('dragging');
+      if (itemSelector === "li.task-item") draggedTask = null;
+      else draggedSubtask = null;
+      await onDragEnd();
+      // console.log("Saving order to Firestone");
+    });
+    item.addEventListener('dragover', e=>{
+      // console.log("draggedItem in dragover:", draggedItem);
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  });
+  container.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
+      if (!draggedItem) return;
+
+      const afterElement = getDragAfterElement (container, e.clientY, itemSelector);
+      if (afterElement == null) {
+        container.appendChild(draggedItem);
+      } else {
+      container.insertBefore(draggedItem, afterElement);
+      }
+  });
+}
+
+function getDragAfterElement(container, y, selector) {
+  const draggableElements = [...container.querySelectorAll(`${selector}:not(.dragging)`)];
+  let closest = {offset: Number.NEGATIVE_INFINITY, element: null};
+
+  draggableElements.forEach(child=> {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+
+    if (offset < 0 && offset > closest.offset) {
+      closest = {offset, element: child};
+    }
+  });
+
+  return closest.element; //always null or real item
+}
+
+// -------------------------
+// Firestore: Update Task Order
+// -------------------------
+async function updateTaskOrder() {
+  const items = taskList.querySelectorAll("li");
+  // console.log("updateTaskOrder items:", items.length);
+  items.forEach((li, index)=> {
+    const id = li.dataset.id;
+    if (!id) return;
+
+    const ref = doc(tasksCollection, id);
+    updateDoc(ref, {order: Number(index)});
+  });
+}
+
+async function updateSubtaskOrder(taskId, container) {
+  const items = container.querySelectorAll("li.subtask-item");
+
+  const newSubtasks = [ ...items].map((el, index) => {
+    const checkbox = el.querySelector("input[type='checkbox']");
+    const text = el.querySelector("span").textContent;
+
+    return {
+      text,
+      completed: checkbox.checked,
+      order: index
+    };
+  });
+
+  await updateDoc(doc(tasksCollection, taskId), {
+    subtasks: newSubtasks
+  });
+}
+
 // -------------------------
 // Firestore: Delete Task
 // -------------------------
@@ -443,381 +550,60 @@ function initLargeTaskSelector() {
 }
 
 async function fetchAISuggestions(taskName) {
-    const suggestionList = document.getElementById("aiSuggestionList");
-    const container = document.getElementById("aiSuggestionContainer");
-    
-    const functionUrl = "https://suggestsubtasks-ie3j3rv3yq-uc.a.run.app"; 
-    
-    //show loading state
-    suggestionList.innerHTML = "<span style='font-style:italic; color:#666;'>Gemini is thinking...</span>";
-    container.style.display = "block";
+  const suggestionList = document.getElementById("aiSuggestionList");
+  const container = document.getElementById("aiSuggestionContainer");
 
-    try {
-        //call Firebase function
-        const response = await fetch(`${functionUrl}?taskName=${encodeURIComponent(taskName)}`);
-        
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        
-        const data = await response.json();
-        suggestionList.innerHTML = ""; // clear loading text
+  const functionUrl = "https://suggestsubtasks-ie3j3rv3yq-uc.a.run.app";
 
-        //handle the array of subtasks returned by gemini
-        if (data.subtasks && data.subtasks.length > 0) {
-            data.subtasks.forEach(sub => {
-                const pill = document.createElement("div");
-                pill.className = "ai-pill";
-                
-                //keep the same look and logic
-                pill.innerHTML = `
+  //show loading state
+  suggestionList.innerHTML = "<span style='font-style:italic; color:#666;'>Gemini is thinking...</span>";
+  container.style.display = "block";
+
+  try {
+    //call Firebase function
+    const response = await fetch(`${functionUrl}?taskName=${encodeURIComponent(taskName)}`);
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const data = await response.json();
+    suggestionList.innerHTML = ""; // clear loading text
+
+    //handle the array of subtasks returned by gemini
+    if (data.subtasks && data.subtasks.length > 0) {
+      data.subtasks.forEach(sub => {
+        const pill = document.createElement("div");
+        pill.className = "ai-pill";
+
+        //keep the same look and logic
+        pill.innerHTML = `
                     <span>${sub}</span>
                     <button type="button" class="accept-suggestion">+</button>
                 `;
-                
-                  pill.querySelector("button").addEventListener("click", () => {
-                  //add to groups global subtask array
-                  if (typeof currentSubtasks !== 'undefined') {
-                      currentSubtasks.push(sub);
-                      
-                      //call groups function that draws the list on the screen
-                      renderSubtasks(); 
-                      
-                      //visual feedback
-                      pill.style.backgroundColor = "#4ade80"; 
-                      setTimeout(() => pill.remove(), 200);
-                  } else {
-                      console.error("The variable 'currentSubtasks' isn't defined in your group's code!");
-                  }
-              });
 
-                suggestionList.appendChild(pill);
-            });
-        } else {
-            suggestionList.innerHTML = "<span>No suggestions found. Try a different task name.</span>";
-        }
+        pill.querySelector("button").addEventListener("click", () => {
+          //add to groups global subtask array
+          if (typeof currentSubtasks !== 'undefined') {
+            currentSubtasks.push(sub);
 
-    } catch (error) {
-        console.error("AI Error:", error);
-        suggestionList.innerHTML = "<span style='color:red;'>Failed to reach AI. Check console.</span>";
+            //call groups function that draws the list on the screen
+            renderSubtasks();
+
+            //visual feedback
+            pill.style.backgroundColor = "#4ade80";
+            setTimeout(() => pill.remove(), 200);
+          } else {
+            console.error("The variable 'currentSubtasks' isn't defined in your group's code!");
+          }
+        });
+
+        suggestionList.appendChild(pill);
+      });
+    } else {
+      suggestionList.innerHTML = "<span>No suggestions found. Try a different task name.</span>";
     }
+
+  } catch (error) {
+    console.error("AI Error:", error);
+    suggestionList.innerHTML = "<span style='color:red;'>Failed to reach AI. Check console.</span>";
+  }
 }
-
-// OLD CODE
-// import {
-//   db, addDoc, deleteDoc, doc, updateDoc,
-//   onSnapshot, query, orderBy, serverTimestamp,
-//   userReady, currentUser, userCollection
-// } from "../firebase.js";
-
-// console.log("task.js loaded");
-
-// let tasks = [];
-// let currentSubTask = [];
-// let editingTaskIndex = null;
-// let tasksCollection = null;
-
-// window.addEventListener("DOMContentLoaded", async () => {
-//   await userReady;
-//   console.log("User ready in task.js:", currentUser?.uid);
-//   tasksCollection = userCollection("tasks");
-//   startTaskSnapshotListener();
-//   wireEventListeners();
-// });
-
-// const taskModal = document.getElementById('taskModal');
-// const openTaskBtn = document.getElementById('taskCreate-btn');
-// const closeTaskBtn = document.getElementById('cancelTask');
-
-// const saveTaskBtn = document.getElementById('saveTask');
-// const taskNameInput = document.getElementById('taskInput-name');
-// const taskDescInput = document.getElementById('taskInput-desc');
-// const subTaskInput = document.getElementById('subtaskInput');
-// const addSubTaskBtn = document.getElementById('addSubtask');
-// const subTaskList = document.getElementById('subtaskList');
-
-// const taskListModal = document.getElementById('taskListModal');
-// const openTaskListBtn = document.getElementById('taskListView');
-// const closeTaskListBtn = document.getElementById('closeTaskList');
-// const taskListEl = document.getElementById('taskList');
-
-// function wireEventListeners() {
-//   const taskModal = document.getElementById('taskModal');
-//   const openTaskBtn = document.getElementById('taskCreate-btn');
-//   const closeTaskBtn = document.getElementById('cancelTask');
-
-//   openTaskBtn.addEventListener('click', () => {
-//     taskNameInput.value = '';
-//     taskDescInput.value = '';
-//     currentSubTask = [];
-//     renderSubTasks(currentSubTask, subTaskList);
-//     editingTaskIndex = null;
-//     taskModal.querySelector('h2').textContent = 'Create New Task';
-//     saveTaskBtn.textContent = 'Save';
-//     taskModal.classList.add('active');
-//   });
-
-//   closeTaskBtn.addEventListener('click', () => {
-//     taskModal.classList.remove('active');
-//   });
-
-//   saveTaskBtn.addEventListener('click', saveTask);
-//   addSubTaskBtn.addEventListener('click', addSubtask);
-// }
-
-// function startTaskSnapshotListener() {
-//   if (!tasksCollection) return;
-
-//   onSnapshot(
-//     query(tasksCollection, orderBy("createdAt", "desc")),
-//     (snapshot) => {
-//       tasks = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-//       renderTaskList();
-//       renderCurrentTasks(tasks);
-//     }
-//   );
-// }
-
-// function saveTask() {
-//   const name = taskNameInput.value.trim();
-//   const description = taskDescInput.value.trim();
-
-//   if (!name) {
-//     alert("Please enter a task name!");
-//     return;
-//   }
-
-//   const newTask = {
-//     name,
-//     description,
-//     subtask: [...currentSubTask],
-//     createdAt: serverTimestamp(),
-//     completed: editingTaskIndex !== null ? tasks[editingTaskIndex].completed : false
-//   };
-
-//   if (editingTaskIndex !== null) {
-//     const taskId = tasks[editingTaskIndex].id;
-//     const taskRef = doc(tasksCollection, taskId);
-//     updateDoc(taskRef, newTask).then(() => {
-//       editingTaskIndex = null;
-//       resetTaskModal();
-//     });
-//   } else {
-//     addDoc(tasksCollection, newTask).then(() => {
-//       resetTaskModal();
-//     });
-//   }
-// }
-
-// function resetTaskModal() {
-//   taskNameInput.value = "";
-//   taskDescInput.value = "";
-//   subTaskList.innerHTML = "";
-//   currentSubTask = [];
-//   taskModal.classList.remove("active");
-// }
-
-// function addSubtask() {
-//   const subtaskName = subTaskInput.value.trim();
-//   if (!subtaskName) return;
-//   currentSubTask.push({ name: subtaskName, completed: false });
-//   renderSubTasks(currentSubTask, subTaskList);
-//   subTaskInput.value = "";
-// }
-
-// if (openTaskListBtn) {
-//   openTaskListBtn.addEventListener('click', () => {
-//     renderTaskList();
-//     taskListModal.classList.add('active');
-//   });
-// }
-
-// if (closeTaskListBtn) {
-//   closeTaskListBtn.addEventListener('click', () => {
-//     taskListModal.classList.remove('active');
-//   });
-// }
-
-// function renderTaskList() {
-//   taskListEl.innerHTML = '';
-
-//   if (tasks.length === 0) {
-//     taskListEl.innerHTML = '<li>You have no tasks yet!</li>';
-//     return;
-//   }
-
-//   tasks.forEach((task, index) => {
-//     const li = document.createElement('li');
-//     li.classList.toggle('completed', task.completed);
-
-//     const taskCheckbox = document.createElement('input');
-//     taskCheckbox.type = 'checkbox';
-//     taskCheckbox.checked = task.completed;
-
-//     taskCheckbox.addEventListener('change', () => {
-//       task.completed = taskCheckbox.checked;
-//       task.subtask.forEach(st => st.completed = task.completed);
-//       renderTaskList();
-//     });
-
-//     const taskLabel = document.createElement('span');
-//     taskLabel.innerHTML = `<strong>${task.name}</strong> ${task.description ? `<p>${task.description}</p>` : ''}`;
-
-//     li.appendChild(taskCheckbox);
-//     li.appendChild(taskLabel);
-
-//     if (task.subtask.length) {
-//       const ul = document.createElement('ul');
-//       renderSubTasks(task.subtask, ul, index);
-//       li.appendChild(ul);
-//     }
-
-//     const actions = document.createElement('div');
-//     actions.className = 'task-actions';
-
-//     const editBtn = document.createElement('button');
-//     editBtn.textContent = 'Edit';
-//     editBtn.className = 'edit-btn';
-
-//     editBtn.addEventListener('click', () => {
-//       taskNameInput.value = task.name;
-//       taskDescInput.value = task.description;
-//       currentSubTask = task.subtask.map(st => ({ name: st.name, completed: st.completed }));
-//       renderSubTasks(currentSubTask, subTaskList);
-//       taskListModal.classList.remove('active');
-//       editingTaskIndex = index;
-//       taskModal.querySelector('h2').textContent = 'Edit Task';
-//       saveTaskBtn.textContent = 'Save Changes';
-//       taskModal.classList.add('active');
-//     });
-
-//     const deleteBtn = document.createElement('button');
-//     deleteBtn.textContent = 'Delete';
-
-//     deleteBtn.addEventListener('click', async () => {
-//       if (confirm(`Delete "${task.name}"?`)) {
-//         const taskRef = doc(tasksCollection, task.id);
-//         await deleteDoc(taskRef);
-//       }
-//     });
-
-//     actions.appendChild(editBtn);
-//     actions.appendChild(deleteBtn);
-//     li.appendChild(actions);
-
-//     taskListEl.appendChild(li);
-//   });
-// }
-
-// function renderSubTasks(subtasks, container, taskIndex = null) {
-//   container.innerHTML = '';
-
-//   subtasks.forEach((st, i) => {
-//     const li = document.createElement('li');
-//     li.classList.toggle('completed', st.completed);
-
-//     const checkbox = document.createElement('input');
-//     checkbox.type = 'checkbox';
-//     checkbox.checked = st.completed;
-
-//     checkbox.addEventListener('change', () => {
-//       st.completed = checkbox.checked;
-//       li.classList.toggle('completed', st.completed);
-//       if (taskIndex !== null) {
-//         const allDone = subtasks.every(s => s.completed);
-//         tasks[taskIndex].completed = allDone;
-//         renderTaskList();
-//       }
-//     });
-
-//     const span = document.createElement('span');
-//     span.textContent = st.name;
-//     span.style.cursor = 'pointer';
-
-//     span.addEventListener('click', () => {
-//       const input = document.createElement('input');
-//       input.type = 'text';
-//       input.value = st.name;
-//       li.replaceChild(input, span);
-//       input.focus();
-
-//       const saveEdit = () => {
-//         const newName = input.value.trim();
-//         if (newName) {
-//           st.name = newName;
-//           renderSubTasks(subtasks, container, taskIndex);
-//           if (taskIndex !== null) renderTaskList();
-//         } else {
-//           input.focus();
-//         }
-//       };
-
-//       input.addEventListener('blur', saveEdit);
-//       input.addEventListener('keydown', (e) => {
-//         if (e.key === 'Enter') saveEdit();
-//       });
-//     });
-
-//     const removeBtn = document.createElement('button');
-//     removeBtn.textContent = '×';
-
-//     removeBtn.addEventListener('click', () => {
-//       subtasks.splice(i, 1);
-//       if (taskIndex !== null) {
-//         const allDone = subtasks.every(s => s.completed);
-//         tasks[taskIndex].completed = allDone;
-//       }
-//       renderSubTasks(subtasks, container, taskIndex);
-//       if (taskIndex !== null) renderTaskList();
-//     });
-
-//     li.appendChild(checkbox);
-//     li.appendChild(span);
-//     li.appendChild(removeBtn);
-//     container.appendChild(li);
-//   });
-// }
-
-// function escapeHtml(str = "") {
-//   return String(str)
-//     .replace(/&/g, "&amp;")
-//     .replace(/</g, "&lt;")
-//     .replace(/>/g, "&gt;");
-// }
-
-// function renderCurrentTasks(summaryTasks) {
-//   const box = document.getElementById("currentTasks");
-//   if (!box) return;
-
-//   if (!summaryTasks || !summaryTasks.length) {
-//     box.innerHTML = '<div class="empty">No tasks yet.</div>';
-//     return;
-//   }
-
-//   box.innerHTML = summaryTasks.map(t => `
-//     <div class="summary-item${t.completed ? " completed" : ""}">
-//       <strong>${escapeHtml(t.name || "")}</strong>
-//       ${t.description ? `<div class="summary-sub">${escapeHtml(t.description)}</div>` : ""}
-//     </div>
-//   `).join("");
-// }
-
-// function renderCurrentRoutines(routines) {
-//   const box = document.getElementById("currentRoutines");
-//   if (!box) return;
-
-//   if (!routines || !routines.length) {
-//     box.innerHTML = '<div class="empty">No routines yet.</div>';
-//     return;
-//   }
-
-//   box.innerHTML = routines.map(r => `
-//     <div class="summary-item">
-//       <strong>${escapeHtml(r.name || "")}</strong>
-//       ${Array.isArray(r.tasks) && r.tasks.length
-//         ? `<div class="summary-sub">${r.tasks.length} step${r.tasks.length > 1 ? "s" : ""}</div>`
-//         : ""}
-//     </div>
-//   `).join("");
-// }
-
-// window.renderCurrentTasks = renderCurrentTasks;
-// window.renderCurrentRoutines = renderCurrentRoutines;

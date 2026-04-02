@@ -3,23 +3,31 @@
 
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="../manifest.json" />
-    <title>Document</title>
+    <title>OnTrack Productivity</title>
     <link rel="stylesheet" href="../cssStyles/menu.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
 <body id="productive-menu">
     <div class="header">
         <h1 class="title">Productivity</h1>
         <div class="navigation-area">
-            <a href="task.html" class="pm-button">📝 Tasks 📝</a>
-            <a href="focusMode.html" class="pm-button">⏳ Focus Mode ⏳</a>
-            <a href="reminder.html" class="pm-button">🔔 Reminder 🔔</a>
-            <a href="../index.html" class="pm-button">🏠 Home 🏠</a>
+            <a href="task.html" class="pm-button">
+                <span class="material-symbols-outlined">menu_open</span> Tasks </a>
+            <a href="focusMode.html" class="pm-button">
+                <span class="material-symbols-outlined">mindfulness</span> Focus Mode </a>
+            <a href="reminder.html" class="pm-button">
+                <span class="material-symbols-outlined">alarm_smart_wake</span> Reminder </a>
+            <a href="../index.html" class="pm-button">
+                <span class="material-symbols-outlined">home</span> Home </a>
         </div>
     </div>
 </body>

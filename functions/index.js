@@ -18,18 +18,24 @@ exports.suggestSubtasks = onRequest({ cors: true, secrets: [geminiKey] }, async 
         const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" }); 
         
         const prompt = `
-        You are an executive function coach for people with ADHD. 
-        Break the task "${taskName}" into 3 tiny, concrete steps.
+        You are an executive function coach helping a user overcome task paralysis. 
+        Break the task "${taskName}" into 3 to 5 actionable, sequential subtasks that make a meaningful dent in the overall goal.
 
         Rules:
-        1. Start with a "micro-action" (something that takes < 2 minutes).
-        2. Use low-energy, encouraging language.
-        3. No abstract goals (e.g., instead of "Be productive," use "Open the laptop").
-        4. Keep each step under 6 words.
-        5. Separate steps with semicolons.
+        1. Step 1 should be a low-friction "activation" step to build momentum (e.g., gathering materials or clearing the workspace).
+        2. Steps 2 and 3 should tackle the core components of the task.
+        3. Use concrete, action-oriented language. No abstract goals.
+        4. Keep each step under 10 words.
+        5. Output ONLY the 3 to 5 steps, separated by a semicolon (;). Do not include labels like "Step 1".
 
-        Example: Put one dish in the dishwasher; Wipe a small spot on counter; Toss one piece of trash.
+        Examples:
+        Task: "Clean Kitchen"
+        Response: Gather all trash into one bag; Load plates and cups into the dishwasher; Wipe down the main prep counter.
 
+        Task: "Write Essay"
+        Response: Open a blank document and type the title; Write down three bullet points for main arguments; Draft a rough introduction paragraph.
+
+        Task: "${taskName}"
         Response:`;
 
         const result = await model.generateContent(prompt);
