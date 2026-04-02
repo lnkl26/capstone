@@ -34,6 +34,8 @@ window.addEventListener("load", async () => {
     const dateEl = $("diet-date");
     const mealEl = $("diet-meal");
     const foodEl = $("diet-food");
+    const searchBtn = $("diet-search-btn");
+    const searchResultsEl = $("diet-search-results");
     const calEl = $("diet-cal");
     const proteinEl = $("diet-protein");
     const carbsEl = $("diet-carbs");
@@ -170,10 +172,114 @@ window.addEventListener("load", async () => {
             });
 
         totalCal.textContent = Math.round(totals.cal);
-        totalProtein.textContent = +totals.p.toFixed(1);
-        totalCarbs.textContent = +totals.c.toFixed(1);
-        totalFat.textContent = +totals.f.toFixed(1);
+        totalProtein.textContent = +totals.p.toFixed(2);
+        totalCarbs.textContent = +totals.c.toFixed(2);
+        totalFat.textContent = +totals.f.toFixed(2);
     }
+
+    // Food search integration
+    function showSearchResults(foods) {
+        if (!searchResultsEl) return;
+        searchResultsEl.innerHTML = "";
+        if (!foods || !foods.length) {
+            searchResultsEl.style.display = "none";
+            return;
+        }
+
+        foods.slice(0, 10).forEach((f) => {
+            const li = document.createElement("li");
+            li.style.padding = "8px";
+            li.style.borderBottom = "1px solid #eee";
+            li.style.cursor = "pointer";
+            const desc = f.description || f.foodName || "(no description)";
+            const sub = f.brandOwner ? ` — ${f.brandOwner}` : "";
+            li.textContent = desc + sub;
+
+            // store data for quick access
+            li.dataset.fdcId = f.fdcId || f.fdcId;
+            li.dataset.description = desc;
+
+            // extract nutrients
+            const nutrients = {};
+            (f.foodNutrients || []).forEach((n) => {
+                const name = (n.nutrientName || "").toLowerCase();
+                const val = n.value;
+                if (!val && val !== 0) return;
+                if (/protein/.test(name)) nutrients.protein = val;
+                else if (/carbohydrate|carb/.test(name)) nutrients.carbs = val;
+                else if (/fat|lipid/.test(name)) nutrients.fat = val;
+                else if (/energy|calor/.test(name)) nutrients.cal = val;
+            });
+
+            li.dataset.cal = nutrients.cal ?? "";
+            li.dataset.protein = nutrients.protein ?? "";
+            li.dataset.carbs = nutrients.carbs ?? "";
+            li.dataset.fat = nutrients.fat ?? "";
+
+            li.addEventListener("click", () => {
+                // populate form fields
+                foodEl.value = li.dataset.description || "";
+                calEl.value = li.dataset.cal || "";
+                proteinEl.value = li.dataset.protein || "";
+                carbsEl.value = li.dataset.carbs || "";
+                fatEl.value = li.dataset.fat || "";
+                // hide results
+                searchResultsEl.style.display = "none";
+            });
+
+            searchResultsEl.appendChild(li);
+        });
+
+        searchResultsEl.style.display = "block";
+    }
+
+    async function doFoodSearch(query) {
+        if (!query || query.trim().length < 2) {
+            alert("Please enter at least 2 characters to search.");
+            return;
+        }
+
+        try {
+            // simple explicit search via GET
+            const res = await fetch(
+                `/api/searchFoods?query=${encodeURIComponent(query)}`,
+            );
+            if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+            const data = await res.json();
+            // FDC search results
+            const foods = data.foods || data || [];
+            showSearchResults(foods);
+        } catch (err) {
+            console.error("Food search failed", err);
+            alert("Food search failed. See console for details.");
+        }
+    }
+
+    // Button + Enter handling
+    searchBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        doFoodSearch((foodEl.value || "").trim());
+    });
+
+    foodEl?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            doFoodSearch((foodEl.value || "").trim());
+        }
+    });
+
+    // click outside to close results
+    document.addEventListener("click", (e) => {
+        if (!searchResultsEl) return;
+        if (
+            e.target === searchResultsEl ||
+            searchResultsEl.contains(e.target) ||
+            e.target === searchBtn ||
+            e.target === foodEl
+        )
+            return;
+        searchResultsEl.style.display = "none";
+    });
 
     // Firestore live sync
     onSnapshot(dietCol, (snapshot) => {
