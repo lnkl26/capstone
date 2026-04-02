@@ -172,9 +172,9 @@ window.addEventListener("load", async () => {
             });
 
         totalCal.textContent = Math.round(totals.cal);
-        totalProtein.textContent = +totals.p.toFixed(2);
-        totalCarbs.textContent = +totals.c.toFixed(2);
-        totalFat.textContent = +totals.f.toFixed(2);
+        totalProtein.textContent = +totals.p.toFixed(3);
+        totalCarbs.textContent = +totals.c.toFixed(3);
+        totalFat.textContent = +totals.f.toFixed(3);
     }
 
     // Food search integration
