@@ -19,7 +19,7 @@ CSCE 4901 & CSCE 4902 Capstone Project Repository
 
 ## How to Run
 
-Go to this website [https://lnkl26.github.io/capstone/](https://lnkl26.github.io/capstone/).
+The Web App can be accessed using this GitHub Pages link [https://lnkl26.github.io/capstone/](https://lnkl26.github.io/capstone/) or through this one [https://capstone-i-55cd7.web.app/](https://capstone-i-55cd7.web.app/).
 
 ## Current Bugs
 
