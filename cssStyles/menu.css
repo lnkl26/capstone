@@ -16,8 +16,7 @@ body,
     height: 1000px;
     background-repeat: no-repeat;
     background-size: cover;
-    margin: 5vw 0;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .title {
@@ -109,6 +108,13 @@ body,
 
     #settings-menu {
         background-image: url('../assets/bgimg/smbgd.jpg');
+    }
+
+    #main-menu,
+    #productive-menu,
+    #food-med-menu,
+    #settings-menu {
+        margin: 2.5vw 0;
     }
 
     .header {
