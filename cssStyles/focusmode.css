@@ -23,7 +23,7 @@ button:hover {
 }
 
 .focus-mode {
-    margin-top: 5vw;
+    margin: 5vw 0 0;
     background-color: #fff;
     align-items: center;
     justify-content: center;
@@ -69,9 +69,40 @@ button:hover {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
+#firebaseTaskList {
+    list-style: none;
+    background: #eee;
+    border: 1.5px solid black;
+    border-radius: 15px;
+}
+
+span {
+    margin-right: 2.5vw;
+}
+
+button {
+    border: none;
+    border-radius: 15px;
+    background: #8babfb;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    margin-right: 2vw;
+    padding: 1vw 2vw;
+    font-size: 15px;
+}
+
+button:hover {
+    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
 #short-pomodoro-setting,
 #med-pomodoro-setting,
-#long-pomodoro-setting {
+#long-pomodoro-setting,
+#closeTaskModal {
     border: none;
     border-radius: 15px;
     background: #8babfb;
@@ -84,7 +115,8 @@ button:hover {
 
 #short-pomodoro-setting:hover,
 #med-pomodoro-setting:hover,
-#long-pomodoro-setting:hover {
+#long-pomodoro-setting:hover,
+#closeTaskModal:hover {
     background: #414080;
     color: whitesmoke;
     transform: translateY(-1px);
