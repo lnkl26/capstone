@@ -13,7 +13,6 @@ body,
 #productive-menu,
 #food-med-menu,
 #settings-menu {
-    height: 1000px;
     background-repeat: no-repeat;
     background-size: cover;
     overflow: auto;
@@ -76,6 +75,14 @@ body,
         background-image: url('../assets/bgimg/smbg.png');
     }
 
+    #main-menu,
+    #productive-menu,
+    #food-med-menu,
+    #settings-menu {
+        height: 200vw;
+        margin: 2.5vw 0 0;
+    }
+
     .header {
         margin-top: 15vw;
     }
@@ -114,7 +121,8 @@ body,
     #productive-menu,
     #food-med-menu,
     #settings-menu {
-        margin: 2.5vw 0;
+        margin: 2.5vw 0 0;
+        height: 100vw;
     }
 
     .header {

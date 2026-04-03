@@ -1,4 +1,4 @@
-const VERSION = 'v31.10.0';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
+const VERSION = 'v31.10.3';  //bump this when we make big changes, if u have a weird bug, bump this and refresh
 const CACHE = `static-${VERSION}`;  //unique cache name per version
 const ASSETS = [  //files to be available offline immediately
 './',
@@ -12,7 +12,7 @@ const ASSETS = [  //files to be available offline immediately
 
   './assets/bgimg/fmbg.png',
   './assets/bgimg/fmbgd.jpg', 
-  './assets/bgimg/logo.png',
+  './assets/bgimg/logo1.png',
   './assets/bgimg/mmbg.png',
   './assets/bgimg/mmbgd.jpg',
   './assets/bgimg/pmbg.png',
