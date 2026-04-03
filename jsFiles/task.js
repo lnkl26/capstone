@@ -314,20 +314,27 @@ function attachDragHandlers(container, itemSelector, onDragEnd) {
       e.stopPropagation();
     });
   });
+
+  let lastMoveTime = 0;
+  const MOVE_DELAY = 50; // ms between moves (tune this)
   
   container.addEventListener('dragover', e => {
-    e.preventDefault();
-    e.stopPropagation();
+  e.preventDefault();
+  e.stopPropagation();
 
-    const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
-      if (!draggedItem) return;
+  const now = performance.now();
+  if (now - lastMoveTime < MOVE_DELAY) return; // throttle
+  lastMoveTime = now;
 
-      const goingDown = e.clientY > lastY;
-      lastY = e.clientY;
+  const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
+  if (!draggedItem) return;
 
-      const after = getDragAfterElement(container, e.clientY, itemSelector, goingDown);
-      container.insertBefore(draggedItem, after);
-  });
+  const goingDown = e.clientY > lastY;
+  lastY = e.clientY;
+
+  const after = getDragAfterElement(container, e.clientY, itemSelector, goingDown);
+  container.insertBefore(draggedItem, after);
+});
 }
 
 function getDragAfterElement(container, y, selector, goingDown) {
@@ -351,7 +358,14 @@ function getDragAfterElement(container, y, selector, goingDown) {
     }
   }
 
-  if (!closest) return null;
+  // If cursor is below the last item, append to bottom
+const last = items[items.length - 1];
+const lastBox = last.getBoundingClientRect();
+const lastMid = lastBox.top + lastBox.height / 2;
+
+if (y > lastMid) {
+  return null; // append to bottom
+}
 
   return goingDown ? closest.nextSibling : closest;
 }
