@@ -12,6 +12,7 @@ let currentSubtasks = []; // store subtasks before saving
 let draggedTask = null;
 let draggedSubtask = null;
 let taskList = null;
+let lastY = 0;
 
 window.addEventListener("DOMContentLoaded", async () => {
   await userReady;
@@ -298,6 +299,7 @@ function attachDragHandlers(container, itemSelector, onDragEnd) {
       if (itemSelector === "li.task-item") draggedTask = item;
       else draggedSubtask = item;
       item.classList.add('dragging');
+      lastY = e.clientY; //reset direction tracking
     });
     item.addEventListener('dragend', async ()=>{
       item.classList.remove('dragging');
@@ -312,6 +314,7 @@ function attachDragHandlers(container, itemSelector, onDragEnd) {
       e.stopPropagation();
     });
   });
+  
   container.addEventListener('dragover', e => {
     e.preventDefault();
     e.stopPropagation();
@@ -319,29 +322,38 @@ function attachDragHandlers(container, itemSelector, onDragEnd) {
     const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
       if (!draggedItem) return;
 
-      const afterElement = getDragAfterElement (container, e.clientY, itemSelector);
-      if (afterElement == null) {
-        container.appendChild(draggedItem);
-      } else {
-      container.insertBefore(draggedItem, afterElement);
-      }
+      const goingDown = e.clientY > lastY;
+      lastY = e.clientY;
+
+      const after = getDragAfterElement(container, e.clientY, itemSelector, goingDown);
+      container.insertBefore(draggedItem, after);
   });
 }
 
-function getDragAfterElement(container, y, selector) {
-  const draggableElements = [...container.querySelectorAll(`${selector}:not(.dragging)`)];
-  let closest = {offset: Number.NEGATIVE_INFINITY, element: null};
+function getDragAfterElement(container, y, selector, goingDown) {
+  const dragged = selector === "li.task-item" ? draggedTask : draggedSubtask;
 
-  draggableElements.forEach(child=> {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
+  const items = [...container.querySelectorAll(selector)].filter (el => el !== dragged);
+  
+  if (items.length === 0) return null;
 
-    if (offset < 0 && offset > closest.offset) {
-      closest = {offset, element: child};
+  let closest = null;
+  let closestDistance = Infinity;
+
+  for (const item of items) {
+    const box = item.getBoundingClientRect();
+    const midpoint = box.top + box.height / 2;
+    const distance = Math.abs(y - midpoint);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closest = item;
     }
-  });
+  }
 
-  return closest.element; //always null or real item
+  if (!closest) return null;
+
+  return goingDown ? closest.nextSibling : closest;
 }
 
 // -------------------------
