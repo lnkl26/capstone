@@ -247,14 +247,38 @@ async function loadFirebaseTasks() {
       li.classList.toggle('completed', task.completed);
 
       const label = document.createElement('span');
-      label.innerHTML = `<strong>${task.title}</strong>${task.description ? `<p>${task.description}</p>` : ''}`;
+      label.innerHTML = `<strong>${task.title}</strong>`;
 
       const addBtn = document.createElement('button');
-      addBtn.textContent = 'add to pomodoro';
+      addBtn.textContent = '+';
       addBtn.addEventListener('click', () => addTaskToPomodoro({ id: docSnap.id, ...task }));
+
+      const desc = document.createElement('span');
+      desc.innerHTML = `${task.description ? `<p>${task.description}</p>` : ''}`;
 
       li.appendChild(label);
       li.appendChild(addBtn);
+      li.appendChild(desc);
+
+      if (task.subtasks && task.subtasks.length > 0) {
+        const subtaskContainer = document.createElement("ul");
+
+        task.subtasks.forEach((sub, index) => {
+          const subtaskRow = document.createElement("li");
+          // subtaskRow.classList.toggle('completed', task.sub.completed);
+
+          subtaskRow.dataset.subtaskIndex = index;
+
+          const subtaskText = document.createElement("span");
+          subtaskText.textContent = sub.text || sub;
+
+          subtaskRow.appendChild(subtaskText);
+          subtaskContainer.appendChild(subtaskRow);
+        });
+
+        li.appendChild(subtaskContainer);
+      }
+
       firebaseTaskList.appendChild(li);
     });
 
@@ -320,6 +344,48 @@ function renderPomodoroTasks() {
     li.appendChild(checkbox);
     li.appendChild(label);
     li.appendChild(removeBtn);
+
+    if (task.subtasks && task.subtasks.length > 0) {
+        const subtaskContainer = document.createElement("ul");
+
+        task.subtasks.forEach((sub, index) => {
+          const subtaskRow = document.createElement("li");
+          // subtaskRow.classList.toggle('completed', task.sub.completed);
+
+          subtaskRow.dataset.subtaskIndex = index;
+          
+
+          const subCheckbox = document.createElement('input');
+          subCheckbox.type = 'checkbox';
+          subCheckbox.checked = sub.completed || false;
+          subCheckbox.style.marginRight = '8px'; // left-align and spacing
+
+          const subtaskText = document.createElement("span");
+          subtaskText.textContent = sub.text || sub;
+          if (subCheckbox.checked) {
+            subtaskText.style.textDecoration = "line-through";
+            subtaskText.style.color = "gray";
+          }
+
+          subCheckbox.addEventListener('change', async () => {
+            sub.completed = subCheckbox.checked;
+
+            try {
+              await updateDoc(doc(tasksCollection, task.id), { subtasks: updatedSubtasks});
+              renderPomodoroTasks();
+            } catch(error) {
+              console.error("Error updating subtask:", error);
+            }
+          });
+
+          subtaskRow.appendChild(subCheckbox);
+          subtaskRow.appendChild(subtaskText);
+          subtaskContainer.appendChild(subtaskRow);
+        });
+
+        li.appendChild(subtaskContainer);
+      }
+
     pomodoroTaskList.appendChild(li);
   });
 }
