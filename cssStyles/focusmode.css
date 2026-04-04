@@ -189,6 +189,11 @@ button:hover {
     opacity: 0.5;
 }
 
+.task-item.dragging, .subtask-item.dragging {
+    opacity: 0.5;
+    background-color: lightgray;
+}
+
 /*red back button*/
 .back-btn.danger {
     background: #fee;

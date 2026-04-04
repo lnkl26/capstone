@@ -1,6 +1,6 @@
 import {
   db, collection, doc, updateDoc,
-  onSnapshot, query, orderBy, userReady, currentUser
+  onSnapshot, query, orderBy, userReady, currentUser, userCollection
 } from "../firebase.js";
 
 // -------------------------
@@ -13,6 +13,7 @@ let breakTime = 5;
 let timeRemaining = focusTime * 60; //convert to seconds
 let timerInterval = null;
 let pomodoroTasks = [];
+let tasksCollection = null;
 
 // DOM Elements (declared globally so accessible in all functions)
 let timerElement;
@@ -38,6 +39,11 @@ let closeTaskModal;
 let firebaseTaskList;
 let pomodoroTaskList;
 
+//dragging
+let draggedTask = null;
+let draggedSubtask = null;
+let lastY = 0;
+
 // -------------------------
 // Initialize after DOM ready
 // -------------------------
@@ -47,6 +53,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     await new Promise(r => setTimeout(r, 10));
   }
   console.log("Final UID on load:", currentUser.uid);
+
+  // get reference to user's tasks collection
+  tasksCollection = userCollection("tasks");
 
   // Timer elements
   timerElement = document.getElementById("pomodoro-timer");
@@ -314,6 +323,8 @@ function renderPomodoroTasks() {
   pomodoroTasks.forEach((task, index) => {
     const li = document.createElement('li');
     li.classList.toggle('completed', task.completed);
+    li.classList.add("task-item");
+    li.draggable = "true";
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -350,7 +361,8 @@ function renderPomodoroTasks() {
 
         task.subtasks.forEach((sub, index) => {
           const subtaskRow = document.createElement("li");
-          // subtaskRow.classList.toggle('completed', task.sub.completed);
+          subtaskRow.classList.add("subtask-item");
+          subtaskRow.draggable = "true";
 
           subtaskRow.dataset.subtaskIndex = index;
           
@@ -384,8 +396,127 @@ function renderPomodoroTasks() {
         });
 
         li.appendChild(subtaskContainer);
+        attachDragHandlers(subtaskContainer, "li.subtask-item", () => updateSubtaskOrder(task.id, subtaskContainer));
       }
 
     pomodoroTaskList.appendChild(li);
+  });
+
+  attachDragHandlers(pomodoroTaskList, "li.task-item", () => updateTaskOrder());
+}
+
+// -------------------------
+// Drag List Items
+// -------------------------
+
+function attachDragHandlers(container, itemSelector, onDragEnd) {
+  container.querySelectorAll(itemSelector).forEach(item=>{
+    item.addEventListener('dragstart', e=>{
+      e.stopPropagation();
+      if (itemSelector === "li.task-item") draggedTask = item;
+      else draggedSubtask = item;
+      item.classList.add('dragging');
+      lastY = e.clientY; //reset direction tracking
+    });
+    item.addEventListener('dragend', async ()=>{
+      item.classList.remove('dragging');
+      if (itemSelector === "li.task-item") draggedTask = null;
+      else draggedSubtask = null;
+      await onDragEnd();
+      // console.log("Saving order to Firestone");
+    });
+    item.addEventListener('dragover', e=>{
+      // console.log("draggedItem in dragover:", draggedItem);
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  });
+
+  let lastMoveTime = 0;
+  const MOVE_DELAY = 50; // ms between moves (tune this)
+  
+  container.addEventListener('dragover', e => {
+  e.preventDefault();
+  e.stopPropagation();
+
+  const now = performance.now();
+  if (now - lastMoveTime < MOVE_DELAY) return; // throttle
+  lastMoveTime = now;
+
+  const draggedItem = itemSelector === "li.task-item" ? draggedTask : draggedSubtask;
+  if (!draggedItem) return;
+
+  const goingDown = e.clientY > lastY;
+  lastY = e.clientY;
+
+  const after = getDragAfterElement(container, e.clientY, itemSelector, goingDown);
+  container.insertBefore(draggedItem, after);
+});
+}
+
+function getDragAfterElement(container, y, selector, goingDown) {
+  const dragged = selector === "li.task-item" ? draggedTask : draggedSubtask;
+
+  const items = [...container.querySelectorAll(selector)].filter (el => el !== dragged);
+  
+  if (items.length === 0) return null;
+
+  let closest = null;
+  let closestDistance = Infinity;
+
+  for (const item of items) {
+    const box = item.getBoundingClientRect();
+    const midpoint = box.top + box.height / 2;
+    const distance = Math.abs(y - midpoint);
+
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closest = item;
+    }
+  }
+
+  // If cursor is below the last item, append to bottom
+const last = items[items.length - 1];
+const lastBox = last.getBoundingClientRect();
+const lastMid = lastBox.top + lastBox.height / 2;
+
+if (y > lastMid) {
+  return null; // append to bottom
+}
+
+  return goingDown ? closest.nextSibling : closest;
+}
+
+// -------------------------
+// Firestore: Update Task Order
+// -------------------------
+async function updateTaskOrder() {
+  const items = pomodoroTaskList.querySelectorAll("li");
+  // console.log("updateTaskOrder items:", items.length);
+  items.forEach((li, index)=> {
+    const id = li.dataset.id;
+    if (!id) return;
+
+    const ref = doc(tasksCollection, id);
+    updateDoc(ref, {order: Number(index)});
+  });
+}
+
+async function updateSubtaskOrder(taskId, container) {
+  const items = container.querySelectorAll("li.subtask-item");
+
+  const newSubtasks = [ ...items].map((el, index) => {
+    const checkbox = el.querySelector("input[type='checkbox']");
+    const text = el.querySelector("span").textContent;
+
+    return {
+      text,
+      completed: checkbox.checked,
+      order: index
+    };
+  });
+
+  await updateDoc(doc(tasksCollection, taskId), {
+    subtasks: newSubtasks
   });
 }
