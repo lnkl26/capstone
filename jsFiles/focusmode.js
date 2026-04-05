@@ -222,19 +222,19 @@ function applyPomodoroSettings() {
 function useShortPomodoro() {
     focusInput.value =  15; // 15 minutes of working
     breakInput.value = 5; // 5 minutes of break
-    console.log("short button");
+    //console.log("short button");
 }
 
 function useMedPomodoro() {
     focusInput.value = 30; // 30 minutes of working
     breakInput.value = 5; // 5 minutes of break
-    console.log("med button");
+    //console.log("med button");
 }
 
 function useLongPomodoro() {
     focusInput.value = 45; // 45 minutes of working
     breakInput.value = 5; // 5 minutes of break
-    console.log("long button");
+    //console.log("long button");
 }
 
 // -------------------------
