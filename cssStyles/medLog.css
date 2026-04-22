@@ -3,6 +3,12 @@ body {
     font-family: "Noto Sans", sans-serif;
 }
 
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 dialog::backdrop {
     background: rgba(0, 0, 0, .25);
 }
@@ -228,6 +234,10 @@ button:hover {
 }
 
 @media screen and (max-width: 600px) {
+    body {
+        background-image: url('../assets/bgimg/fmbg.png');
+    }
+
     button {
         padding: 1vw;
         margin: 0 0 2vw;
@@ -289,6 +299,10 @@ button:hover {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/fmbgd.jpg');
+    }
+
     button {
         padding: 0.5vw;
         margin: 0 0 0.5vw;

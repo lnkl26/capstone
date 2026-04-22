@@ -3,6 +3,12 @@ body {
     font-family: "Noto Sans", sans-serif;
 }
 
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 .title {
     display: flex;
     justify-content: center;
@@ -97,6 +103,10 @@ body {
 }
 
 @media screen and (max-width: 600px) {
+    body {
+        background-image: url('../assets/bgimg/smbg.png');
+    }
+
     .page-container {
         flex-wrap: wrap;
     }
@@ -135,6 +145,10 @@ body {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/smbgd.jpg');
+    }
+
     .button {
         padding: 0.5vw 1vw;
         margin: 0.5vw;

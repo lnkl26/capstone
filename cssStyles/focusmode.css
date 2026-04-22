@@ -7,6 +7,12 @@ body {
     margin: 2.5vw 0 0;
 }
 
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 input {
     font-family: "Noto Sans", sans-serif;
 }
@@ -24,7 +30,7 @@ button:hover {
 
 .focus-mode {
     margin: 5vw 0 0;
-    background-color: #fff;
+    background-color: none;
     align-items: center;
     justify-content: center;
 }
@@ -33,11 +39,12 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1.5px solid black;
     border-radius: 50%;
     background-color: #8babfb;
     width: 350px;
     height: 350px;
-    color: #fff;
+    color: black;
     font-size: 50px;
 }
 
@@ -53,7 +60,7 @@ button:hover {
 #pomodoro-pause-start,
 #pomodoro-restart {
     font-size: 25px;
-    border: none;
+    border: 1.5px solid black;
     border-radius: 15px;
     background: #8babfb;
     box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
@@ -81,7 +88,7 @@ span {
 }
 
 button {
-    border: none;
+    border: 1.5px solid black;
     border-radius: 15px;
     background: #8babfb;
     margin-top: 1vw;
@@ -103,7 +110,7 @@ button:hover {
 #med-pomodoro-setting,
 #long-pomodoro-setting,
 #closeTaskModal {
-    border: none;
+    border: 1.5px solid black;
     border-radius: 15px;
     background: #8babfb;
     margin-top: 1vw;
@@ -133,7 +140,7 @@ button:hover {
 
 .control-buttons button {
     font-size: 15px;
-    border: none;
+    border: 1.5px solid black;
     border-radius: 15px;
     background: #8babfb;
     padding: 1vw;
@@ -197,7 +204,7 @@ button:hover {
 /*red back button*/
 .back-btn.danger {
     background: #fee;
-    border: none;
+    border: 1.5px solid black;
     border-radius: 15px;
     color: #900;
     box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
@@ -212,6 +219,9 @@ button:hover {
 
 /* styling for mobile screens */
 @media screen and (max-width: 600px) {
+    body {
+        background-image: url('../assets/bgimg/pmbg.png');
+    }
 
     #pomodoro-type-selection,
     #pomodoro-pause-start,
@@ -233,6 +243,9 @@ button:hover {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/pmbgd.jpg');
+    }
 
     #pomodoro-type-selection,
     #pomodoro-pause-start,

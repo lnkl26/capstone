@@ -1,3 +1,9 @@
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 /* is this needed for task.css? */
 .full {
     width: 94%;
@@ -276,6 +282,10 @@ option {
 
 /* styling for mobile screens */
 @media screen and (max-width: 600px) {
+    body {
+        background-image: url('../assets/bgimg/pmbg.png');
+    }
+
     .page-container {
         margin-left: 5vw;
         margin-right: 5vw;
@@ -349,6 +359,10 @@ option {
 
 /* for desktop styling */
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/pmbgd.jpg');
+    }
+
     .page-container {
         margin: 0 10vw;
     }

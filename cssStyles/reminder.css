@@ -1,3 +1,9 @@
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 /* reminder maybe will fix later */
 /* in-app reminder */
 #reminder-toast-container {
@@ -555,6 +561,10 @@ button:active {
 
 @media screen and (max-width: 600px) {
     body {
+        background-image: url('../assets/bgimg/pmbg.png');
+    }
+
+    body {
         margin: 2.5vw;
     }
 
@@ -607,6 +617,10 @@ button:active {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/pmbgd.jpg');
+    }
+
     body {
         margin: 5vw;
     }

@@ -3,6 +3,12 @@ body {
     font-family: "Noto Sans", sans-serif;
 }
 
+body {
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: auto;
+}
+
 /*title*/
 .title {
     display: flex;
@@ -196,6 +202,10 @@ textarea {
 
 
 @media screen and (max-width: 600px) {
+    body {
+        background-image: url('../assets/bgimg/fmbg.png');
+    }
+
     .title {
         margin: 10vw 0 2.5vw;
     }
@@ -375,6 +385,10 @@ textarea {
 }
 
 @media screen and (min-width: 768px) {
+    body {
+        background-image: url('../assets/bgimg/fmbgd.jpg');
+    }
+
     .title {
         margin-top: 5vw;
     }
