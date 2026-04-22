@@ -39,13 +39,23 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1.5px solid black;
+    /* border: 1.5px solid black; */
     border-radius: 50%;
-    background-color: #8babfb;
+    /* background-color: #8babfb; */
+    background-color: whitesmoke;
     width: 350px;
     height: 350px;
     color: black;
     font-size: 50px;
+
+    animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 20px #5771c7; }
+    25% { transform: scale(1); box-shadow: 0 0 20px #c7579e; }
+    50% { transform: scale(1); box-shadow: 0 0 30px rgba(189, 96, 14, 0.6); }
+    100% { transform: scale(1); box-shadow: 0 0 20px #c966ed; }
 }
 
 .pomodoro-settings-buttons {
