@@ -214,6 +214,11 @@ textarea {
         padding: 5vw;
     }
 
+    .grid-2,
+    .grid-3 {
+        grid-template-columns: 1fr;
+    }
+
     .grid-4 {
         display: flex;
         flex-wrap: wrap;
