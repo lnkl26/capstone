@@ -1,9 +1,14 @@
+html, body {
+    height: 100%;
+    margin: 0;              /* remove that spacing */
+}
+
 body {
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: auto;
+    background-position: center;
+    min-height: 100vh;      /* force full screen */
 }
-
 /* reminder maybe will fix later */
 /* in-app reminder */
 #reminder-toast-container {
@@ -184,6 +189,8 @@ a.back-btn-top {
     border: 1.5px solid #f99 !important;
     box-shadow: var(--shadow-btn) !important;
     color: #900 !important;
+    padding: 10px 18px;  
+    font-size: 18px;
 }
 
 .back-btn-top:hover,
@@ -564,9 +571,6 @@ button:active {
         background-image: url('../assets/bgimg/pmbg.png');
     }
 
-    body {
-        margin: 2.5vw;
-    }
 
     .button,
     button {
@@ -621,9 +625,6 @@ button:active {
         background-image: url('../assets/bgimg/pmbgd.jpg');
     }
 
-    body {
-        margin: 5vw;
-    }
 
     .button,
     button {
@@ -632,8 +633,8 @@ button:active {
 
     .back-btn-top {
         position: absolute;
-        left: 2.5vw;
-        top: 0;
+        left: 47vw;
+        top: 50vh;
     }
 
     /* keep toolbar buttons flush */

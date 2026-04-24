@@ -1,16 +1,21 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+}
+
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #fff;
     font-family: "Noto Sans", sans-serif;
-    margin: 2.5vw 0 0;
-}
-
-body {
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: auto;
+    background-position: center;
+    overflow-y: auto; 
 }
 
 input {
@@ -19,35 +24,61 @@ input {
 
 button {
     font-family: "Noto Sans", sans-serif;
+    margin-top: 20px;
     transition: transform 120ms ease,
-        background-color 120ms ease,
-        box-shadow 120ms ease;
+                background-color 120ms ease,
+                box-shadow 120ms ease;
+    border: 1.5px solid black;
+    border-radius: 15px;
+    background: #8babfb;
+    cursor: pointer;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25); 
 }
 
 button:hover {
-    cursor: pointer;
+    background: #414080;
+    color: whitesmoke;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.back-btn {
+    border-radius: 15px;
+    border: 1.5px solid black;
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px;
+    z-index: 1000;
+    padding: 1vw 2vw;
+    font-weight: 550;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    background: #fb8b8b !important;
+    color: black !important;
 }
 
 .focus-mode {
-    margin: 5vw 0 0;
-    background-color: none;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding-top: 5vh;
+    padding-bottom: 20vh;
 }
 
 .pomodoro-time-face {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* border: 1.5px solid black; */
     border-radius: 50%;
-    /* background-color: #8babfb; */
     background-color: whitesmoke;
     width: 350px;
     height: 350px;
     color: black;
     font-size: 50px;
-
     animation: pulse 3s infinite ease-in-out;
 }
 
@@ -62,107 +93,14 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 2.5vw;
-    gap: 2.5vw;
+    margin-top: 5vw; 
+    gap: 4vw;
 }
 
 #pomodoro-type-selection,
 #pomodoro-pause-start,
 #pomodoro-restart {
     font-size: 25px;
-    border: 1.5px solid black;
-    border-radius: 15px;
-    background: #8babfb;
-    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
-}
-
-#pomodoro-type-selection:hover,
-#pomodoro-pause-start:hover,
-#pomodoro-restart:hover {
-    cursor: pointer;
-    background: #414080;
-    color: whitesmoke;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-}
-
-#firebaseTaskList {
-    list-style: none;
-    background: #eee;
-    border: 1.5px solid black;
-    border-radius: 15px;
-}
-
-span {
-    margin-right: 2.5vw;
-}
-
-button {
-    border: 1.5px solid black;
-    border-radius: 15px;
-    background: #8babfb;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-    margin-right: 2vw;
-    padding: 1vw 2vw;
-    font-size: 15px;
-}
-
-button:hover {
-    cursor: pointer;
-    background: #414080;
-    color: whitesmoke;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-}
-
-#short-pomodoro-setting,
-#med-pomodoro-setting,
-#long-pomodoro-setting,
-#closeTaskModal {
-    border: 1.5px solid black;
-    border-radius: 15px;
-    background: #8babfb;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-    margin-right: 2vw;
-    padding: 1vw 2vw;
-    font-size: 15px;
-}
-
-#short-pomodoro-setting:hover,
-#med-pomodoro-setting:hover,
-#long-pomodoro-setting:hover,
-#closeTaskModal:hover {
-    background: #414080;
-    color: whitesmoke;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-}
-
-/* your task button */
-.control-buttons {
-    display: flex;
-    justify-content: center;
-    justify-items: center;
-    margin-top: 2.5vw;
-}
-
-.control-buttons button {
-    font-size: 15px;
-    border: 1.5px solid black;
-    border-radius: 15px;
-    background: #8babfb;
-    padding: 1vw;
-    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
-}
-
-.control-buttons button:hover {
-    cursor: pointer;
-    background: #414080;
-    color: whitesmoke;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .pomodoro-task-list {
@@ -171,10 +109,8 @@ button:hover {
     border-radius: 15px;
     background-color: #fff;
     padding: 1vw 2.5vw;
-}
-
-.pomodoro-task-list li {
     list-style: none;
+    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
 }
 
 .modal {
@@ -201,32 +137,6 @@ button:hover {
     padding: 5vw;
 }
 
-.completed {
-    text-decoration: line-through;
-    opacity: 0.5;
-}
-
-.task-item.dragging, .subtask-item.dragging {
-    opacity: 0.5;
-    background-color: lightgray;
-}
-
-/*red back button*/
-.back-btn.danger {
-    background: #fee;
-    border: 1.5px solid black;
-    border-radius: 15px;
-    color: #900;
-    box-shadow: -2px 3px 0.5px rgba(0, 0, 0, 0.25);
-}
-
-.back-btn.danger:hover {
-    background: #414080;
-    color: whitesmoke;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
-}
-
 /* styling for mobile screens */
 @media screen and (max-width: 600px) {
     body {
@@ -239,19 +149,17 @@ button:hover {
         padding: 4vw;
     }
 
-    .control-buttons {
-        margin-top: 4vw;
-    }
-
-    .control-buttons button {
+    .back-btn {
+        width: 80%;
         padding: 4vw;
     }
-
-    .back-btn.danger {
-        padding: 4vw;
+    
+    .pomodoro-settings-buttons {
+        gap: 6vw;
     }
 }
 
+/*styling for desktop screens*/
 @media screen and (min-width: 768px) {
     body {
         background-image: url('../assets/bgimg/pmbgd.jpg');
@@ -263,15 +171,7 @@ button:hover {
         padding: 1vw;
     }
 
-    .control-buttons {
-        margin-top: 2.5vw;
-    }
-
-    .control-buttons button {
-        padding: 1vw;
-    }
-
-    .back-btn.danger {
+    .back-btn {
         padding: 1vw;
     }
 }

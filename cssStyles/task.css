@@ -1,3 +1,9 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* 100% of the Viewport Height */
+    width: 100%;
+}
 body {
     background-repeat: no-repeat;
     background-size: cover;
@@ -24,6 +30,7 @@ button {
     border-radius: 15px;
     background: #eeeeee;
     padding: 0 0.5vw 0;
+    font-size: large;
     /* border: 1.5px solid black;
     border-radius: 15px;
     padding: 0.5vw 1vw;
@@ -257,7 +264,7 @@ input[type="text"] {
 #home-button {
     border: 1.5px solid black;
     border-radius: 15px;
-    background: #8babfb;
+    background: #fb8b8b;
     color: black;
     font-weight: 550;
     cursor: pointer;
@@ -375,7 +382,7 @@ option {
 
     .task-tab {
         padding: 1vw;
-        font-size: 1vw;
+        font-size: 18px;
         min-width: 350px;
     }
 

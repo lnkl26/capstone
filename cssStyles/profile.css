@@ -1,12 +1,20 @@
-body {
-    background-color: #f8f8f8;
-    font-family: "Noto Sans", sans-serif;
+*{
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    margin: 0;
 }
 
 body {
+    background-color: #f8f8f8;
+    font-family: "Noto Sans", sans-serif;
     background-repeat: no-repeat;
     background-size: cover;
-    overflow: auto;
+    background-position: center;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 .title {
@@ -51,8 +59,16 @@ body {
 
 .page-container {
     display: flex;
-    align-content: center;
-    justify-content: center;
+    flex-direction: column;
+    align-items: stretch;
+    width: min(92vw, 620px);
+    margin: 0 auto;
+}
+
+#log-section,
+.log-section,
+.pending-section {
+    width: 100%;
 }
 
 #log-section {
@@ -77,12 +93,12 @@ body {
 
 .form-row {
     display: grid;
-    grid-template-columns: 110px 1fr;
+    grid-template-columns: 110px minmax(0, 1fr);
     align-items: center;
     font-weight: 400;
 }
 
-.form-row>label {
+.form-row > label {
     opacity: .85;
 }
 
@@ -97,7 +113,6 @@ body {
     background-color: #f99;
 }
 
-/* ??? */
 .empty {
     opacity: .7;
 }
@@ -107,35 +122,35 @@ body {
         background-image: url('../assets/bgimg/smbg.png');
     }
 
-    .page-container {
-        flex-wrap: wrap;
+    .title {
+        margin: 10vw 0 6vw;
+        font-size: 28px;
     }
 
-    #log-section {
+    #log-section,
+    .log-section,
+    .pending-section {
+        padding: 4vw;
         margin-bottom: 5vw;
-        padding: 2.5vw;
     }
 
     .button {
         margin: 5vw 0 0;
+        padding: 2.5vw;
     }
 
     .input {
-        margin: 2.5vw 0 2.5vw;
+        width: 100%;
+        margin: 2.5vw 0;
     }
 
     input {
-        padding: 0 2vw 0;
+        padding: 0 2vw;
     }
 
-    .log-section {
-        margin-bottom: 5vw;
-        padding: 5vw;
-    }
-
-    .pending-section {
-        margin: 0 7vw;
-        width: 100%;
+    .form-row {
+        grid-template-columns: 95px minmax(0, 1fr);
+        gap: 2vw;
     }
 
     .button.back-btn {
@@ -149,32 +164,25 @@ body {
         background-image: url('../assets/bgimg/smbgd.jpg');
     }
 
+    .title {
+        margin-top: 5vw;
+    }
+
     .button {
         padding: 0.5vw 1vw;
         margin: 0.5vw;
     }
 
-    .title {
-        margin-top: 5vw;
-    }
-
-    .page-container {
-        margin: 0 10vw 2.5vw;
-    }
-
-    #log-section {
-        margin: 0 1vw 2.5vw;
-        padding: 1vw 1vw 2.5vw;
-    }
-
-    .log-section {
-        margin: 0 1vw 2.5vw;
-        padding: 1vw 1vw 2.5vw;
+    #log-section,
+    .log-section,
+    .pending-section {
+        padding: 1vw;
+        margin-bottom: 2.5vw;
     }
 
     .input {
         padding: 0.5vw 1vw;
-        margin: 1vw 0 1vw;
+        margin: 1vw 0;
     }
 
     .section-title {

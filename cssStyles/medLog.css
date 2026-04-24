@@ -1,11 +1,16 @@
-body {
-    background-color: #f8f8f8;
-    font-family: "Noto Sans", sans-serif;
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
 }
 
 body {
+    background-color: #f8f8f8;
+    font-family: "Noto Sans", sans-serif;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
     overflow: auto;
 }
 
@@ -61,12 +66,18 @@ button:hover {
     align-items: center;
 }
 
-/*container for the top 3 buttons*/
 .top-buttons {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row; 
+    justify-content: center;
     align-items: center;
-    margin: 2vw;
+    gap: 2vw; 
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 100%;
 }
 
 .pop-button {
@@ -83,12 +94,10 @@ button:hover {
     position: absolute;
 }
 
-/*dialog tuning to allow inner panel to style itself*/
 .popup-menu::backdrop {
     backdrop-filter: blur(2px);
 }
 
-/*the actual menu panel*/
 .popup-menu .menu {
     display: grid;
     border: 1.5px solid black;
@@ -131,7 +140,6 @@ button:hover {
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
-/*force center*/
 #popupMenu.popup-center {
     position: fixed !important;
     top: 50% !important;
@@ -174,14 +182,12 @@ button:hover {
     opacity: .85;
 }
 
-/*section titles inside a menu*/
 .section-title {
     font-weight: 600;
     text-align: center;
     border-bottom: 1px solid #d1d1d1;
 }
 
-/*log section container*/
 #log-section,
 #reminder-section {
     border: 1.5px solid black;
@@ -206,11 +212,14 @@ button:hover {
 }
 
 .button.back-btn {
-    align-self: center;
     width: 350px;
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
 }
 
-/*reminder entries inline*/
 .entry {
     display: flex;
     border-bottom: 1px solid #eee;
@@ -220,7 +229,6 @@ button:hover {
     font-weight: 600;
 }
 
-/* ??? */
 .inline-center {
     display: flex;
     align-items: center;
@@ -248,11 +256,6 @@ button:hover {
         padding: 2.5vw;
     }
 
-    .top-buttons .pop-button,
-    .top-buttons .back-btn {
-        margin: 2vw;
-    }
-
     .button-row-top {
         display: flex;
         padding: 0 10vw;
@@ -261,6 +264,7 @@ button:hover {
     .page-container {
         display: flex;
         flex-wrap: wrap;
+        padding-bottom: 15vh; 
     }
 
     .popup-menu .menu {
@@ -290,11 +294,21 @@ button:hover {
         width: 100%;
         min-height: 250px;
         padding: 2vw 5vw;
-        margin: 0 5vw 5vw;
+        margin: 5vh 5vw 5vw; /* Adjusted top margin here to 5vh */
     }
 
     .entry {
         padding: 1vw 0 1vw;
+    }
+    
+    .button.back-btn {
+        width: 80%;
+    }
+    
+    .top-buttons {
+        flex-direction: column;
+        bottom: 2vh;
+        gap: 2vw;
     }
 }
 
@@ -313,9 +327,8 @@ button:hover {
         padding: 1vw;
     }
 
-    .top-buttons .pop-button,
-    .top-buttons .back-btn {
-        margin: 1vw;
+    .page-container {
+        padding-bottom: 15vh;
     }
 
     .popup-menu .menu {
@@ -343,7 +356,7 @@ button:hover {
         min-width: 350px;
         min-height: 350px;
         padding: 1vw 2vw;
-        margin: 0 1vw;
+        margin: 5vh 1vw; /* Adjusted top margin here to 5vh */
     }
 
     .entry {
