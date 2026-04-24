@@ -36,6 +36,8 @@ window.addEventListener("load", async () => {
     const foodEl = $("diet-food");
     const searchBtn = $("diet-search-btn");
     const searchResultsEl = $("diet-search-results");
+    const servingsEl = $("diet-servings");
+    const servingInfoEl = $("diet-serving-info");
     const calEl = $("diet-cal");
     const proteinEl = $("diet-protein");
     const carbsEl = $("diet-carbs");
@@ -60,6 +62,14 @@ window.addEventListener("load", async () => {
     const exportJsonBtn = $("diet-export-json");
     const importJsonInput = $("diet-import-json");
     const clearAllBtn = $("diet-clear-all");
+
+    const confirmModal = $("diet-confirm-modal");
+    const confirmDeleteBtn = $("diet-confirm-delete");
+    const confirmCancelBtn = $("diet-confirm-cancel");
+
+    const clearAllModal = $("diet-clearall-modal");
+    const clearAllConfirmBtn = $("diet-clearall-confirm");
+    const clearAllCancelBtn = $("diet-clearall-cancel");
 
     // Firestore collection
     const dietCol = collection(db, "dietLog");
@@ -110,17 +120,105 @@ window.addEventListener("load", async () => {
         editIndexEl.value = "";
         if (!dateEl.value) dateEl.value = today();
         if (safeEl) safeEl.checked = false;
+        if (servingsEl) {
+            servingsEl.value = "1";
+            delete servingsEl.dataset.baseCal;
+            delete servingsEl.dataset.baseProtein;
+            delete servingsEl.dataset.baseCarbs;
+            delete servingsEl.dataset.baseFat;
+            delete servingsEl.dataset.baseGrams;
+            delete servingsEl.dataset.baseHousehold;
+            delete servingsEl.dataset.baseUnit;
+        }
+        if (servingInfoEl) servingInfoEl.textContent = "";
     }
 
+    // Delete confirm modal
+    let pendingDeleteIndex = null;
+
+    function openConfirm(i) {
+        pendingDeleteIndex = i;
+        confirmModal.style.display = "block";
+        document.body.classList.add("no-scroll");
+    }
+    function closeConfirm() {
+        confirmModal.style.display = "none";
+        document.body.classList.remove("no-scroll");
+        pendingDeleteIndex = null;
+    }
+
+    confirmCancelBtn?.addEventListener("click", closeConfirm);
+    confirmModal?.addEventListener("click", (e) => {
+        if (e.target === confirmModal) closeConfirm();
+    });
+
+    confirmDeleteBtn?.addEventListener("click", async () => {
+        if (pendingDeleteIndex != null) {
+            const v = entries[pendingDeleteIndex];
+            if (v && v.id) {
+                try {
+                    await deleteDoc(doc(dietCol, v.id));
+                } catch (err) {
+                    console.error("Failed to delete diet entry:", err);
+                }
+            }
+        }
+        closeConfirm();
+    });
+
+    // Clear-all confirm modal
+    function openClearAll() {
+        clearAllModal.style.display = "block";
+        document.body.classList.add("no-scroll");
+    }
+    function closeClearAll() {
+        clearAllModal.style.display = "none";
+        document.body.classList.remove("no-scroll");
+    }
+
+    clearAllCancelBtn?.addEventListener("click", closeClearAll);
+    clearAllModal?.addEventListener("click", (e) => {
+        if (e.target === clearAllModal) closeClearAll();
+    });
+
+    clearAllConfirmBtn?.addEventListener("click", async () => {
+        try {
+            const snapshotEntries = [...entries];
+            await Promise.all(
+                snapshotEntries.map((ent) =>
+                    ent.id ? deleteDoc(doc(dietCol, ent.id)) : Promise.resolve(),
+                ),
+            );
+        } catch (err) {
+            console.error("Failed to clear diet log:", err);
+        }
+        closeClearAll();
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            if (confirmModal?.style.display === "block") closeConfirm();
+            if (clearAllModal?.style.display === "block") closeClearAll();
+        }
+    });
+
     function readForm() {
+        const qty = parseFloat(servingsEl?.value) || 1;
+        const baseGrams = parseFloat(servingsEl?.dataset.baseGrams);
+        const unit = servingsEl?.dataset.baseUnit || "g";
+        const plural = qty === 1 ? "serving" : "servings";
+        const servingDisplay = baseGrams
+            ? `${qty} ${plural} (${+(baseGrams * qty).toFixed(1)}${unit})`
+            : "";
         return {
             date: dateEl.value || "",
             meal: mealEl.value || "",
             food: (foodEl.value || "").trim(),
-            cal: Number(calEl.value || 0),
+            cal: Math.round(Number(calEl.value || 0)),
             protein: Number(proteinEl.value || 0),
             carbs: Number(carbsEl.value || 0),
             fat: Number(fatEl.value || 0),
+            serving: servingDisplay,
             notes: (notesEl.value || "").trim(),
             safe: !!(safeEl && safeEl.checked),
             createdAt: Date.now(),
@@ -157,6 +255,7 @@ window.addEventListener("load", async () => {
           <td>${e.protein || 0}</td>
           <td>${e.carbs || 0}</td>
           <td>${e.fat || 0}</td>
+          <td>${(e.serving || "").replace(/</g, "&lt;")}</td>
           <td>${(e.notes || "").replace(/</g, "&lt;")}</td>
           <td>${e.safe ? "✓" : ""}</td>
           <td>
@@ -178,6 +277,22 @@ window.addEventListener("load", async () => {
     }
 
     // Food search integration
+    function updateServingLabel(qty) {
+        if (!servingInfoEl || !servingsEl?.dataset.baseGrams) return;
+        const baseGrams = parseFloat(servingsEl.dataset.baseGrams);
+        const household = servingsEl.dataset.baseHousehold || "";
+        const unit = servingsEl.dataset.baseUnit || "g";
+        const totalGrams = +(baseGrams * qty).toFixed(1);
+        const plural = qty === 1 ? "serving" : "servings";
+        if (qty === 1) {
+            servingInfoEl.textContent = household
+                ? `1 serving = ${household} (${baseGrams}${unit})`
+                : `1 serving = ${baseGrams}${unit}`;
+        } else {
+            servingInfoEl.textContent = `${qty} ${plural} = ${totalGrams}${unit}`;
+        }
+    }
+
     function showSearchResults(foods) {
         if (!searchResultsEl) return;
         searchResultsEl.innerHTML = "";
@@ -199,7 +314,17 @@ window.addEventListener("load", async () => {
             li.dataset.fdcId = f.fdcId || f.fdcId;
             li.dataset.description = desc;
 
-            // extract nutrients
+            // extract serving size — branded foods have explicit servingSize; others are per 100g
+            const servingSize = f.servingSize || 100;
+            const servingUnit = (f.servingSizeUnit || "g").toLowerCase();
+            const servingLabel = f.householdServingFullText
+                ? `${f.householdServingFullText} (${servingSize}${servingUnit})`
+                : `${servingSize}${servingUnit}`;
+            li.dataset.servingLabel = servingLabel;
+            // nutrients from search endpoint are per 100g; scale to actual serving size for branded foods
+            const scale = f.servingSize ? f.servingSize / 100 : 1;
+
+            // extract nutrients (values in search results are per 100g)
             const nutrients = {};
             (f.foodNutrients || []).forEach((n) => {
                 const name = (n.nutrientName || "").toLowerCase();
@@ -211,19 +336,33 @@ window.addEventListener("load", async () => {
                 else if (/energy|calor/.test(name)) nutrients.cal = val;
             });
 
-            li.dataset.cal = nutrients.cal ?? "";
-            li.dataset.protein = nutrients.protein ?? "";
-            li.dataset.carbs = nutrients.carbs ?? "";
-            li.dataset.fat = nutrients.fat ?? "";
+            // store base values scaled to 1 serving
+            li.dataset.cal = nutrients.cal != null ? +(nutrients.cal * scale).toFixed(1) : "";
+            li.dataset.protein = nutrients.protein != null ? +(nutrients.protein * scale).toFixed(2) : "";
+            li.dataset.carbs = nutrients.carbs != null ? +(nutrients.carbs * scale).toFixed(2) : "";
+            li.dataset.fat = nutrients.fat != null ? +(nutrients.fat * scale).toFixed(2) : "";
+
+            li.dataset.baseGrams = servingSize;
+            li.dataset.baseHousehold = f.householdServingFullText || "";
+            li.dataset.baseUnit = servingUnit;
 
             li.addEventListener("click", () => {
-                // populate form fields
                 foodEl.value = li.dataset.description || "";
+                if (servingsEl) {
+                    servingsEl.value = "1";
+                    servingsEl.dataset.baseCal = li.dataset.cal;
+                    servingsEl.dataset.baseProtein = li.dataset.protein;
+                    servingsEl.dataset.baseCarbs = li.dataset.carbs;
+                    servingsEl.dataset.baseFat = li.dataset.fat;
+                    servingsEl.dataset.baseGrams = li.dataset.baseGrams;
+                    servingsEl.dataset.baseHousehold = li.dataset.baseHousehold;
+                    servingsEl.dataset.baseUnit = li.dataset.baseUnit;
+                }
+                updateServingLabel(1);
                 calEl.value = li.dataset.cal || "";
                 proteinEl.value = li.dataset.protein || "";
                 carbsEl.value = li.dataset.carbs || "";
                 fatEl.value = li.dataset.fat || "";
-                // hide results
                 searchResultsEl.style.display = "none";
             });
 
@@ -268,6 +407,17 @@ window.addEventListener("load", async () => {
         }
     });
 
+    // rescale nutrients and serving label when servings count changes
+    servingsEl?.addEventListener("input", () => {
+        const qty = parseFloat(servingsEl.value);
+        if (!qty || qty <= 0 || !servingsEl.dataset.baseCal) return;
+        calEl.value = servingsEl.dataset.baseCal ? +(+servingsEl.dataset.baseCal * qty).toFixed(1) : "";
+        proteinEl.value = servingsEl.dataset.baseProtein ? +(+servingsEl.dataset.baseProtein * qty).toFixed(2) : "";
+        carbsEl.value = servingsEl.dataset.baseCarbs ? +(+servingsEl.dataset.baseCarbs * qty).toFixed(2) : "";
+        fatEl.value = servingsEl.dataset.baseFat ? +(+servingsEl.dataset.baseFat * qty).toFixed(2) : "";
+        updateServingLabel(qty);
+    });
+
     // click outside to close results
     document.addEventListener("click", (e) => {
         if (!searchResultsEl) return;
@@ -294,6 +444,7 @@ window.addEventListener("load", async () => {
                 protein: data.protein ?? 0,
                 carbs: data.carbs ?? 0,
                 fat: data.fat ?? 0,
+                serving: data.serving || "",
                 notes: data.notes || "",
                 safe: !!data.safe,
                 createdAt: data.createdAt || Date.now(),
@@ -328,6 +479,7 @@ window.addEventListener("load", async () => {
                     protein: data.protein,
                     carbs: data.carbs,
                     fat: data.fat,
+                    serving: data.serving,
                     notes: data.notes,
                     safe: data.safe,
                     createdAt: existing.createdAt || Date.now(),
@@ -358,17 +510,7 @@ window.addEventListener("load", async () => {
         if (del) {
             const i = +del.dataset.del;
             if (Number.isInteger(i) && i >= 0 && i < entries.length) {
-                if (confirm("Delete this entry?")) {
-                    const v = entries[i];
-                    if (v && v.id) {
-                        try {
-                            await deleteDoc(doc(dietCol, v.id));
-                        } catch (err) {
-                            console.error("Failed to delete diet entry:", err);
-                            alert("Error deleting entry. Please try again.");
-                        }
-                    }
-                }
+                openConfirm(i);
             }
         }
 
@@ -549,24 +691,10 @@ window.addEventListener("load", async () => {
     });
 
     // Clear all
-    clearAllBtn?.addEventListener("click", async (e) => {
+    clearAllBtn?.addEventListener("click", (e) => {
         e.preventDefault();
         closeModal(toolsModal);
-        if (!confirm("This will delete ALL diet entries. Continue?")) return;
-
-        try {
-            const snapshotEntries = [...entries];
-            await Promise.all(
-                snapshotEntries.map((ent) =>
-                    ent.id
-                        ? deleteDoc(doc(dietCol, ent.id))
-                        : Promise.resolve(),
-                ),
-            );
-        } catch (err) {
-            console.error("Failed to clear diet log:", err);
-            alert("Error clearing entries. Please try again.");
-        }
+        openClearAll();
     });
 
     // Initialize defaults

@@ -110,6 +110,22 @@
                         ></ul>
                     </label>
 
+                    <div class="serving-row" style="display: flex; gap: 12px; align-items: flex-end; margin-bottom: 8px;">
+                        <label style="flex: 0 0 auto;">
+                            Servings
+                            <input
+                                type="number"
+                                id="diet-servings"
+                                inputmode="decimal"
+                                min="0.25"
+                                step="0.25"
+                                value="1"
+                                style="width: 110px;"
+                            />
+                        </label>
+                        <span id="diet-serving-info" style="font-size: 0.85em; color: #666; padding-bottom: 6px;"></span>
+                    </div>
+
                     <div class="grid-4">
                         <label
                             >Calories
@@ -118,7 +134,7 @@
                                 id="diet-cal"
                                 inputmode="numeric"
                                 min="0"
-                                step="1"
+                                step="any"
                                 placeholder="0"
                             />
                         </label>
@@ -272,6 +288,7 @@
                             <th>P</th>
                             <th>C</th>
                             <th>F</th>
+                            <th>Serving</th>
                             <th>Notes</th>
                             <th>Safe</th>
                             <th style="width: 140px">Actions</th>
@@ -333,6 +350,30 @@
                 </div>
             </div>
         </div>
+        <!-- Confirm Delete Modal -->
+        <div id="diet-confirm-modal" class="task-modal" role="dialog" aria-modal="true" aria-labelledby="diet-confirm-title" style="display: none">
+            <div class="task-modal-content" style="max-width: 420px">
+                <h2 id="diet-confirm-title" style="margin-top: 0">Delete this entry?</h2>
+                <p>This action can't be undone.</p>
+                <div class="task-btns" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+                    <button type="button" id="diet-confirm-cancel" class="button btn-secondary button--sm">Cancel</button>
+                    <button type="button" id="diet-confirm-delete" class="button button--sm">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirm Clear-All Modal -->
+        <div id="diet-clearall-modal" class="task-modal" role="dialog" aria-modal="true" aria-labelledby="diet-clearall-title" style="display: none">
+            <div class="task-modal-content" style="max-width: 420px">
+                <h2 id="diet-clearall-title" style="margin-top: 0">Clear all entries?</h2>
+                <p>This will permanently delete all diet log entries.</p>
+                <div class="task-btns" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px;">
+                    <button type="button" id="diet-clearall-cancel" class="button btn-secondary button--sm">Cancel</button>
+                    <button type="button" id="diet-clearall-confirm" class="button button--sm">Clear All</button>
+                </div>
+            </div>
+        </div>
+
         <script type="module" src="../firebase.js"></script>
         <script type="module" src="../jsFiles/dietLog.js"></script>
     </body>
