@@ -1,12 +1,17 @@
 import {
+    db,
+    collection,
     addDoc,
     deleteDoc,
     doc,
     onSnapshot,
     updateDoc,
+    collectionForUser,
 } from "../firebase.js";
 
-import { userReady, currentUser, userCollection } from "../firebase.js";
+import { userReady, currentUser } from "../firebase.js";
+
+import { getDocs, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 window.addEventListener("load", async () => {
     await userReady;
@@ -17,6 +22,9 @@ window.addEventListener("load", async () => {
     if (document.body.id !== "diet-log-page") return;
 
     await userReady;
+
+    const meUid = currentUser.uid;
+    let activeOwnerUid = localStorage.getItem("activeOwnerUid") || meUid;
 
     const $ = (id) => document.getElementById(id);
 
@@ -70,9 +78,6 @@ window.addEventListener("load", async () => {
     const clearAllModal = $("diet-clearall-modal");
     const clearAllConfirmBtn = $("diet-clearall-confirm");
     const clearAllCancelBtn = $("diet-clearall-cancel");
-
-    // Firestore collection — scoped to the signed-in user
-    const dietCol = userCollection("dietLog");
 
     // State
     let entries = [];
@@ -259,12 +264,10 @@ window.addEventListener("load", async () => {
           <td>${(e.notes || "").replace(/</g, "&lt;")}</td>
           <td>${e.safe ? "✓" : ""}</td>
           <td>
-            <button type="button" class="button button--small btn-secondary" data-edit="${
-                e._i
-            }">Edit</button>
-            <button type="button" class="button button--small btn-secondary" data-del="${
-                e._i
-            }">Delete</button>
+            ${readOnly ? "" : `
+            <button type="button" class="button button--small btn-secondary" data-edit="${e._i}">Edit</button>
+            <button type="button" class="button button--small btn-secondary" data-del="${e._i}">Delete</button>
+            `}
           </td>
         `;
                 tbody.appendChild(tr);
@@ -430,6 +433,81 @@ window.addEventListener("load", async () => {
             return;
         searchResultsEl.style.display = "none";
     });
+
+    // View-as selector (shared accounts)
+    async function setupViewSelector() {
+        const sharedWithRef = collection(db, "users", meUid, "sharedWith");
+        const snap = await getDocs(sharedWithRef);
+        if (snap.empty) {
+            localStorage.setItem("activeOwnerUid", meUid);
+            return;
+        }
+        const validUids = new Set([meUid, ...snap.docs.map((d) => d.id)]);
+        if (!validUids.has(activeOwnerUid)) {
+            activeOwnerUid = meUid;
+            localStorage.setItem("activeOwnerUid", meUid);
+        }
+
+        const wrap = document.createElement("div");
+        wrap.style.cssText = "max-width:600px;margin:0 auto 10px auto;width:86%;";
+        wrap.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;padding:4px 0;">
+                <label for="dietViewAs" style="font-weight:600;white-space:nowrap;">Viewing</label>
+                <select id="dietViewAs" style="flex:1;border:1.5px solid black;border-radius:10px;padding:4px 8px;font-family:inherit;"></select>
+            </div>
+            <div id="dietViewHint" style="text-align:center;font-size:0.85em;color:#666;margin-top:2px;"></div>
+        `;
+
+        const firstCard = document.querySelector("section.card");
+        if (firstCard) firstCard.before(wrap);
+        else document.body.prepend(wrap);
+
+        const sel = wrap.querySelector("#dietViewAs");
+        const hint = wrap.querySelector("#dietViewHint");
+
+        const myProfile = await getDoc(doc(db, "users", meUid));
+        const myName = myProfile.exists() && myProfile.data().displayName ? myProfile.data().displayName : "Me";
+        const optMe = document.createElement("option");
+        optMe.value = meUid;
+        optMe.textContent = myName;
+        sel.appendChild(optMe);
+
+        for (const d of snap.docs) {
+            const ownerUid = d.id;
+            const data = d.data();
+            let ownerName = data.ownerName;
+            if (!ownerName) {
+                const ownerProfile = await getDoc(doc(db, "users", ownerUid));
+                if (ownerProfile.exists()) ownerName = ownerProfile.data().displayName;
+            }
+            const opt = document.createElement("option");
+            opt.value = ownerUid;
+            opt.textContent = `Shared: ${ownerName || ownerUid.slice(0, 6)}`;
+            sel.appendChild(opt);
+        }
+
+        sel.value = activeOwnerUid;
+        hint.textContent = activeOwnerUid !== meUid ? "Viewing shared data." : "";
+
+        sel.addEventListener("change", () => {
+            localStorage.setItem("activeOwnerUid", sel.value);
+            location.reload();
+        });
+    }
+
+    try {
+        await setupViewSelector();
+    } catch (err) {
+        console.warn("[diet] setupViewSelector failed, continuing as own user:", err);
+    }
+    activeOwnerUid = localStorage.getItem("activeOwnerUid") || meUid;
+    let readOnly = activeOwnerUid !== meUid;
+    const dietCol = collectionForUser(activeOwnerUid, "dietLog");
+
+    // hide write actions when viewing shared data
+    if (readOnly) {
+        dietCreateBtn?.style.setProperty("display", "none");
+    }
 
     // Firestore live sync
     onSnapshot(dietCol, (snapshot) => {
