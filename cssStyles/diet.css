@@ -466,6 +466,14 @@ textarea {
     display: flex !important;
 }
 
+#diet-confirm-modal .task-btns button,
+#diet-clearall-modal .task-btns button {
+    padding: 12px 28px;
+    font-size: 1rem;
+    font-weight: 700;
+    min-width: 100px;
+}
+
 #diet-confirm-modal .task-modal-content,
 #diet-clearall-modal .task-modal-content {
     position: relative;
