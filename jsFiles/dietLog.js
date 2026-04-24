@@ -1,6 +1,4 @@
 import {
-    db,
-    collection,
     addDoc,
     deleteDoc,
     doc,
@@ -8,15 +6,17 @@ import {
     updateDoc,
 } from "../firebase.js";
 
-import { userReady, currentUser } from "../firebase.js";
+import { userReady, currentUser, userCollection } from "../firebase.js";
 
 window.addEventListener("load", async () => {
     await userReady;
     console.log("Final UID on load:", currentUser.uid);
 });
 
-(function () {
+(async function () {
     if (document.body.id !== "diet-log-page") return;
+
+    await userReady;
 
     const $ = (id) => document.getElementById(id);
 
@@ -71,8 +71,8 @@ window.addEventListener("load", async () => {
     const clearAllConfirmBtn = $("diet-clearall-confirm");
     const clearAllCancelBtn = $("diet-clearall-cancel");
 
-    // Firestore collection
-    const dietCol = collection(db, "dietLog");
+    // Firestore collection — scoped to the signed-in user
+    const dietCol = userCollection("dietLog");
 
     // State
     let entries = [];

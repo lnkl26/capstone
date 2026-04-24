@@ -1,6 +1,4 @@
 import {
-    db,
-    collection,
     addDoc,
     deleteDoc,
     doc,
@@ -8,14 +6,14 @@ import {
     updateDoc,
 } from "../firebase.js";
 
-import { userReady, currentUser } from "../firebase.js";
+import { userReady, currentUser, userCollection } from "../firebase.js";
 console.log("reminder.JS LOADED");
 window.addEventListener("load", async () => {
     await userReady;
     console.log("Final UID on load:", currentUser.uid);
 });
 
-(function () {
+(async function () {
     if (!document.body || document.body.id !== "reminder-page") {
         console.warn(
             "[reminder.js] Body id is:",
@@ -24,6 +22,8 @@ window.addEventListener("load", async () => {
         );
         return;
     }
+
+    await userReady;
 
     const $ = (id) => document.getElementById(id);
 
@@ -52,8 +52,8 @@ window.addEventListener("load", async () => {
     const thead = document.querySelector("#reminder-table thead");
     let sortState = { key: "due", dir: "asc" };
 
-    // Firestore collection
-    const remindersCol = collection(db, "reminders");
+    // Firestore collection — scoped to the signed-in user
+    const remindersCol = userCollection("reminders");
 
     // State
     let reminders = [];
