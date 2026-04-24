@@ -200,10 +200,9 @@ textarea {
     overflow-x: auto;
 }
 
-
 @media screen and (max-width: 600px) {
     body {
-        background-image: url('../assets/bgimg/fmbg.png');
+        background-image: url("../assets/bgimg/fmbg.png");
     }
 
     .title {
@@ -381,12 +380,11 @@ textarea {
     .table td:nth-of-type(9):before {
         content: "safe";
     }
-
 }
 
 @media screen and (min-width: 768px) {
     body {
-        background-image: url('../assets/bgimg/fmbgd.jpg');
+        background-image: url("../assets/bgimg/fmbgd.jpg");
     }
 
     .title {
@@ -437,5 +435,45 @@ textarea {
     .task-input-area select,
     .task-input-area textarea {
         margin: 0.5vw 0 1vw;
+    }
+}
+
+/* confirm / clear-all modals — match reminder style */
+#diet-confirm-modal,
+#diet-clearall-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+#diet-confirm-modal[style*="display: block"],
+#diet-clearall-modal[style*="display: block"] {
+    display: flex !important;
+}
+
+#diet-confirm-modal .task-modal-content,
+#diet-clearall-modal .task-modal-content {
+    position: relative;
+    bottom: 6vh;
+    border-radius: 15px;
+    width: min(90%, 440px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    padding: 20px 22px;
+    animation: dietConfirmSlideUp 200ms ease-out both;
+}
+
+@keyframes dietConfirmSlideUp {
+    from {
+        transform: translateY(24px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
