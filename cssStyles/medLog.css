@@ -64,27 +64,40 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 180px;
 }
 
 .top-buttons {
-    display: flex;
-    flex-direction: row; 
-    justify-content: center;
-    align-items: center;
-    gap: 2vw; 
     position: fixed;
-    bottom: 5vh;
+    bottom: 4vh;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
     width: 100%;
 }
 
-.pop-button {
-    display: inline-flex;
+.button-row-top {
+    display: flex;
     justify-content: center;
-    min-width: 180px;
-    text-align: center;
+    gap: 20px;
+}
+
+.pop-button {
+    min-width: 200px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.button.back-btn {
+    position: static;
+    transform: none;
+    width: 500px;
+    padding: 12px;
+    font-size: 18px;
 }
 
 .popup-menu {
@@ -92,6 +105,7 @@ button:hover {
     padding: 0;
     background: transparent;
     position: absolute;
+    z-index: 9999;
 }
 
 .popup-menu::backdrop {
@@ -211,15 +225,6 @@ button:hover {
     color: whitesmoke;
 }
 
-.button.back-btn {
-    width: 350px;
-    position: fixed;
-    bottom: 5vh;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-}
-
 .entry {
     display: flex;
     border-bottom: 1px solid #eee;
@@ -258,13 +263,15 @@ button:hover {
 
     .button-row-top {
         display: flex;
-        padding: 0 10vw;
+        flex-direction: column;
+        gap: 8px;
+        width: 90%;
     }
 
     .page-container {
         display: flex;
         flex-wrap: wrap;
-        padding-bottom: 15vh; 
+        padding-bottom: 230px;
     }
 
     .popup-menu .menu {
@@ -294,21 +301,20 @@ button:hover {
         width: 100%;
         min-height: 250px;
         padding: 2vw 5vw;
-        margin: 5vh 5vw 5vw; /* Adjusted top margin here to 5vh */
+        margin: 5vh 5vw 5vw;
     }
 
     .entry {
         padding: 1vw 0 1vw;
     }
-    
+
     .button.back-btn {
-        width: 80%;
+        width: 100%;
     }
-    
+
     .top-buttons {
-        flex-direction: column;
         bottom: 2vh;
-        gap: 2vw;
+        gap: 8px;
     }
 }
 
@@ -321,14 +327,14 @@ button:hover {
         padding: 0.5vw;
         margin: 0 0 0.5vw;
     }
-    
+
     .button,
     .pop-button {
         padding: 1vw;
     }
 
     .page-container {
-        padding-bottom: 15vh;
+        padding-bottom: 180px;
     }
 
     .popup-menu .menu {
@@ -356,7 +362,7 @@ button:hover {
         min-width: 350px;
         min-height: 350px;
         padding: 1vw 2vw;
-        margin: 5vh 1vw; /* Adjusted top margin here to 5vh */
+        margin: 5vh 1vw;
     }
 
     .entry {
