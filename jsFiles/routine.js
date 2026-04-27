@@ -1,5 +1,5 @@
 import {
-  db, addDoc, deleteDoc, doc, updateDoc,
+  db, addDoc, deleteDoc, doc, updateDoc, getDocs,
   onSnapshot, query, orderBy,
   userReady, currentUser, userCollection
 } from "../firebase.js";
@@ -8,6 +8,7 @@ console.log("routine.js LOADED");
 let tasksCollection = null;
 let routinesCollection = null;
 let editingRoutineId = null; 
+let routines = [];
 let tasks = []; 
 
 window.addEventListener("load", async () => {
@@ -24,11 +25,18 @@ window.addEventListener("load", async () => {
   tasks = await fetchTasks();
 
   // Start listening for live updates on routines
+  await fetchRoutines();
   startRoutineSnapshotListener();
   
   // Initialize button and form events
   initializeEventListeners();
 });
+
+async function fetchRoutines() {
+  const snapshot = await getDocs(query(routinesCollection));
+  routines = snapshot.docs.map(doc => ({ id: doc.is, ...doc.data() }));
+  console.log("Fetched routines:", routines);
+}
 
 function initializeEventListeners() {
   const routineModal = document.getElementById("routineModal");
@@ -149,7 +157,7 @@ function startRoutineSnapshotListener() {
   const routinesQuery = query(routinesCollection, orderBy("createdAt", "desc"));
   
   onSnapshot(routinesQuery, (snapshot) => {
-    const routines = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    routines = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     console.log("Routine list updated:", routines);
     renderRoutineList(routines);
   });
@@ -209,14 +217,13 @@ async function deleteRoutine(id) {
     const routineDocRef = doc(routinesCollection, id);
     await deleteDoc(routineDocRef);
     console.log("Routine deleted id:", id);
-    alert("Routine deleted!");
+    // alert("Routine deleted!");
   } catch (error) {
     console.error("Error deleting routine:", error);
   }
 }
 
 async function openRoutineForEdit(id) {
-  const routines = []; // To be fetched from Firestore
   const routine = routines.find(r => r.id === id);
   if (!routine) return alert("Routine not found!");
 

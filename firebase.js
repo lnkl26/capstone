@@ -3,7 +3,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getFirestore, collection, addDoc, deleteDoc, doc,
-  onSnapshot, updateDoc, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  onSnapshot, updateDoc, getDocs, query, orderBy, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-analytics.js";
 import {
   getAuth, onAuthStateChanged, signInAnonymously, EmailAuthProvider, 
@@ -99,6 +99,7 @@ export {
   doc,
   onSnapshot,
   updateDoc,
+  getDocs,
   query,
   orderBy,
   serverTimestamp,
