@@ -2,3 +2,5 @@
 firebase-debug.log
 firebase-debug.*.log
 ui-debug.log
+capstone_deployment_artifacts
+capstone_ontracked_zipped.zip
