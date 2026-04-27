@@ -141,7 +141,7 @@ async function saveRoutine() {
     };
     await addDoc(routinesCollection, newRoutine);
     console.log("New routine created:", newRoutine);
-    alert("Routine saved!");
+    // alert("Routine saved!");
   }
 
   // Reset modal
@@ -150,6 +150,7 @@ async function saveRoutine() {
   routineNameInput.value = "";
   routineTaskList.innerHTML = "";
 
+  await fetchRoutines();
   renderRoutineList(routines); 
 }
 
@@ -180,7 +181,7 @@ function renderRoutineList(routines) {
     const routineTasks = routine.tasks
       .map(id => tasks.find(t => t.id === id)?.title || "(Deleted Task)")
       .join(", ");
-      
+    
     li.innerHTML = `
       <strong>${routine.name}</strong><br>
       <small>${routineTasks}</small>
@@ -191,6 +192,11 @@ function renderRoutineList(routines) {
     routineList.appendChild(li);
   });
 
+  // Adding listeners after rendering
+  addRoutineListeners();
+}
+
+function addRoutineListeners() {
   // Add click listeners for delete buttons
   const deleteButtons = document.querySelectorAll(".deleteRoutineBtn");
   deleteButtons.forEach(btn => {
@@ -211,6 +217,7 @@ function renderRoutineList(routines) {
     });
   });
 }
+
 
 async function deleteRoutine(id) {
   try {
